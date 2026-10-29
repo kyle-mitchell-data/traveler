@@ -1,0 +1,27 @@
+# Secrets and bootstrap credentials
+a.txt
+*.pem
+.env
+.env.*
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.example.tfvars
+crash.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Build output
+dist/
+build/
+node_modules/
+*.zip
