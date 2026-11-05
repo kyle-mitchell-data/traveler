@@ -95,6 +95,7 @@ data "aws_iam_policy_document" "traveler" {
       "lambda:InvokeFunction",
       "lambda:PutFunctionEventInvokeConfig",
       "lambda:PutFunctionConcurrency",
+      "lambda:PutFunctionRecursionConfig",
       "lambda:TagResource",
     ]
     resources = [local.traveler_fn]

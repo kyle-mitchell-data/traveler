@@ -8,10 +8,14 @@ Replaces the spec's $10 and $20 alerts. Email alerts at $10, $20 and $25 actual
 spend, plus a forecast alert at $25. Alerts go to the address in `terraform.tfvars`
 (not committed).
 
-## D2. Account stays on the AWS Free plan for now
+## D2. Account: Paid plan, advanced features, no region lock
 
-The account is on the credit-based Free plan (expires 2027-04-28). Revisit before
-phase 2 creates CloudFront, and again before the plan expires.
+The account was created with "Sign up for AWS (new)", which pins accounts to one
+Region through an organization SCP. On 2026-11-05 it was upgraded to the Paid plan
+(credit carried over), advanced features were activated, and the replacement
+`AdvancedModeRegionRestrictionSecurityControlPolicy` was detached by hand in the
+management account. All 17 default Regions are usable. The AWS Budgets spend-limit
+SCPs were left in place as an extra backstop.
 
 ## D3. Lambda concurrency: build on the default quota, raise before launch
 
@@ -87,3 +91,37 @@ Two GitHub OIDC roles, trusted only by `kyle-mitchell-data/traveler`:
 
 Home region us-east-2. The allowlist is all 17 regions enabled by default on the
 account (no opt-in regions).
+
+## D14. Recursive loop detection is set to Allow on every copy
+
+Lambda stops chains of about 16 invocations that pass trace headers, including
+Lambda-to-Lambda async invokes. Each new traveler copy calls
+`PutFunctionRecursionConfig RecursiveLoop=Allow` at P2, before anything invokes it.
+The watchdog and copy count remain the guard against runaway replication.
+
+## D15. CloudFront on pay-as-you-go, no WAF
+
+The free flat-rate plan excludes KeyValueStore (it starts at Pro, $15/month), so
+the distribution uses pay-as-you-go, whose free tier (1 TB, 10M requests, 2M
+function invocations a month) covers demo traffic at $0. WAF on pay-as-you-go is
+$5 per web ACL plus $1 per rule even when idle, so it is skipped. Floods are capped
+by Lambda concurrency, edge caching and the budget alerts.
+
+## D16. Route flips may run in the home region
+
+KeyValueStore writes use SigV4A, which boto3 handles through `awscrt`. If the Lambda
+runtime does not bundle it, the traveler asks a small home-region function to
+perform the flip, so the multi-MB library never travels with the traveler. To be
+tested in phase 2.
+
+## D17. Each copy grants CloudFront access to itself
+
+With Origin Access Control on IAM-auth Function URLs, every new copy needs
+`lambda:InvokeFunctionUrl` and `lambda:InvokeFunction` granted to
+`cloudfront.amazonaws.com` with the distribution as `SourceArn`. Done at P4 with
+`AddPermission`.
+
+## D18. At most 10 custom metrics, none split by Region
+
+The first 10 CloudWatch metrics and 10 alarms are free. A metric split by Region
+becomes 17 metrics, so Region goes in the log line, not in a metric dimension.
