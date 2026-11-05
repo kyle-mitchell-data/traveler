@@ -1,7 +1,7 @@
 SHELL := bash
 .SHELLFLAGS := -euo pipefail -c
 
-export AWS_PROFILE ?= traveler-bootstrap
+export AWS_PROFILE ?= traveler
 HOME_REGION ?= us-east-2
 TF := terraform -chdir=infra/terraform
 
