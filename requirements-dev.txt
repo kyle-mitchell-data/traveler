@@ -1,0 +1,7 @@
+# Local tooling only. The traveler itself ships with no dependencies.
+boto3[crt]>=1.40
+moto[dynamodb,s3,lambda,ssm]>=5.1
+pytest>=8.3
+ruff>=0.8
+mypy>=1.13
+boto3-stubs[dynamodb,lambda,s3,ssm,cloudfront-keyvaluestore]>=1.40

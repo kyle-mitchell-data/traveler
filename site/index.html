@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Traveler</title>
+<style>
+  :root { --bg: #fafaf7; --fg: #1d1d1b; --muted: #6b6b66; --accent: #c2410c; --card: #ffffff; --line: #e5e5df; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #141413; --fg: #ececea; --muted: #9a9a94; --accent: #fb923c; --card: #1e1e1c; --line: #2e2e2b; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 48px 16px; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 32px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  .where { font-size: 1.35rem; font-weight: 600; }
+  .status { display: inline-block; font-size: .8rem; padding: 2px 10px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); }
+  .status.live { color: var(--accent); border-color: var(--accent); }
+  dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 16px 0 0; font-size: .9rem; }
+  dt { color: var(--muted); }
+  dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  ul { list-style: none; padding: 0; margin: 0; font-size: .9rem; }
+  li { padding: 6px 0; border-top: 1px solid var(--line); }
+  li:first-child { border-top: 0; }
+  time { color: var(--muted); margin-right: 8px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>The Traveler</h1>
+  <p class="sub">A website that can't sit still. Placeholder page: the map arrives in phase 6.</p>
+
+  <section class="card" aria-live="polite">
+    <span id="status" class="status">checking…</span>
+    <p id="where" class="where">Finding the traveler…</p>
+    <dl>
+      <dt>Region</dt><dd id="region">–</dd>
+      <dt>Hop</dt><dd id="hop">–</dd>
+      <dt>Arrived</dt><dd id="arrived">–</dd>
+      <dt>Release</dt><dd id="release">–</dd>
+      <dt>Distance</dt><dd id="rtt">–</dd>
+    </dl>
+  </section>
+
+  <section class="card">
+    <ul id="events"><li>No events yet.</li></ul>
+  </section>
+</main>
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  async function getJson(url) {
+    const res = await fetch(url, { cache: 'no-store' });
+    return { ok: res.ok, status: res.status, body: await res.json().catch(() => ({})), region: res.headers.get('x-traveler-region') };
+  }
+
+  async function refreshFeed() {
+    try {
+      const { ok, body } = await getJson('/api/tower/feed');
+      if (!ok) return;
+      const s = body.state || {};
+      $('status').textContent = s.status || 'unknown';
+      $('status').className = 'status' + (s.status === 'live' ? ' live' : '');
+      $('events').replaceChildren(...(body.events || []).slice().reverse().map((e) => {
+        const li = document.createElement('li');
+        const t = document.createElement('time');
+        t.textContent = new Date(e.ts).toLocaleTimeString();
+        li.append(t, `${e.type}${e.region ? ' · ' + e.region : ''}`);
+        return li;
+      }));
+      if (!body.events || !body.events.length) $('events').innerHTML = '<li>No events yet.</li>';
+    } catch (e) { /* keep last good view */ }
+  }
+
+  async function refreshTraveler() {
+    try {
+      const t0 = performance.now();
+      const { ok, status, body } = await getJson('/api/traveler/whereami');
+      const ms = Math.round(performance.now() - t0);
+      if (!ok) {
+        $('where').textContent = status === 503 ? 'The traveler is resting.' : 'The traveler is unreachable.';
+        $('rtt').textContent = '–';
+        return;
+      }
+      $('where').textContent = `Currently ${body.near}`;
+      $('region').textContent = body.region;
+      $('hop').textContent = body.hop_id || '–';
+      $('arrived').textContent = body.arrived_at ? new Date(body.arrived_at).toLocaleString() : '–';
+      $('release').textContent = body.release;
+      $('rtt').textContent = `You are ${ms} ms away`;
+    } catch (e) { /* keep last good view */ }
+  }
+
+  function tick() {
+    if (document.hidden) return; // D7: no polling from background tabs
+    refreshFeed();
+  }
+
+  refreshFeed();
+  refreshTraveler();
+  setInterval(tick, 2000);
+  setInterval(() => { if (!document.hidden) refreshTraveler(); }, 5000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) { refreshFeed(); refreshTraveler(); } });
+</script>
+</body>
+</html>

@@ -125,3 +125,17 @@ With Origin Access Control on IAM-auth Function URLs, every new copy needs
 
 The first 10 CloudWatch metrics and 10 alarms are free. A metric split by Region
 becomes 17 metrics, so Region goes in the log line, not in a metric dimension.
+
+## D19. Hop summaries live under one partition
+
+The spec's `HOP#<hop_id> / SUMMARY` layout cannot list recent hops without a scan.
+Hop summaries use `pk=HOP, sk=<hop_id>` instead, so `/api/tower/hops` is a single
+newest-first query. Hop IDs are zero-padded (`h-000412`), so they sort correctly.
+The shape of each summary is unchanged.
+
+## D20. `make wake` shares code with the handoff
+
+`traveler/placement.py` (create, health check, remove) and `traveler/routing.py`
+(the route flip) are used both by the operator CLI (`scripts/ops.py`) and, from
+phase 3, by the traveler itself. Wake is therefore an exercise of P2–P6 before any
+hop exists.

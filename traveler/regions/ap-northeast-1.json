@@ -1,0 +1,12 @@
+{
+  "code": "ap-northeast-1",
+  "city": "Tokyo",
+  "near": "near Tokyo, Japan",
+  "country": "Japan",
+  "country_code": "JP",
+  "lat": 35.68,
+  "lon": 139.69,
+  "tz": "Asia/Tokyo",
+  "evergreen_facts": [],
+  "nearby_towns": []
+}

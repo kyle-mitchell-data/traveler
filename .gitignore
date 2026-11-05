@@ -25,3 +25,6 @@ dist/
 build/
 node_modules/
 *.zip
+
+# Terraform build artifacts
+infra/terraform/.build/
