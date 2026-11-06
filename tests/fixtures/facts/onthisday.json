@@ -1,0 +1,202 @@
+{
+ "selected": [
+  {
+   "text": "Hillary Clinton was elected as a US senator from New York, the first time a first lady had been elected to public office.",
+   "year": 2000,
+   "pages": [
+    {
+     "titles": {
+      "normalized": "Hillary Clinton"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/Hillary_Clinton"
+      }
+     }
+    },
+    {
+     "titles": {
+      "normalized": "2000 United States Senate election in New York"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/2000_United_States_Senate_election_in_New_York"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "text": "NASA launched Mars Global Surveyor from the Kennedy Space Center at Cape Canaveral, Florida.",
+   "year": 1996,
+   "pages": [
+    {
+     "titles": {
+      "normalized": "NASA"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/NASA"
+      }
+     }
+    },
+    {
+     "titles": {
+      "normalized": "Mars Global Surveyor"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/Mars_Global_Surveyor"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "text": "Magic Johnson announced his retirement from professional basketball due to HIV infection.",
+   "year": 1991,
+   "pages": [
+    {
+     "titles": {
+      "normalized": "Magic Johnson"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/Magic_Johnson"
+      }
+     }
+    },
+    {
+     "titles": {
+      "normalized": "HIV"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/HIV"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "text": "Tunisian prime minister Zine El Abidine Ben Ali deposed and replaced President Habib Bourguiba by declaring him medically unfit for the duties of the office.",
+   "year": 1987,
+   "pages": [
+    {
+     "titles": {
+      "normalized": "Zine El Abidine Ben Ali"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/Zine_El_Abidine_Ben_Ali"
+      }
+     }
+    },
+    {
+     "titles": {
+      "normalized": "1987 Tunisian coup d'état"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/1987_Tunisian_coup_d'%C3%A9tat"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "text": "Singapore's first Mass Rapid Transit line opened, with train services running between Yio Chu Kang and Toa Payoh.",
+   "year": 1987,
+   "pages": [
+    {
+     "titles": {
+      "normalized": "Mass Rapid Transit (Singapore)"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/Mass_Rapid_Transit_(Singapore)"
+      }
+     }
+    },
+    {
+     "titles": {
+      "normalized": "Yio Chu Kang"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/Yio_Chu_Kang"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "text": "A ship collision with the Sidney Lanier Bridge in the U.S. state of Georgia resulted in a bridge collapse (pictured), which killed ten people.",
+   "year": 1972,
+   "pages": [
+    {
+     "titles": {
+      "normalized": "Sidney Lanier Bridge"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/Sidney_Lanier_Bridge"
+      }
+     }
+    },
+    {
+     "titles": {
+      "normalized": "1972 Sidney Lanier Bridge collapse"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/1972_Sidney_Lanier_Bridge_collapse"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "text": "Oil was discovered in the Caspian Sea off the coast of Azerbaijan, leading to the construction of Neft Daşları, the world's first offshore oil platform.",
+   "year": 1949,
+   "pages": [
+    {
+     "titles": {
+      "normalized": "Caspian Sea"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/Caspian_Sea"
+      }
+     }
+    },
+    {
+     "titles": {
+      "normalized": "Neft Daşları"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/Neft_Da%C5%9Flar%C4%B1"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "text": "The first specimens of the tufted jay (pictured) to be scientifically described were collected in Mexico.",
+   "year": 1934,
+   "pages": [
+    {
+     "titles": {
+      "normalized": "Tufted jay"
+     },
+     "content_urls": {
+      "desktop": {
+       "page": "https://en.wikipedia.org/wiki/Tufted_jay"
+      }
+     }
+    }
+   ]
+  }
+ ]
+}

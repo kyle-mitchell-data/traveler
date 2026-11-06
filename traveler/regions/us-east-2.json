@@ -7,6 +7,130 @@
   "lat": 39.96,
   "lon": -83.0,
   "tz": "America/New_York",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Washington, D.C.",
+    "languages": [
+      "English"
+    ],
+    "currency": "USD",
+    "currency_name": "US dollar",
+    "drives_on": "right",
+    "calling_code": "+1"
+  },
+  "evergreen_facts": [
+    {
+      "id": "us-east-2-columbus-founded",
+      "category": "history",
+      "text": "Columbus, Ohio's capital, was founded in 1812 and named after the explorer Christopher Columbus.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Columbus,_Ohio"
+    },
+    {
+      "id": "us-east-2-statehood",
+      "category": "history",
+      "text": "Ohio was admitted to the Union in 1803 as the 17th US state.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Ohio"
+    },
+    {
+      "id": "us-east-2-presidents",
+      "category": "history",
+      "text": "Seven US presidents were born in Ohio, including Ulysses S. Grant and William McKinley.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Ohio"
+    },
+    {
+      "id": "us-east-2-wright-brothers",
+      "category": "science",
+      "text": "The Wright brothers built their first airplanes in their bicycle shop in Dayton, Ohio.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Wright_brothers"
+    },
+    {
+      "id": "us-east-2-neil-armstrong",
+      "category": "science",
+      "text": "Neil Armstrong, the first person to walk on the Moon, was born in Wapakoneta, Ohio, in 1930.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Neil_Armstrong"
+    },
+    {
+      "id": "us-east-2-statehouse",
+      "category": "landmark",
+      "text": "The Ohio Statehouse in Columbus, a Greek Revival capitol building, was completed in 1861.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Ohio_Statehouse"
+    },
+    {
+      "id": "us-east-2-german-village",
+      "category": "landmark",
+      "text": "German Village, a historic Columbus neighborhood settled by German immigrants, is known for its brick streets.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/German_Village"
+    },
+    {
+      "id": "us-east-2-serpent-mound",
+      "category": "landmark",
+      "text": "Serpent Mound in southern Ohio is an ancient earthwork shaped like a long, coiling snake.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Serpent_Mound"
+    },
+    {
+      "id": "us-east-2-rock-hall",
+      "category": "culture",
+      "text": "The Rock and Roll Hall of Fame, designed by I. M. Pei, stands on the Lake Erie shore in Cleveland, Ohio.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Rock_and_Roll_Hall_of_Fame"
+    },
+    {
+      "id": "us-east-2-pro-football-hof",
+      "category": "sport",
+      "text": "The Pro Football Hall of Fame is in Canton, Ohio, where the NFL was founded in 1920.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Pro_Football_Hall_of_Fame"
+    },
+    {
+      "id": "us-east-2-ohio-stadium",
+      "category": "sport",
+      "text": "Ohio State's football team plays at Ohio Stadium in Columbus, nicknamed \"the Horseshoe\" for its shape.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Ohio_Stadium"
+    },
+    {
+      "id": "us-east-2-cincinnati-chili",
+      "category": "food",
+      "text": "Cincinnati chili, a meat sauce spiced with cinnamon and other warm spices, is served over spaghetti in Ohio.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Cincinnati_chili"
+    },
+    {
+      "id": "us-east-2-buckeye-candy",
+      "category": "food",
+      "text": "Buckeyes, peanut butter fudge balls dipped in chocolate, are made to look like the nut of Ohio's state tree.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Buckeye_(candy)"
+    },
+    {
+      "id": "us-east-2-buckeye-tree",
+      "category": "nature",
+      "text": "The Ohio buckeye is Ohio's state tree and gives the state its nickname, the Buckeye State.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Aesculus_glabra"
+    },
+    {
+      "id": "us-east-2-hocking-hills",
+      "category": "nature",
+      "text": "Hocking Hills State Park, southeast of Columbus, is known for sandstone gorges, rock shelters and waterfalls.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Hocking_Hills_State_Park"
+    },
+    {
+      "id": "us-east-2-borders",
+      "category": "geography",
+      "text": "Lake Erie forms much of Ohio's northern border, and the Ohio River runs along its southern edge.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Ohio"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

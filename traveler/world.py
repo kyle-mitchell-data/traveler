@@ -135,9 +135,28 @@ class AwsWorld:
             },
         }
 
+    def fetch_json(self, url: str) -> Any:
+        """One fact-source request. MET Norway and Wikimedia require an identifying User-Agent."""
+        agent = (
+            f"traveler/{self.release or 'dev'} (+{self._cfg.get('site_url', 'https://github.com/kyle-mitchell-data')})"
+        )
+        req = urllib.request.Request(url, headers={"user-agent": agent, "accept": "application/json"})  # noqa: S310
+        with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT_S) as resp:  # noqa: S310 - fixed https sources
+            return json.loads(resp.read(2_000_000))
+
     def log(self, msg: str, **fields: Any) -> None:
         # JSON log format is on for the function, so one JSON object per line.
         print(json.dumps({"msg": msg, "region": self.region, "release": self.release, **fields}, default=str))
+
+    def metric(self, **values: float) -> None:
+        # Embedded metric format, no dimensions (D18), like the watchdog.
+        aws = {
+            "Timestamp": int(time.time() * 1000),
+            "CloudWatchMetrics": [
+                {"Namespace": "Traveler", "Dimensions": [[]], "Metrics": [{"Name": k} for k in values]}
+            ],
+        }
+        print(json.dumps({"_aws": aws, **values}))
 
 
 @cache

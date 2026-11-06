@@ -7,6 +7,130 @@
   "lat": 34.69,
   "lon": 135.5,
   "tz": "Asia/Tokyo",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Tokyo",
+    "languages": [
+      "Japanese"
+    ],
+    "currency": "JPY",
+    "currency_name": "yen",
+    "drives_on": "left",
+    "calling_code": "+81"
+  },
+  "evergreen_facts": [
+    {
+      "id": "ap-northeast-3-naniwa",
+      "category": "history",
+      "text": "Naniwa, on the site of today's Osaka, served more than once as Japan's capital in the 7th and 8th centuries.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Naniwa-kyō"
+    },
+    {
+      "id": "ap-northeast-3-nations-kitchen",
+      "category": "history",
+      "text": "In the Edo period Osaka was Japan's great trading center, nicknamed \"the nation's kitchen\".",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Osaka"
+    },
+    {
+      "id": "ap-northeast-3-daisen-kofun",
+      "category": "history",
+      "text": "The Daisen Kofun near Osaka, a keyhole-shaped burial mound, is attributed to the ancient Emperor Nintoku.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Mozu_Kofun_Group"
+    },
+    {
+      "id": "ap-northeast-3-osaka-castle",
+      "category": "landmark",
+      "text": "Osaka Castle was built by the warlord Toyotomi Hideyoshi, who began construction in 1583.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Osaka_Castle"
+    },
+    {
+      "id": "ap-northeast-3-dotonbori",
+      "category": "landmark",
+      "text": "Dōtonbori, a canal-side district in Osaka, is known for its neon signs and the giant Glico running man.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Dōtonbori"
+    },
+    {
+      "id": "ap-northeast-3-shitenno-ji",
+      "category": "landmark",
+      "text": "Shitennō-ji in Osaka, founded by Prince Shōtoku in 593, is one of Japan's oldest Buddhist temples.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Shitennō-ji"
+    },
+    {
+      "id": "ap-northeast-3-takoyaki",
+      "category": "food",
+      "text": "Takoyaki, round balls of batter with chunks of octopus inside, are Osaka's best-known street food.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Takoyaki"
+    },
+    {
+      "id": "ap-northeast-3-okonomiyaki",
+      "category": "food",
+      "text": "Okonomiyaki, a savory griddle pancake of batter and cabbage, is a dish closely tied to Osaka.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Okonomiyaki"
+    },
+    {
+      "id": "ap-northeast-3-sumiyoshi-taisha",
+      "category": "landmark",
+      "text": "Sumiyoshi Taisha in Osaka is the head shrine of the many Sumiyoshi shrines found across Japan.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Sumiyoshi-taisha"
+    },
+    {
+      "id": "ap-northeast-3-instant-ramen",
+      "category": "food",
+      "text": "Instant noodles were invented near Osaka by Momofuku Ando, who launched Chicken Ramen in 1958.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Instant_noodles"
+    },
+    {
+      "id": "ap-northeast-3-bunraku",
+      "category": "culture",
+      "text": "Bunraku, Japan's traditional puppet theater, developed in Osaka, home of the National Bunraku Theatre.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Bunraku"
+    },
+    {
+      "id": "ap-northeast-3-tenjin-matsuri",
+      "category": "culture",
+      "text": "Osaka's Tenjin Matsuri, held each July, is one of Japan's three great festivals and ends with a river procession.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Tenjin_Matsuri"
+    },
+    {
+      "id": "ap-northeast-3-expo-70",
+      "category": "culture",
+      "text": "Osaka hosted Expo '70, the first world's fair held in Asia, remembered for Tarō Okamoto's Tower of the Sun.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Expo_'70"
+    },
+    {
+      "id": "ap-northeast-3-yodo-river",
+      "category": "geography",
+      "text": "Osaka grew up on Osaka Bay at the mouth of the Yodo River, which drains Lake Biwa.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Yodo_River"
+    },
+    {
+      "id": "ap-northeast-3-keihanshin",
+      "category": "geography",
+      "text": "Osaka is the heart of the Keihanshin region, the metropolitan area it forms with Kyoto and Kobe.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Keihanshin"
+    },
+    {
+      "id": "ap-northeast-3-koshien",
+      "category": "sport",
+      "text": "Koshien Stadium, just outside Osaka, hosts Japan's national high school baseball tournaments.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Koshien_Stadium"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

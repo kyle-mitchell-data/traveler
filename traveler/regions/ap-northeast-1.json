@@ -7,6 +7,130 @@
   "lat": 35.68,
   "lon": 139.69,
   "tz": "Asia/Tokyo",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Tokyo",
+    "languages": [
+      "Japanese"
+    ],
+    "currency": "JPY",
+    "currency_name": "yen",
+    "drives_on": "left",
+    "calling_code": "+81"
+  },
+  "evergreen_facts": [
+    {
+      "id": "ap-northeast-1-edo-renamed",
+      "category": "history",
+      "text": "Tokyo was called Edo until 1868, when it was renamed and became the seat of the emperor.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Edo"
+    },
+    {
+      "id": "ap-northeast-1-tokugawa-shogunate",
+      "category": "history",
+      "text": "Edo, today's Tokyo, was the seat of the Tokugawa shogunate, which ruled Japan from 1603 to 1867.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Tokugawa_shogunate"
+    },
+    {
+      "id": "ap-northeast-1-kanto-earthquake",
+      "category": "history",
+      "text": "The Great Kantō earthquake of 1923 and the fires that followed devastated Tokyo and nearby Yokohama.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Great_Kantō_Earthquake"
+    },
+    {
+      "id": "ap-northeast-1-olympics-1964",
+      "category": "sport",
+      "text": "Tokyo hosted the 1964 Summer Olympics, the first Olympic Games ever held in Asia.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/1964_Summer_Olympics"
+    },
+    {
+      "id": "ap-northeast-1-senso-ji",
+      "category": "landmark",
+      "text": "Sensō-ji in Tokyo's Asakusa district is the city's oldest temple, traditionally founded in the year 645.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Sensō-ji"
+    },
+    {
+      "id": "ap-northeast-1-meiji-shrine",
+      "category": "landmark",
+      "text": "Tokyo's Meiji Shrine honors Emperor Meiji and Empress Shōken and sits in a forest planted by volunteers.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Meiji_Shrine"
+    },
+    {
+      "id": "ap-northeast-1-tokyo-tower",
+      "category": "landmark",
+      "text": "Tokyo Tower, completed in 1958, is a lattice tower inspired by the Eiffel Tower and painted white and orange.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Tokyo_Tower"
+    },
+    {
+      "id": "ap-northeast-1-imperial-palace",
+      "category": "landmark",
+      "text": "The Imperial Palace in central Tokyo stands on the grounds of the former Edo Castle.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Tokyo_Imperial_Palace"
+    },
+    {
+      "id": "ap-northeast-1-kabuki-za",
+      "category": "culture",
+      "text": "The Kabuki-za theater in Tokyo's Ginza district is the city's principal stage for traditional kabuki drama.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Kabuki-za"
+    },
+    {
+      "id": "ap-northeast-1-hachiko",
+      "category": "culture",
+      "text": "A statue at Tokyo's Shibuya Station honors Hachikō, the Akita dog who waited there for his late owner for years.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Hachikō"
+    },
+    {
+      "id": "ap-northeast-1-edomae-sushi",
+      "category": "food",
+      "text": "Nigiri sushi, hand-pressed rice topped with fish, took its modern form in Edo, old Tokyo, in the early 1800s.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Sushi"
+    },
+    {
+      "id": "ap-northeast-1-monjayaki",
+      "category": "food",
+      "text": "Monjayaki, a runny batter fried on a griddle and eaten straight off it, is a specialty of Tokyo's Tsukishima area.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Monjayaki"
+    },
+    {
+      "id": "ap-northeast-1-kanto-plain",
+      "category": "geography",
+      "text": "Tokyo lies at the head of Tokyo Bay on the Kantō Plain, the largest plain in Japan.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Kantō_Plain"
+    },
+    {
+      "id": "ap-northeast-1-ogasawara",
+      "category": "geography",
+      "text": "Tokyo's territory includes the Ogasawara Islands, about 1,000 km to the south in the Pacific Ocean.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Bonin_Islands"
+    },
+    {
+      "id": "ap-northeast-1-mount-fuji-view",
+      "category": "nature",
+      "text": "On clear days Mount Fuji, Japan's highest mountain, can be seen from Tokyo about 100 km to the southwest.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Mount_Fuji"
+    },
+    {
+      "id": "ap-northeast-1-ueno-hanami",
+      "category": "nature",
+      "text": "Tokyo's Ueno Park, lined with cherry trees, is one of the city's best-loved spots for hanami, or blossom viewing.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Ueno_Park"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

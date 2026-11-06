@@ -7,6 +7,130 @@
   "lat": 37.57,
   "lon": 126.98,
   "tz": "Asia/Seoul",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Seoul",
+    "languages": [
+      "Korean"
+    ],
+    "currency": "KRW",
+    "currency_name": "won",
+    "drives_on": "right",
+    "calling_code": "+82"
+  },
+  "evergreen_facts": [
+    {
+      "id": "ap-northeast-2-joseon-capital",
+      "category": "history",
+      "text": "Seoul, then called Hanyang, became the capital of Korea's Joseon dynasty in 1394 under King Taejo.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Joseon"
+    },
+    {
+      "id": "ap-northeast-2-hangul",
+      "category": "history",
+      "text": "King Sejong the Great proclaimed Hangul, the Korean alphabet, from his court in Seoul in 1446.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Hangul"
+    },
+    {
+      "id": "ap-northeast-2-city-wall",
+      "category": "history",
+      "text": "Seoul's Fortress Wall, first built in 1396, once ran along the four mountains around the old capital.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Seoul_City_Wall"
+    },
+    {
+      "id": "ap-northeast-2-gyeongbokgung",
+      "category": "landmark",
+      "text": "Gyeongbokgung, built in 1395, was the main royal palace of the Joseon dynasty in Seoul.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Gyeongbokgung"
+    },
+    {
+      "id": "ap-northeast-2-changdeokgung",
+      "category": "landmark",
+      "text": "Changdeokgung Palace in Seoul is a UNESCO World Heritage Site admired for blending into its wooded setting.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Changdeokgung"
+    },
+    {
+      "id": "ap-northeast-2-jongmyo",
+      "category": "landmark",
+      "text": "Jongmyo Shrine in Seoul, where Joseon kings and queens are honored in ancestral rites, is UNESCO-listed.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Jongmyo"
+    },
+    {
+      "id": "ap-northeast-2-n-seoul-tower",
+      "category": "landmark",
+      "text": "N Seoul Tower stands on top of Namsan, a mountain in the middle of Seoul with views across the city.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Namsan_Seoul_Tower"
+    },
+    {
+      "id": "ap-northeast-2-han-river",
+      "category": "geography",
+      "text": "The Han River flows west through Seoul, splitting the city into northern and southern halves.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Han_River_(Korea)"
+    },
+    {
+      "id": "ap-northeast-2-bukhansan",
+      "category": "geography",
+      "text": "Seoul is ringed by mountains, and Bukhansan National Park reaches into the city's northern edge.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Bukhansan_National_Park"
+    },
+    {
+      "id": "ap-northeast-2-olympics-1988",
+      "category": "sport",
+      "text": "Seoul hosted the 1988 Summer Olympics, the second Olympic Games ever held in Asia.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/1988_Summer_Olympics"
+    },
+    {
+      "id": "ap-northeast-2-kukkiwon",
+      "category": "sport",
+      "text": "Kukkiwon in Seoul is the world headquarters of taekwondo, the Korean martial art known for its kicks.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Kukkiwon"
+    },
+    {
+      "id": "ap-northeast-2-kimchi",
+      "category": "food",
+      "text": "Kimchi, spicy fermented napa cabbage or radish, is served as a side dish at nearly every meal in Seoul.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Kimchi"
+    },
+    {
+      "id": "ap-northeast-2-gwangjang-market",
+      "category": "food",
+      "text": "Seoul's Gwangjang Market, opened in 1905, is famous for street food such as bindaetteok mung bean pancakes.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Gwangjang_Market"
+    },
+    {
+      "id": "ap-northeast-2-kimjang",
+      "category": "culture",
+      "text": "Kimjang, the communal autumn making of kimchi in Korea, is on UNESCO's list of intangible heritage.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Gimjang"
+    },
+    {
+      "id": "ap-northeast-2-bukchon",
+      "category": "culture",
+      "text": "Seoul's Bukchon Hanok Village preserves hundreds of hanok, traditional Korean houses with tiled roofs.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Bukchon_Hanok_Village"
+    },
+    {
+      "id": "ap-northeast-2-cheonggyecheon",
+      "category": "nature",
+      "text": "Cheonggyecheon, a stream in downtown Seoul, was restored in 2005 after decades buried under an elevated road.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Cheonggyecheon"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

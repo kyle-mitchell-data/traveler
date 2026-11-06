@@ -7,6 +7,130 @@
   "lat": -33.87,
   "lon": 151.21,
   "tz": "Australia/Sydney",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Canberra",
+    "languages": [
+      "English"
+    ],
+    "currency": "AUD",
+    "currency_name": "Australian dollar",
+    "drives_on": "left",
+    "calling_code": "+61"
+  },
+  "evergreen_facts": [
+    {
+      "id": "ap-southeast-2-first-fleet",
+      "category": "history",
+      "text": "The First Fleet landed at Sydney Cove in 1788, founding the first British colony in Australia.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/First_Fleet"
+    },
+    {
+      "id": "ap-southeast-2-the-rocks",
+      "category": "history",
+      "text": "The Rocks, beside Sydney Harbour, is where Sydney's first colonial settlement was built.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/The_Rocks,_New_South_Wales"
+    },
+    {
+      "id": "ap-southeast-2-eora",
+      "category": "history",
+      "text": "The Eora are the Aboriginal people of the Sydney coast, whose country includes the land of today's city.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Eora"
+    },
+    {
+      "id": "ap-southeast-2-opera-house",
+      "category": "landmark",
+      "text": "The Sydney Opera House, designed by Danish architect Jørn Utzon, opened in 1973.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Sydney_Opera_House"
+    },
+    {
+      "id": "ap-southeast-2-harbour-bridge",
+      "category": "landmark",
+      "text": "The Sydney Harbour Bridge, a steel arch nicknamed \"the Coathanger\", opened in 1932.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Sydney_Harbour_Bridge"
+    },
+    {
+      "id": "ap-southeast-2-bondi",
+      "category": "landmark",
+      "text": "Bondi Beach, on the Pacific coast east of central Sydney, is one of Australia's best-known beaches.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Bondi_Beach"
+    },
+    {
+      "id": "ap-southeast-2-port-jackson",
+      "category": "geography",
+      "text": "Sydney is built around Port Jackson, a large natural harbour that includes Sydney Harbour.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Port_Jackson"
+    },
+    {
+      "id": "ap-southeast-2-blue-mountains",
+      "category": "nature",
+      "text": "The Blue Mountains west of Sydney take their name from the blue haze given off by eucalyptus forests.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Blue_Mountains_(New_South_Wales)"
+    },
+    {
+      "id": "ap-southeast-2-royal-national-park",
+      "category": "nature",
+      "text": "Royal National Park, south of Sydney, was set up in 1879 as the world's second national park after Yellowstone.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Royal_National_Park"
+    },
+    {
+      "id": "ap-southeast-2-three-sisters",
+      "category": "nature",
+      "text": "The Three Sisters, a trio of sandstone peaks near Katoomba, is a famous sight in the Blue Mountains west of Sydney.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Three_Sisters_(Australia)"
+    },
+    {
+      "id": "ap-southeast-2-mardi-gras",
+      "category": "culture",
+      "text": "The Sydney Gay and Lesbian Mardi Gras, first held in 1978, is known for its big night parade.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Sydney_Gay_and_Lesbian_Mardi_Gras"
+    },
+    {
+      "id": "ap-southeast-2-sydney-to-hobart",
+      "category": "sport",
+      "text": "The Sydney to Hobart Yacht Race, first sailed in 1945, starts on Sydney Harbour every Boxing Day.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Sydney_to_Hobart_Yacht_Race"
+    },
+    {
+      "id": "ap-southeast-2-scg",
+      "category": "sport",
+      "text": "The Sydney Cricket Ground has staged Test cricket since 1882.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Sydney_Cricket_Ground"
+    },
+    {
+      "id": "ap-southeast-2-olympics-2000",
+      "category": "sport",
+      "text": "Sydney hosted the 2000 Summer Olympics, centred on Sydney Olympic Park at Homebush Bay.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/2000_Summer_Olympics"
+    },
+    {
+      "id": "ap-southeast-2-rock-oyster",
+      "category": "food",
+      "text": "The Sydney rock oyster is native to the bays and estuaries of eastern Australia and is farmed around Sydney.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Saccostrea_glomerata"
+    },
+    {
+      "id": "ap-southeast-2-granny-smith",
+      "category": "food",
+      "text": "The Granny Smith apple grew from a chance seedling found by Maria Ann Smith in Sydney's Eastwood in 1868.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Granny_Smith"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

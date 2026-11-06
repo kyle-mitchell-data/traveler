@@ -63,8 +63,17 @@ class FakeCloud:
         self.violations: list[str] = []
         self.errors: list[BaseException] = []
         self.logs: list[dict[str, Any]] = []
+        self.metrics: list[dict[str, float]] = []
+        # url-prefix -> parsed JSON, for fact sources; anything else is "no network".
+        self.responses: dict[str, Any] = {}
         self._threads: list[threading.Thread] = []
         self._urls = itertools.count(1)
+
+    def fetch(self, url: str) -> Any:
+        for prefix, body in self.responses.items():
+            if url.startswith(prefix):
+                return body
+        raise ConnectionError(f"offline: {url}")
 
     # --- clock ----------------------------------------------------------------
 
@@ -295,3 +304,9 @@ class FakeWorld:
 
     def log(self, msg: str, **fields: Any) -> None:
         self.cloud.logs.append({"t": round(self.now()), "region": self.region, "msg": msg, **fields})
+
+    def metric(self, **values: float) -> None:
+        self.cloud.metrics.append(values)
+
+    def fetch_json(self, url: str) -> Any:
+        return self.cloud.fetch(url)

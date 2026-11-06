@@ -7,6 +7,130 @@
   "lat": 39.04,
   "lon": -77.49,
   "tz": "America/New_York",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Washington, D.C.",
+    "languages": [
+      "English"
+    ],
+    "currency": "USD",
+    "currency_name": "US dollar",
+    "drives_on": "right",
+    "calling_code": "+1"
+  },
+  "evergreen_facts": [
+    {
+      "id": "us-east-1-bull-run",
+      "category": "history",
+      "text": "The First Battle of Bull Run, the first major battle of the American Civil War, was fought at Manassas in 1861.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/First_Battle_of_Bull_Run"
+    },
+    {
+      "id": "us-east-1-alexandria",
+      "category": "history",
+      "text": "Alexandria, a port town on the Potomac River in Northern Virginia, was founded in 1749.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Alexandria,_Virginia"
+    },
+    {
+      "id": "us-east-1-arlington-retrocession",
+      "category": "history",
+      "text": "Arlington, Virginia, was part of the original District of Columbia until it was returned to Virginia in 1846.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Arlington_County,_Virginia"
+    },
+    {
+      "id": "us-east-1-jamestown",
+      "category": "history",
+      "text": "Virginia's Jamestown, founded in 1607, was the first permanent English settlement in the Americas.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Jamestown"
+    },
+    {
+      "id": "us-east-1-mount-vernon",
+      "category": "landmark",
+      "text": "Mount Vernon, George Washington's plantation home, overlooks the Potomac River in Fairfax County, Virginia.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Mount_Vernon"
+    },
+    {
+      "id": "us-east-1-arlington-cemetery",
+      "category": "landmark",
+      "text": "Arlington National Cemetery in Northern Virginia was established in 1864 on the grounds of Robert E. Lee's estate.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Arlington_National_Cemetery"
+    },
+    {
+      "id": "us-east-1-pentagon",
+      "category": "landmark",
+      "text": "The Pentagon in Arlington, Virginia, headquarters of the US Department of Defense, was completed in 1943.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/The_Pentagon"
+    },
+    {
+      "id": "us-east-1-dulles",
+      "category": "landmark",
+      "text": "Dulles Airport's main terminal in Northern Virginia, designed by Eero Saarinen, opened in 1962.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Dulles_International_Airport"
+    },
+    {
+      "id": "us-east-1-across-potomac",
+      "category": "geography",
+      "text": "Northern Virginia lies across the Potomac River from Washington, D.C., and includes Arlington and Fairfax counties.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Northern_Virginia"
+    },
+    {
+      "id": "us-east-1-great-falls",
+      "category": "nature",
+      "text": "At Great Falls Park in Northern Virginia, the Potomac River plunges through a series of jagged rocky rapids.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Great_Falls_Park"
+    },
+    {
+      "id": "us-east-1-shenandoah",
+      "category": "nature",
+      "text": "Shenandoah National Park protects a long stretch of Virginia's Blue Ridge Mountains, crossed by Skyline Drive.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Shenandoah_National_Park"
+    },
+    {
+      "id": "us-east-1-presidents",
+      "category": "culture",
+      "text": "Virginia is known as the \"Mother of Presidents\" because eight US presidents were born there.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Virginia"
+    },
+    {
+      "id": "us-east-1-wolf-trap",
+      "category": "culture",
+      "text": "Wolf Trap in Vienna, Virginia, is the only US national park dedicated to the performing arts.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Wolf_Trap_National_Park_for_the_Performing_Arts"
+    },
+    {
+      "id": "us-east-1-virginia-ham",
+      "category": "food",
+      "text": "Smithfield ham, a salt-cured and smoked country ham, is a traditional Virginia specialty.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Smithfield_ham"
+    },
+    {
+      "id": "us-east-1-wine-country",
+      "category": "food",
+      "text": "Loudoun County in Northern Virginia is known for its many vineyards and wineries.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Virginia_wine"
+    },
+    {
+      "id": "us-east-1-udvar-hazy",
+      "category": "science",
+      "text": "The Udvar-Hazy Center near Dulles in Northern Virginia displays the Space Shuttle Discovery.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Steven_F._Udvar-Hazy_Center"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

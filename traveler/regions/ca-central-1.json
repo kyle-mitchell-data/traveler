@@ -7,6 +7,131 @@
   "lat": 45.5,
   "lon": -73.57,
   "tz": "America/Toronto",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Ottawa",
+    "languages": [
+      "English",
+      "French"
+    ],
+    "currency": "CAD",
+    "currency_name": "Canadian dollar",
+    "drives_on": "right",
+    "calling_code": "+1"
+  },
+  "evergreen_facts": [
+    {
+      "id": "ca-central-1-ville-marie",
+      "category": "history",
+      "text": "Ville-Marie, the settlement that became Montreal, was founded in 1642 by Paul de Chomedey de Maisonneuve.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Montreal"
+    },
+    {
+      "id": "ca-central-1-hochelaga",
+      "category": "history",
+      "text": "In 1535 Jacques Cartier visited Hochelaga, an Iroquoian village on the site of present-day Montreal.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Hochelaga_(village)"
+    },
+    {
+      "id": "ca-central-1-expo-67",
+      "category": "history",
+      "text": "Montreal hosted Expo 67, the world's fair held in Canada's centennial year.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Expo_67"
+    },
+    {
+      "id": "ca-central-1-island",
+      "category": "geography",
+      "text": "Montreal sits on an island in the St. Lawrence River, near where the Ottawa River joins it.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Island_of_Montreal"
+    },
+    {
+      "id": "ca-central-1-mount-royal",
+      "category": "geography",
+      "text": "Montreal takes its name from Mount Royal, the three-peaked hill at the heart of the city.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Mount_Royal"
+    },
+    {
+      "id": "ca-central-1-mount-royal-park",
+      "category": "landmark",
+      "text": "Montreal's Mount Royal Park was designed by Frederick Law Olmsted, co-designer of New York's Central Park.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Mount_Royal"
+    },
+    {
+      "id": "ca-central-1-notre-dame",
+      "category": "landmark",
+      "text": "Notre-Dame Basilica in Old Montreal is known for its Gothic Revival style and its richly colored interior.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Notre-Dame_Basilica_(Montreal)"
+    },
+    {
+      "id": "ca-central-1-olympic-stadium",
+      "category": "landmark",
+      "text": "Montreal's Olympic Stadium, built for the 1976 Games, has an inclined tower designed to hold up its roof.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Olympic_Stadium_(Montreal)"
+    },
+    {
+      "id": "ca-central-1-st-josephs-oratory",
+      "category": "landmark",
+      "text": "Saint Joseph's Oratory, a domed basilica on Mount Royal in Montreal, was founded by Brother André.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Saint_Joseph's_Oratory"
+    },
+    {
+      "id": "ca-central-1-olympics-1976",
+      "category": "sport",
+      "text": "At the 1976 Montreal Olympics, gymnast Nadia Comăneci scored the first perfect 10 in Olympic history.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/1976_Summer_Olympics"
+    },
+    {
+      "id": "ca-central-1-canadiens",
+      "category": "sport",
+      "text": "The Montreal Canadiens, founded in 1909, have won the Stanley Cup more times than any other NHL team.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Montreal_Canadiens"
+    },
+    {
+      "id": "ca-central-1-jazz-festival",
+      "category": "culture",
+      "text": "The Montreal International Jazz Festival, first held in 1980, fills downtown Montreal with concerts every summer.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Montreal_International_Jazz_Festival"
+    },
+    {
+      "id": "ca-central-1-cirque-du-soleil",
+      "category": "culture",
+      "text": "Cirque du Soleil, founded in Quebec in 1984, has its international headquarters in Montreal.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Cirque_du_Soleil"
+    },
+    {
+      "id": "ca-central-1-poutine",
+      "category": "food",
+      "text": "Poutine, fries topped with cheese curds and gravy, is a Quebec dish found all over Montreal.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Poutine"
+    },
+    {
+      "id": "ca-central-1-bagels",
+      "category": "food",
+      "text": "Montreal-style bagels are hand-rolled, boiled in honey-sweetened water and baked in wood-fired ovens.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Montreal-style_bagel"
+    },
+    {
+      "id": "ca-central-1-smoked-meat",
+      "category": "food",
+      "text": "Montreal smoked meat is cured, spiced beef brisket, piled high in sandwiches at delis like Schwartz's.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Montreal-style_smoked_meat"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

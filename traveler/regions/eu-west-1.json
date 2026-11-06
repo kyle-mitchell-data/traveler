@@ -7,6 +7,131 @@
   "lat": 53.35,
   "lon": -6.26,
   "tz": "Europe/Dublin",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Dublin",
+    "languages": [
+      "Irish",
+      "English"
+    ],
+    "currency": "EUR",
+    "currency_name": "euro",
+    "drives_on": "left",
+    "calling_code": "+353"
+  },
+  "evergreen_facts": [
+    {
+      "id": "eu-west-1-viking-founding",
+      "category": "history",
+      "text": "Vikings established a settlement at Dublin, beside the River Liffey, in the 9th century.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/History_of_Dublin"
+    },
+    {
+      "id": "eu-west-1-black-pool",
+      "category": "history",
+      "text": "Dublin's name comes from the Irish Dubh Linn, meaning \"black pool\".",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Dublin"
+    },
+    {
+      "id": "eu-west-1-easter-rising",
+      "category": "history",
+      "text": "The 1916 Easter Rising was headquartered at Dublin's General Post Office on O'Connell Street.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Easter_Rising"
+    },
+    {
+      "id": "eu-west-1-book-of-kells",
+      "category": "landmark",
+      "text": "Trinity College Dublin, founded in 1592, is home to the Book of Kells, a richly illuminated medieval manuscript.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Book_of_Kells"
+    },
+    {
+      "id": "eu-west-1-dublin-castle",
+      "category": "landmark",
+      "text": "Dublin Castle was the center of British rule in Ireland until it was handed over in 1922.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Dublin_Castle"
+    },
+    {
+      "id": "eu-west-1-hapenny-bridge",
+      "category": "landmark",
+      "text": "The Ha'penny Bridge, a cast-iron footbridge over Dublin's River Liffey, opened in 1816.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Ha'penny_Bridge"
+    },
+    {
+      "id": "eu-west-1-st-patricks",
+      "category": "landmark",
+      "text": "Jonathan Swift, author of Gulliver's Travels, was dean of Dublin's St Patrick's Cathedral and is buried there.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/St_Patrick's_Cathedral,_Dublin"
+    },
+    {
+      "id": "eu-west-1-liffey",
+      "category": "geography",
+      "text": "The River Liffey runs through the center of Dublin and out into Dublin Bay.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/River_Liffey"
+    },
+    {
+      "id": "eu-west-1-phoenix-park",
+      "category": "nature",
+      "text": "Dublin's Phoenix Park is a vast walled park that is home to a herd of wild fallow deer.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Phoenix_Park"
+    },
+    {
+      "id": "eu-west-1-wicklow-mountains",
+      "category": "nature",
+      "text": "The Wicklow Mountains, with their moorland and glacial lakes, rise just south of Dublin.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Wicklow_Mountains"
+    },
+    {
+      "id": "eu-west-1-guinness",
+      "category": "food",
+      "text": "Guinness stout has been brewed at St. James's Gate in Dublin since Arthur Guinness took a lease there in 1759.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Guinness_Brewery"
+    },
+    {
+      "id": "eu-west-1-coddle",
+      "category": "food",
+      "text": "Dublin coddle is a slow-cooked stew of sausages, bacon, potatoes and onion.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Coddle"
+    },
+    {
+      "id": "eu-west-1-bloomsday",
+      "category": "culture",
+      "text": "James Joyce's Ulysses follows a single day in Dublin, 16 June 1904, now celebrated every year as Bloomsday.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Bloomsday"
+    },
+    {
+      "id": "eu-west-1-writers",
+      "category": "culture",
+      "text": "Writers born in Dublin include Jonathan Swift, Oscar Wilde, Bram Stoker, James Joyce and Samuel Beckett.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Dublin"
+    },
+    {
+      "id": "eu-west-1-croke-park",
+      "category": "sport",
+      "text": "Croke Park in Dublin is the headquarters and main stadium of the Gaelic Athletic Association.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Croke_Park"
+    },
+    {
+      "id": "eu-west-1-hurling",
+      "category": "sport",
+      "text": "Hurling, an ancient Irish stick-and-ball game, holds its All-Ireland final at Croke Park in Dublin.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Hurling"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

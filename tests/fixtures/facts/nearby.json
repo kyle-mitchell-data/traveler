@@ -1,0 +1,277 @@
+{
+ "batchcomplete": true,
+ "query": {
+  "geosearch": [
+   {
+    "pageid": 21398592,
+    "ns": 0,
+    "title": "Japanese Sword Museum",
+    "lat": 35.681456,
+    "lon": 139.69089,
+    "dist": 180.8,
+    "primary": true
+   },
+   {
+    "pageid": 6848158,
+    "ns": 0,
+    "title": "Hatsudai Station",
+    "lat": 35.68111111111111,
+    "lon": 139.6863888888889,
+    "dist": 348.8,
+    "primary": true
+   },
+   {
+    "pageid": 2317717,
+    "ns": 0,
+    "title": "Sangūbashi Station",
+    "lat": 35.6787,
+    "lon": 139.6936,
+    "dist": 355.8,
+    "primary": true
+   },
+   {
+    "pageid": 81406633,
+    "ns": 0,
+    "title": "Tokyo Opera City Concert Hall",
+    "lat": 35.683286,
+    "lon": 139.686549,
+    "dist": 480.3,
+    "primary": true
+   },
+   {
+    "pageid": 4096641,
+    "ns": 0,
+    "title": "New National Theatre Tokyo",
+    "lat": 35.6825,
+    "lon": 139.68555555555557,
+    "dist": 488.3,
+    "primary": true
+   },
+   {
+    "pageid": 30862298,
+    "ns": 0,
+    "title": "Tokyo Opera City Tower",
+    "lat": 35.68356,
+    "lon": 139.68654,
+    "dist": 504.3,
+    "primary": true
+   },
+   {
+    "pageid": 76052776,
+    "ns": 0,
+    "title": "General Insurance Rating Organization of Japan",
+    "lat": 35.68564,
+    "lon": 139.69095,
+    "dist": 633,
+    "primary": true
+   },
+   {
+    "pageid": 3539101,
+    "ns": 0,
+    "title": "Shinjuku Park Tower",
+    "lat": 35.68564,
+    "lon": 139.69095,
+    "dist": 633,
+    "primary": true
+   },
+   {
+    "pageid": 57483784,
+    "ns": 0,
+    "title": "Yoyogikamizonochō",
+    "lat": 35.674703,
+    "lon": 139.693383,
+    "dist": 663.5,
+    "primary": true
+   },
+   {
+    "pageid": 2360797,
+    "ns": 0,
+    "title": "Bunka Fashion College",
+    "lat": 35.68533333333333,
+    "lon": 139.6945,
+    "dist": 718.9,
+    "primary": true
+   },
+   {
+    "pageid": 18098484,
+    "ns": 0,
+    "title": "Bunka Gakuen University",
+    "lat": 35.68538,
+    "lon": 139.69453,
+    "dist": 724.8,
+    "primary": true
+   },
+   {
+    "pageid": 7452663,
+    "ns": 0,
+    "title": "Yoyogi",
+    "lat": 35.67388888888889,
+    "lon": 139.68666666666667,
+    "dist": 743.2,
+    "primary": true
+   },
+   {
+    "pageid": 8917077,
+    "ns": 0,
+    "title": "Minami-Shinjuku Station",
+    "lat": 35.6834,
+    "lon": 139.6985,
+    "dist": 855.8,
+    "primary": true
+   },
+   {
+    "pageid": 294236,
+    "ns": 0,
+    "title": "Meiji Shrine",
+    "lat": 35.67611111111111,
+    "lon": 139.69916666666668,
+    "dist": 934.1,
+    "primary": true
+   },
+   {
+    "pageid": 448557,
+    "ns": 0,
+    "title": "Tokyo subway sarin attack",
+    "lat": 35.68944444444444,
+    "lon": 139.69166666666666,
+    "dist": 1060.9,
+    "primary": true
+   },
+   {
+    "pageid": 30625836,
+    "ns": 0,
+    "title": "47th All Japan Rugby Football Championship",
+    "lat": 35.689488,
+    "lon": 139.691706,
+    "dist": 1066.2,
+    "primary": true
+   },
+   {
+    "pageid": 6913672,
+    "ns": 0,
+    "title": "Tokyo Metropolitan Government",
+    "lat": 35.6895,
+    "lon": 139.6918,
+    "dist": 1068.8,
+    "primary": true
+   },
+   {
+    "pageid": 354951,
+    "ns": 0,
+    "title": "Greater Tokyo Area",
+    "lat": 35.689722222222215,
+    "lon": 139.69166666666666,
+    "dist": 1091.5,
+    "primary": true
+   },
+   {
+    "pageid": 30833996,
+    "ns": 0,
+    "title": "Teikyo Junior College",
+    "lat": 35.681305555555554,
+    "lon": 139.67794444444442,
+    "dist": 1098.5,
+    "primary": true
+   },
+   {
+    "pageid": 68455,
+    "ns": 0,
+    "title": "Bombing of Tokyo",
+    "lat": 35.689722222222215,
+    "lon": 139.69222222222223,
+    "dist": 1099.5,
+    "primary": true
+   },
+   {
+    "pageid": 30057,
+    "ns": 0,
+    "title": "Tokyo",
+    "lat": 35.689722222222215,
+    "lon": 139.69222222222223,
+    "dist": 1099.5,
+    "primary": true
+   },
+   {
+    "pageid": 870601,
+    "ns": 0,
+    "title": "Tokyo Metropolitan Government Building",
+    "lat": 35.689722222222215,
+    "lon": 139.69222222222223,
+    "dist": 1099.5,
+    "primary": true
+   },
+   {
+    "pageid": 57483737,
+    "ns": 0,
+    "title": "Motoyoyogichō",
+    "lat": 35.670483,
+    "lon": 139.686172,
+    "dist": 1113.3,
+    "primary": true
+   },
+   {
+    "pageid": 2774268,
+    "ns": 0,
+    "title": "Shinjuku Central Park",
+    "lat": 35.69007,
+    "lon": 139.68947,
+    "dist": 1120.8,
+    "primary": true
+   },
+   {
+    "pageid": 62583255,
+    "ns": 0,
+    "title": "Shinjuku Niagara Falls",
+    "lat": 35.69009,
+    "lon": 139.68957,
+    "dist": 1122.6,
+    "primary": true
+   },
+   {
+    "pageid": 4253265,
+    "ns": 0,
+    "title": "Nishi-Shinjuku",
+    "lat": 35.68944444444444,
+    "lon": 139.695,
+    "dist": 1143.2,
+    "primary": true
+   },
+   {
+    "pageid": 8917150,
+    "ns": 0,
+    "title": "Yoyogi-Hachiman Station",
+    "lat": 35.6697,
+    "lon": 139.6889,
+    "dist": 1149.6,
+    "primary": true
+   },
+   {
+    "pageid": 62591371,
+    "ns": 0,
+    "title": "Juniso Kumano Shrine",
+    "lat": 35.690416666666664,
+    "lon": 139.68819444444443,
+    "dist": 1169.7,
+    "primary": true
+   },
+   {
+    "pageid": 22363576,
+    "ns": 0,
+    "title": "Keio Plaza Hotel",
+    "lat": 35.68989,
+    "lon": 139.69444,
+    "dist": 1170.6,
+    "primary": true
+   },
+   {
+    "pageid": 6185859,
+    "ns": 0,
+    "title": "Nishi-shinjuku-gochome Station",
+    "lat": 35.6897,
+    "lon": 139.6844,
+    "dist": 1191.3,
+    "primary": true
+   }
+  ]
+ }
+}

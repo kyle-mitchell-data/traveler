@@ -48,3 +48,20 @@ criterion).
 
 Also verified: intercontinental hops us-east-2 → ap-northeast-1 (111.0 s) → eu-central-1
 (111.6 s), zero failed probes in flight.
+
+## Phase 5: Fact engine — built, waiting to deploy
+
+Built while the phase 4 run finishes; nothing deploys until phase 4 passes. Local
+evidence (`tests/test_facts.py`, recorded API responses for Tokyo, all 17 profiles):
+
+| Criterion | Result |
+|---|---|
+| Each stay posts stay ÷ 30 statements; slot 1 is a right-now fact | Local pass: `slots_for` table; the simulated stay loop posts 3 statements for a 95 s stay on every hop and wake; slot 1 is time or weather and names the place |
+| No consecutive same-category; no repeats within 3 visits | Local pass: 4 online visits to Tokyo and 6 offline visits to every region; online never repeats; offline is clean for 3 visits, then releases the oldest visit first (D29) |
+| With every network adapter off, a full set from computed and evergreen facts | Local pass: 10 of 10 statements, every region, every visit |
+| Selection is reproducible for a given hop ID | Local pass: same hop, same statements; different hops differ |
+
+Also checked live from the laptop (`make facts`): all six network adapters answered for
+London, Tokyo, Northern Virginia, Frankfurt and Northern California. After deploy: confirm
+in AWS from the tower's `STATEMENT` events and the hop records' `facts` summaries.
+

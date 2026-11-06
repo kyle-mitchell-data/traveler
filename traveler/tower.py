@@ -6,11 +6,13 @@ Item layout (single-table, decision D19 for the HOP partition):
     SEQ    / HOP          atomic hop counter
     EVENT  / 000000018233 one event, expires after 7 days
     HOP    / h-000412     one hop summary
+    REGION / eu-central-1 fact memory: ids said on the last visits, last 50 ids, visit count
     CONFIG / RELEASE      desired_release, set by CI or `make release`
 """
 
 from __future__ import annotations
 
+import contextlib
 import time
 from datetime import UTC, datetime
 from typing import Any
@@ -144,6 +146,36 @@ class Tower:
     def hop(self, hop_id: str) -> dict[str, Any]:
         item: dict[str, Any] = self.table.get_item(Key={"pk": "HOP", "sk": hop_id}).get("Item", {})
         return item
+
+    def record_facts(self, hop_id: str, summary: dict[str, Any]) -> None:
+        """Adapter outcomes and statement count on the hop that brought us here (if any)."""
+        # A wake or resurrection has no hop record; then there is nothing to annotate.
+        with contextlib.suppress(self.table.meta.client.exceptions.ConditionalCheckFailedException):
+            self.table.update_item(
+                Key={"pk": "HOP", "sk": hop_id},
+                UpdateExpression="SET facts = :f",
+                ConditionExpression="attribute_exists(pk)",
+                ExpressionAttributeValues={":f": summary},
+            )
+
+    # --- fact memory (one traveler at a time, so read-modify-write is safe) -------
+
+    def region_memory(self, region: str) -> dict[str, Any]:
+        item: dict[str, Any] = self.table.get_item(Key={"pk": "REGION", "sk": region}).get("Item", {})
+        return item
+
+    def remember_visit(self, region: str, fact_ids: list[str], *, visits: int = 3, recent: int = 50) -> None:
+        mem = self.region_memory(region)
+        self.table.put_item(
+            Item={
+                "pk": "REGION",
+                "sk": region,
+                "visits": [*list(mem.get("visits") or []), fact_ids][-visits:],
+                "recent": [*list(mem.get("recent") or []), *fact_ids][-recent:],
+                "visit_count": int(mem.get("visit_count") or 0) + 1,
+                "updated_at": now_iso(),
+            }
+        )
 
     def recent_events(self, limit: int) -> list[dict[str, Any]]:
         items: list[dict[str, Any]] = self.table.query(

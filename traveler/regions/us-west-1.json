@@ -7,6 +7,130 @@
   "lat": 37.77,
   "lon": -122.42,
   "tz": "America/Los_Angeles",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Washington, D.C.",
+    "languages": [
+      "English"
+    ],
+    "currency": "USD",
+    "currency_name": "US dollar",
+    "drives_on": "right",
+    "calling_code": "+1"
+  },
+  "evergreen_facts": [
+    {
+      "id": "us-west-1-gold-rush",
+      "category": "history",
+      "text": "The California Gold Rush began in 1848 when gold was found at Sutter's Mill in Coloma, Northern California.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/California_gold_rush"
+    },
+    {
+      "id": "us-west-1-1906-earthquake",
+      "category": "history",
+      "text": "The 1906 San Francisco earthquake and the fires that followed destroyed much of the city.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/1906_San_Francisco_earthquake"
+    },
+    {
+      "id": "us-west-1-mission-dolores",
+      "category": "history",
+      "text": "Mission Dolores, founded in 1776, has San Francisco's oldest surviving building, its adobe mission chapel.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Mission_San_Francisco_de_Asís"
+    },
+    {
+      "id": "us-west-1-golden-gate-bridge",
+      "category": "landmark",
+      "text": "San Francisco's Golden Gate Bridge opened in 1937 and is painted a color called International Orange.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Golden_Gate_Bridge"
+    },
+    {
+      "id": "us-west-1-alcatraz",
+      "category": "landmark",
+      "text": "Alcatraz Island in San Francisco Bay held a federal prison from 1934 to 1963.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Alcatraz_Island"
+    },
+    {
+      "id": "us-west-1-cable-cars",
+      "category": "landmark",
+      "text": "San Francisco's cable cars make up the last manually operated cable car system in the world.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/San_Francisco_cable_car_system"
+    },
+    {
+      "id": "us-west-1-chinatown",
+      "category": "culture",
+      "text": "San Francisco's Chinatown, founded in the 1840s, is the oldest Chinatown in North America.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Chinatown,_San_Francisco"
+    },
+    {
+      "id": "us-west-1-muir-woods",
+      "category": "nature",
+      "text": "Muir Woods, just north of San Francisco, protects a grove of old-growth coast redwoods.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Muir_Woods_National_Monument"
+    },
+    {
+      "id": "us-west-1-yosemite",
+      "category": "nature",
+      "text": "Yosemite Valley in California's Sierra Nevada is famed for granite cliffs such as El Capitan and Half Dome.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Yosemite_National_Park"
+    },
+    {
+      "id": "us-west-1-san-andreas",
+      "category": "geography",
+      "text": "The San Andreas Fault, where two tectonic plates slide past each other, runs just offshore of San Francisco.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/San_Andreas_Fault"
+    },
+    {
+      "id": "us-west-1-golden-gate-strait",
+      "category": "geography",
+      "text": "The Golden Gate is the narrow strait linking San Francisco Bay to the Pacific Ocean.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Golden_Gate"
+    },
+    {
+      "id": "us-west-1-sourdough",
+      "category": "food",
+      "text": "Boudin Bakery has baked San Francisco sourdough bread since 1849, during the Gold Rush.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Boudin_Bakery"
+    },
+    {
+      "id": "us-west-1-ghirardelli",
+      "category": "food",
+      "text": "The Ghirardelli Chocolate Company was founded in San Francisco in 1852.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Ghirardelli_Chocolate_Company"
+    },
+    {
+      "id": "us-west-1-napa-wine",
+      "category": "food",
+      "text": "Napa Valley wines won fame when they beat top French wines at the 1976 tasting known as the Judgment of Paris.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Judgment_of_Paris_(wine)"
+    },
+    {
+      "id": "us-west-1-silicon-valley",
+      "category": "science",
+      "text": "Silicon Valley, south of San Francisco, is named for the silicon chips pioneered by companies there.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Silicon_Valley"
+    },
+    {
+      "id": "us-west-1-hp-garage",
+      "category": "science",
+      "text": "Hewlett-Packard was founded in 1939 in a Palo Alto garage now known as the birthplace of Silicon Valley.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/HP_Garage"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

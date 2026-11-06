@@ -23,9 +23,10 @@ from __future__ import annotations
 import random
 from datetime import UTC, datetime, timedelta
 from typing import Any, Protocol
-from zoneinfo import ZoneInfo
 
 from traveler import placement, regions
+from traveler.facts import engine
+from traveler.facts.model import Context
 from traveler.routing import EDGE_PROPAGATION_S
 from traveler.tower import Tower, now_iso
 
@@ -57,6 +58,8 @@ class World(Protocol):
     def setting(self, name: str) -> str | None: ...
     def placement_args(self, *, release: str, hop_id: str) -> dict[str, Any]: ...
     def log(self, msg: str, **fields: Any) -> None: ...
+    def metric(self, **values: float) -> None: ...
+    def fetch_json(self, url: str) -> Any: ...
 
 
 # --- entry -------------------------------------------------------------------
@@ -137,11 +140,32 @@ def reside(world: World, s: dict[str, Any]) -> str:
         consecutive_aborts=s.get("consecutive_aborts", 0),
     )
     t.event("ARRIVAL_STARTED", hop_id=s["hop_id"], region=world.region, stay_s=int(stay))
-    _arrival_statement(world, s)
+    statements = _plan_statements(world, s, stay)
+    posted: list[str] = []
+    try:
+        return _stay(world, s, arrived, depart_at, statements, posted)
+    finally:
+        if posted:
+            t.remember_visit(world.region, posted, visits=engine.MEMORY_VISITS, recent=engine.MEMORY_FACTS)
 
+
+def _stay(
+    world: World,
+    s: dict[str, Any],
+    arrived: float,
+    depart_at: float,
+    statements: list[dict[str, Any]],
+    posted: list[str],
+) -> str:
+    t = world.tower
     dest: str | None = None
     next_beat = world.now() + HEARTBEAT_S
     while world.now() < depart_at:
+        # Slot k (0-based) is said k * SLOT_S after arrival; slot 1 straight away.
+        while len(posted) < len(statements) and world.now() >= arrived + engine.SLOT_S * len(posted):
+            st = statements[len(posted)]
+            t.event("STATEMENT", hop_id=s["hop_id"], region=world.region, **st)
+            posted.append(st["fact_id"])
         if world.now() >= next_beat:
             next_beat += HEARTBEAT_S
             if t.state().get("status") != "live":
@@ -374,23 +398,44 @@ def _phase_event(world: World, s: dict[str, Any], name: str) -> None:
     )
 
 
-def _arrival_statement(world: World, s: dict[str, Any]) -> None:
-    p = regions.profile(world.region)
+def _plan_statements(world: World, s: dict[str, Any], stay: float) -> list[dict[str, Any]]:
+    """Gather and pick this stay's statements. Never raises: a broken engine still says hello."""
     try:
-        local = datetime.now(ZoneInfo(p.get("tz", "UTC")))
-        text = f"Landed {p['near']}. It's {local:%H:%M} local time."
-    except Exception:  # noqa: BLE001 - no tz database is not worth failing a stay
-        text = f"Landed {p['near']}."
-    world.tower.event(
-        "STATEMENT",
-        hop_id=s["hop_id"],
-        region=world.region,
-        slot=0,
-        category="time",
-        text=text,
-        source_name="Computed",
-        source_url="",
+        ctx = Context(
+            region=world.region,
+            profile=regions.profile(world.region),
+            now=datetime.now(UTC),
+            hop_id=s["hop_id"],
+            hop_count=int(s.get("hop_count") or 0),
+            from_region=s.get("from_region") or "",
+            fetch=world.fetch_json,
+        )
+        memory = world.tower.region_memory(world.region)
+        plan = engine.plan(
+            ctx, slots=engine.slots_for(stay), memory=memory, disabled=set(_list(world.setting("adapters_off")))
+        )
+    except Exception as e:  # noqa: BLE001
+        world.log("fact engine failed", error=repr(e)[:300])
+        return [_hello(world)]
+    failures = sum(1 for r in plan.adapters.values() if not r.get("ok") and not r.get("skipped"))
+    world.metric(StatementsPlanned=len(plan.statements), AdapterFailures=failures)
+    world.log("facts planned", statements=len(plan.statements), candidates=plan.candidates, adapters=plan.adapters)
+    world.tower.record_facts(
+        s["hop_id"], {"statements": len(plan.statements), "candidates": plan.candidates, "adapters": plan.adapters}
     )
+    return plan.statements or [_hello(world)]
+
+
+def _hello(world: World) -> dict[str, Any]:
+    p = regions.profile(world.region)
+    return {
+        "slot": 1,
+        "category": "time",
+        "text": f"Landed {p['near']}.",
+        "source_name": "Computed",
+        "source_url": "",
+        "fact_id": f"hello-{world.region}",
+    }
 
 
 def _iso_in(world: World, seconds: float) -> str:

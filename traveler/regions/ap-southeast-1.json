@@ -7,6 +7,132 @@
   "lat": 1.35,
   "lon": 103.82,
   "tz": "Asia/Singapore",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Singapore",
+    "languages": [
+      "English",
+      "Malay",
+      "Mandarin"
+    ],
+    "currency": "SGD",
+    "currency_name": "Singapore dollar",
+    "drives_on": "left",
+    "calling_code": "+65"
+  },
+  "evergreen_facts": [
+    {
+      "id": "ap-southeast-1-raffles-1819",
+      "category": "history",
+      "text": "Stamford Raffles set up a British trading post in Singapore in 1819.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Stamford_Raffles"
+    },
+    {
+      "id": "ap-southeast-1-independence-1965",
+      "category": "history",
+      "text": "Singapore became an independent republic on 9 August 1965 after separating from Malaysia.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/History_of_Singapore"
+    },
+    {
+      "id": "ap-southeast-1-lion-city",
+      "category": "history",
+      "text": "Singapore's name comes from the Malay Singapura, from Sanskrit words meaning \"lion city\".",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Singapore"
+    },
+    {
+      "id": "ap-southeast-1-near-equator",
+      "category": "geography",
+      "text": "Singapore lies about one degree north of the equator, off the southern tip of the Malay Peninsula.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Geography_of_Singapore"
+    },
+    {
+      "id": "ap-southeast-1-islands",
+      "category": "geography",
+      "text": "Singapore is made up of one main island and dozens of smaller islands around it.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Geography_of_Singapore"
+    },
+    {
+      "id": "ap-southeast-1-merlion",
+      "category": "landmark",
+      "text": "The Merlion, a creature with a lion's head and a fish's body, is a symbol of Singapore.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Merlion"
+    },
+    {
+      "id": "ap-southeast-1-gardens-by-the-bay",
+      "category": "landmark",
+      "text": "Singapore's Gardens by the Bay is known for its Supertree Grove, tall tree-like vertical gardens.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Gardens_by_the_Bay"
+    },
+    {
+      "id": "ap-southeast-1-marina-bay-sands",
+      "category": "landmark",
+      "text": "Marina Bay Sands, opened in 2010, has a SkyPark that sits across the tops of its three hotel towers.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Marina_Bay_Sands"
+    },
+    {
+      "id": "ap-southeast-1-raffles-hotel",
+      "category": "landmark",
+      "text": "Raffles Hotel, opened in 1887, is the colonial hotel where the Singapore Sling cocktail was created.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Raffles_Hotel"
+    },
+    {
+      "id": "ap-southeast-1-botanic-gardens",
+      "category": "nature",
+      "text": "The Singapore Botanic Gardens, founded in 1859, became Singapore's first UNESCO World Heritage Site.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Singapore_Botanic_Gardens"
+    },
+    {
+      "id": "ap-southeast-1-bukit-timah",
+      "category": "nature",
+      "text": "Bukit Timah Hill, Singapore's highest natural point, lies in a reserve of primary rainforest.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Bukit_Timah_Nature_Reserve"
+    },
+    {
+      "id": "ap-southeast-1-hawker-centres",
+      "category": "food",
+      "text": "Singapore's hawker centres, open-air halls of small cooked-food stalls, are on UNESCO's intangible heritage list.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Hawker_centre"
+    },
+    {
+      "id": "ap-southeast-1-chicken-rice",
+      "category": "food",
+      "text": "Hainanese chicken rice, poached chicken served with rice cooked in chicken stock, is a beloved Singapore dish.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Hainanese_chicken_rice"
+    },
+    {
+      "id": "ap-southeast-1-chilli-crab",
+      "category": "food",
+      "text": "Chilli crab, crab stir-fried in a sweet, tangy tomato and chilli sauce, is a classic Singaporean seafood dish.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Chilli_crab"
+    },
+    {
+      "id": "ap-southeast-1-four-languages",
+      "category": "culture",
+      "text": "Singapore has four official languages: English, Malay, Mandarin Chinese and Tamil.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Languages_of_Singapore"
+    },
+    {
+      "id": "ap-southeast-1-night-race",
+      "category": "sport",
+      "text": "Singapore hosted the first Formula One night race in 2008, on the Marina Bay Street Circuit.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/2008_Singapore_Grand_Prix"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

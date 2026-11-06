@@ -1,0 +1,54 @@
+{
+ "type": "FeatureCollection",
+ "metadata": {
+  "generated": 1793993158000,
+  "url": "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&latitude=35.68&longitude=139.69&maxradiuskm=800&minmagnitude=2.5&starttime=2026-10-30T00:00:00&orderby=magnitude&limit=1",
+  "title": "USGS Earthquakes",
+  "status": 200,
+  "api": "2.8.4",
+  "limit": 1,
+  "offset": 1
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "mag": 6.1,
+    "place": "144 km SE of Hasaki, Japan",
+    "time": 1793961567869,
+    "updated": 1793979565993,
+    "tz": null,
+    "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000twg9",
+    "detail": "https://earthquake.usgs.gov/fdsnws/event/1/query?eventid=us7000twg9&format=geojson",
+    "felt": 30,
+    "cdi": 4.2,
+    "mmi": 0,
+    "alert": "green",
+    "status": "reviewed",
+    "tsunami": 0,
+    "sig": 585,
+    "net": "us",
+    "code": "7000twg9",
+    "ids": ",us7000twg9,usauto7000twg9,atto2tlr,",
+    "sources": ",us,usauto,at,",
+    "types": ",dyfi,internal-moment-tensor,internal-origin,losspager,moment-tensor,origin,phase-data,shakemap,",
+    "nst": 134,
+    "dmin": 3.545,
+    "rms": 0.76,
+    "gap": 32,
+    "magType": "mww",
+    "type": "earthquake",
+    "title": "M 6.1 - 144 km SE of Hasaki, Japan"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     142.1175,
+     34.9677,
+     29
+    ]
+   },
+   "id": "us7000twg9"
+  }
+ ]
+}

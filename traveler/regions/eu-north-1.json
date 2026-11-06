@@ -7,6 +7,130 @@
   "lat": 59.33,
   "lon": 18.07,
   "tz": "Europe/Stockholm",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Stockholm",
+    "languages": [
+      "Swedish"
+    ],
+    "currency": "SEK",
+    "currency_name": "krona",
+    "drives_on": "right",
+    "calling_code": "+46"
+  },
+  "evergreen_facts": [
+    {
+      "id": "eu-north-1-fourteen-islands",
+      "category": "geography",
+      "text": "Stockholm is built on 14 islands where Lake Mälaren flows into the Baltic Sea.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Stockholm"
+    },
+    {
+      "id": "eu-north-1-archipelago",
+      "category": "geography",
+      "text": "The Stockholm archipelago stretches out from the city into the Baltic, with tens of thousands of islands.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Stockholm_Archipelago"
+    },
+    {
+      "id": "eu-north-1-birger-jarl",
+      "category": "history",
+      "text": "Stockholm first appears in written records around 1252, and its founding is traditionally credited to Birger Jarl.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/History_of_Stockholm"
+    },
+    {
+      "id": "eu-north-1-bloodbath",
+      "category": "history",
+      "text": "In the Stockholm Bloodbath of 1520, Danish king Christian II had scores of Swedish nobles and clergy executed.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Stockholm_Bloodbath"
+    },
+    {
+      "id": "eu-north-1-gamla-stan",
+      "category": "landmark",
+      "text": "Gamla stan, Stockholm's old town, dates from the 13th century and is a maze of narrow medieval streets.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Gamla_Stan"
+    },
+    {
+      "id": "eu-north-1-vasa",
+      "category": "landmark",
+      "text": "The warship Vasa sank in Stockholm's harbour on her maiden voyage in 1628 and was raised largely intact in 1961.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Vasa_(ship)"
+    },
+    {
+      "id": "eu-north-1-city-hall",
+      "category": "landmark",
+      "text": "Stockholm City Hall, completed in 1923, hosts the Nobel Prize banquet every December.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Stockholm_City_Hall"
+    },
+    {
+      "id": "eu-north-1-drottningholm",
+      "category": "landmark",
+      "text": "Drottningholm Palace near Stockholm, the Swedish royal family's home, is a UNESCO World Heritage Site.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Drottningholm_Palace"
+    },
+    {
+      "id": "eu-north-1-nobel-prizes",
+      "category": "science",
+      "text": "Every Nobel Prize except the Peace Prize is presented in Stockholm on 10 December, the date Alfred Nobel died.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Nobel_Prize"
+    },
+    {
+      "id": "eu-north-1-alfred-nobel",
+      "category": "science",
+      "text": "Alfred Nobel, the chemist who invented dynamite and founded the Nobel Prizes, was born in Stockholm in 1833.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Alfred_Nobel"
+    },
+    {
+      "id": "eu-north-1-skansen",
+      "category": "culture",
+      "text": "Skansen, opened on Stockholm's Djurgården island in 1891, was the world's first open-air museum.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Skansen"
+    },
+    {
+      "id": "eu-north-1-midsummer",
+      "category": "culture",
+      "text": "Swedes around Stockholm celebrate Midsummer with flower crowns, dancing around a maypole and pickled herring.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Midsummer"
+    },
+    {
+      "id": "eu-north-1-fika",
+      "category": "food",
+      "text": "Fika, a coffee break shared with friends or colleagues, often with a cinnamon bun, is a cherished Swedish custom.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Coffee_in_Sweden"
+    },
+    {
+      "id": "eu-north-1-meatballs",
+      "category": "food",
+      "text": "Swedish meatballs are traditionally served with lingonberry jam, cream gravy and boiled or mashed potatoes.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Meatball"
+    },
+    {
+      "id": "eu-north-1-national-city-park",
+      "category": "nature",
+      "text": "Stockholm's Royal National City Park, created in 1995, was the world's first legally protected national urban park.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Royal_National_City_Park"
+    },
+    {
+      "id": "eu-north-1-olympics-1912",
+      "category": "sport",
+      "text": "Stockholm hosted the 1912 Summer Olympics, and its purpose-built Olympic Stadium is still in use today.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/1912_Summer_Olympics"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

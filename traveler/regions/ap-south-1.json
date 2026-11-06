@@ -7,6 +7,131 @@
   "lat": 19.08,
   "lon": 72.88,
   "tz": "Asia/Kolkata",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "New Delhi",
+    "languages": [
+      "Hindi",
+      "English"
+    ],
+    "currency": "INR",
+    "currency_name": "rupee",
+    "drives_on": "left",
+    "calling_code": "+91"
+  },
+  "evergreen_facts": [
+    {
+      "id": "ap-south-1-seven-islands",
+      "category": "geography",
+      "text": "Mumbai was built on seven islands that land reclamation gradually joined into a single landmass.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Seven_Islands_of_Bombay"
+    },
+    {
+      "id": "ap-south-1-dowry",
+      "category": "history",
+      "text": "Portugal handed Bombay to England in 1661 as part of Catherine of Braganza's dowry when she married Charles II.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Mumbai"
+    },
+    {
+      "id": "ap-south-1-renamed-1995",
+      "category": "history",
+      "text": "Bombay was officially renamed Mumbai in 1995, though both names remain in everyday use.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Mumbai"
+    },
+    {
+      "id": "ap-south-1-bse",
+      "category": "history",
+      "text": "The Bombay Stock Exchange in Mumbai, founded in 1875, is the oldest stock exchange in Asia.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Bombay_Stock_Exchange"
+    },
+    {
+      "id": "ap-south-1-gateway-of-india",
+      "category": "landmark",
+      "text": "The Gateway of India, an arch completed in 1924, looks out over Mumbai Harbour from Apollo Bunder.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Gateway_of_India"
+    },
+    {
+      "id": "ap-south-1-cst",
+      "category": "landmark",
+      "text": "Mumbai's Chhatrapati Shivaji Terminus, a Victorian Gothic railway station, is a UNESCO World Heritage Site.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Chhatrapati_Shivaji_Terminus"
+    },
+    {
+      "id": "ap-south-1-elephanta",
+      "category": "landmark",
+      "text": "The Elephanta Caves, on an island in Mumbai Harbour, contain ancient rock-cut temples devoted to Shiva.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Elephanta_Caves"
+    },
+    {
+      "id": "ap-south-1-marine-drive",
+      "category": "landmark",
+      "text": "Mumbai's seafront Marine Drive is nicknamed the Queen's Necklace for its curve of streetlights at night.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Marine_Drive,_Mumbai"
+    },
+    {
+      "id": "ap-south-1-bollywood",
+      "category": "culture",
+      "text": "Mumbai is the center of the Hindi-language film industry, known around the world as Bollywood.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Hindi_cinema"
+    },
+    {
+      "id": "ap-south-1-dabbawalas",
+      "category": "culture",
+      "text": "Mumbai's dabbawalas deliver home-cooked lunches to office workers using a system of painted codes.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Dabbawala"
+    },
+    {
+      "id": "ap-south-1-ganesh-chaturthi",
+      "category": "culture",
+      "text": "During Ganesh Chaturthi, Mumbai carries huge idols of Ganesha through the streets to be immersed in the sea.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Ganesh_Chaturthi"
+    },
+    {
+      "id": "ap-south-1-vada-pav",
+      "category": "food",
+      "text": "Vada pav, a spiced potato fritter tucked into a bread roll, is Mumbai's signature street food.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Vada_pav"
+    },
+    {
+      "id": "ap-south-1-pav-bhaji",
+      "category": "food",
+      "text": "Pav bhaji, a spiced vegetable mash eaten with buttered bread rolls, originated in Mumbai.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Pav_bhaji"
+    },
+    {
+      "id": "ap-south-1-sanjay-gandhi",
+      "category": "nature",
+      "text": "Sanjay Gandhi National Park lies inside Mumbai's city limits and holds the ancient Buddhist Kanheri Caves.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Sanjay_Gandhi_National_Park"
+    },
+    {
+      "id": "ap-south-1-monsoon",
+      "category": "nature",
+      "text": "Mumbai gets most of its yearly rain from the southwest monsoon, which arrives in June and lasts until September.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Mumbai"
+    },
+    {
+      "id": "ap-south-1-wankhede",
+      "category": "sport",
+      "text": "Mumbai's Wankhede Stadium hosted the 2011 Cricket World Cup final, which India won.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Wankhede_Stadium"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

@@ -231,3 +231,34 @@ topic. The watchdog holds a tower lock so runs never overlap.
 At each departure the traveler rests if it has been awake (`awake_since`, set by
 wake and kept by resurrection) for `auto_sleep_hours` (12) unless `pin_awake` is
 true. The 24-hour gate run uses `pin_awake=true`.
+
+## D29. Fact engine
+
+`traveler/facts/`: gather → score → select → render on landing, one statement per
+30 s slot (`stay // 30`), posted as `STATEMENT` events. No AI.
+
+- **Sources.** Weather is MET Norway Locationforecast, not Open-Meteo: Open-Meteo's
+  free tier is non-commercial only, and this site promotes Kyle's work. MET Norway is
+  free with an identifying User-Agent (`traveler/<release> (+<site url>)`). USGS
+  (public domain), Wikipedia geosearch and On This Day, Nager.Date and Frankfurter
+  (ECB rates) need no key. Country basics ship as static data in the region profiles.
+  Air quality (no free commercial source found) and OpenSky (off by default per spec)
+  are not built.
+- **On This Day** keeps only anniversaries whose text names the region's country or
+  city, and says so in our own words with the article title. A bare title
+  ("…features Tammy Baldwin") said nothing, and the event sentence is not ours to copy.
+- **Failure.** Each network adapter gets one request with a 3 s timeout; all run in
+  parallel under one 3.5 s deadline. A failed or late adapter loses only its own facts.
+  Computed facts (time, sun, journey) and the curated pack always run, so a stay is
+  never silent. `adapters_off` (`all` or a list) disables sources at runtime.
+- **Memory.** `REGION/<code>` keeps the fact ids of the last 3 visits plus the last 50.
+  Facts from the last 3 visits are excluded; older ones are penalized. If a stay can't
+  be filled without repeats (fully offline, from the 4th visit in a row), the oldest
+  remembered visit is released first, so the previous visit is never repeated.
+- **Selection.** Depth-first in score order with a node budget: slot 1 is a right-now
+  fact (time or weather, and it names the place), no category twice in a row, at most
+  2 per category, at least one curated fact. Scores, tie-breaks and template choice are
+  seeded from the hop ID, so a hop is reproducible from its pool and memory.
+- **Evergreen pack.** 16 facts per region, drafted for Kyle's review
+  (`evergreen_reviewed: false` until he signs off). `make facts REGION=… ORIGIN=…`
+  previews a stay against the live sources without writing anything.

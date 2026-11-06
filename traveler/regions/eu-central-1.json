@@ -7,6 +7,130 @@
   "lat": 50.11,
   "lon": 8.68,
   "tz": "Europe/Berlin",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Berlin",
+    "languages": [
+      "German"
+    ],
+    "currency": "EUR",
+    "currency_name": "euro",
+    "drives_on": "right",
+    "calling_code": "+49"
+  },
+  "evergreen_facts": [
+    {
+      "id": "eu-central-1-goethe",
+      "category": "history",
+      "text": "Johann Wolfgang von Goethe was born in Frankfurt in 1749; his family home is now the Goethe House museum.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Goethe_House"
+    },
+    {
+      "id": "eu-central-1-frankfurt-parliament",
+      "category": "history",
+      "text": "Frankfurt's St. Paul's Church hosted the 1848 Frankfurt Parliament, Germany's first freely elected parliament.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Frankfurt_National_Assembly"
+    },
+    {
+      "id": "eu-central-1-coronations",
+      "category": "history",
+      "text": "Holy Roman emperors were elected in Frankfurt for centuries and, from 1562, crowned in its cathedral.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Frankfurt_Cathedral"
+    },
+    {
+      "id": "eu-central-1-on-the-main",
+      "category": "geography",
+      "text": "Frankfurt lies on the river Main, which gives the city its full name, Frankfurt am Main.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Frankfurt"
+    },
+    {
+      "id": "eu-central-1-romer",
+      "category": "landmark",
+      "text": "The Römer, a row of medieval buildings on Frankfurt's old town square, has housed the city hall since 1405.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Römer"
+    },
+    {
+      "id": "eu-central-1-eiserner-steg",
+      "category": "landmark",
+      "text": "The Eiserner Steg, an iron footbridge across the Main in Frankfurt, first opened in 1869.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Eiserner_Steg"
+    },
+    {
+      "id": "eu-central-1-palmengarten",
+      "category": "landmark",
+      "text": "The Palmengarten, opened in 1871, is Frankfurt's botanical garden, with glasshouses full of tropical plants.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Palmengarten"
+    },
+    {
+      "id": "eu-central-1-apfelwein",
+      "category": "food",
+      "text": "Apfelwein, a tart apple wine, is Frankfurt's traditional drink, served in taverns in the Sachsenhausen district.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Apfelwein"
+    },
+    {
+      "id": "eu-central-1-green-sauce",
+      "category": "food",
+      "text": "Grüne Soße, a cold sauce made from seven fresh herbs, is a Frankfurt specialty.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Green_sauce"
+    },
+    {
+      "id": "eu-central-1-frankfurter",
+      "category": "food",
+      "text": "The frankfurter, a thin smoked pork sausage, takes its name from the city of Frankfurt.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Frankfurter_Würstchen"
+    },
+    {
+      "id": "eu-central-1-book-fair",
+      "category": "culture",
+      "text": "The Frankfurt Book Fair continues a tradition of book trading in Frankfurt dating back to the 15th century.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Frankfurt_Book_Fair"
+    },
+    {
+      "id": "eu-central-1-museumsufer",
+      "category": "culture",
+      "text": "Frankfurt's Museumsufer is a string of museums lining both banks of the Main.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Museumsufer"
+    },
+    {
+      "id": "eu-central-1-stadel",
+      "category": "culture",
+      "text": "The Städel Museum in Frankfurt, founded in 1815, holds European art from the Middle Ages to the present.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Städel"
+    },
+    {
+      "id": "eu-central-1-senckenberg",
+      "category": "science",
+      "text": "Frankfurt's Senckenberg Natural History Museum is known for its large collection of dinosaur skeletons.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Naturmuseum_Senckenberg"
+    },
+    {
+      "id": "eu-central-1-otto-hahn",
+      "category": "science",
+      "text": "Chemist Otto Hahn, who discovered nuclear fission, was born in Frankfurt in 1879.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Otto_Hahn"
+    },
+    {
+      "id": "eu-central-1-taunus",
+      "category": "nature",
+      "text": "The forested Taunus hills rise northwest of Frankfurt, topped by the Großer Feldberg.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Großer_Feldberg"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

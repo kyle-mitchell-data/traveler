@@ -7,6 +7,130 @@
   "lat": 45.52,
   "lon": -122.68,
   "tz": "America/Los_Angeles",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Washington, D.C.",
+    "languages": [
+      "English"
+    ],
+    "currency": "USD",
+    "currency_name": "US dollar",
+    "drives_on": "right",
+    "calling_code": "+1"
+  },
+  "evergreen_facts": [
+    {
+      "id": "us-west-2-oregon-trail",
+      "category": "history",
+      "text": "The Oregon Trail carried settlers about 2,000 miles from Missouri to Oregon's Willamette Valley in the 1800s.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Oregon_Trail"
+    },
+    {
+      "id": "us-west-2-coin-toss",
+      "category": "history",
+      "text": "Portland, Oregon, got its name from an 1845 coin toss between two founders, one from Maine and one from Boston.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Portland,_Oregon"
+    },
+    {
+      "id": "us-west-2-statehood",
+      "category": "history",
+      "text": "Oregon was admitted to the Union as the 33rd US state on 14 February 1859, Valentine's Day.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Oregon"
+    },
+    {
+      "id": "us-west-2-fort-clatsop",
+      "category": "history",
+      "text": "Lewis and Clark spent the winter of 1805 to 1806 at Fort Clatsop, near the mouth of the Columbia River in Oregon.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Fort_Clatsop"
+    },
+    {
+      "id": "us-west-2-two-rivers",
+      "category": "geography",
+      "text": "Portland, Oregon, sits where the Willamette River flows into the Columbia River.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Portland,_Oregon"
+    },
+    {
+      "id": "us-west-2-columbia-border",
+      "category": "geography",
+      "text": "The Columbia River forms most of the border between Oregon and Washington state.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Columbia_River"
+    },
+    {
+      "id": "us-west-2-crater-lake",
+      "category": "nature",
+      "text": "Oregon's Crater Lake fills the caldera of Mount Mazama, a volcano that collapsed about 7,700 years ago.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Crater_Lake"
+    },
+    {
+      "id": "us-west-2-mount-hood",
+      "category": "nature",
+      "text": "Mount Hood, a snow-capped volcano visible from Portland, is the highest mountain in Oregon.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Mount_Hood"
+    },
+    {
+      "id": "us-west-2-multnomah-falls",
+      "category": "nature",
+      "text": "Multnomah Falls drops in two tiers down the cliffs of the Columbia River Gorge, east of Portland, Oregon.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Multnomah_Falls"
+    },
+    {
+      "id": "us-west-2-japanese-garden",
+      "category": "landmark",
+      "text": "The Portland Japanese Garden, opened in 1967 in Washington Park, is a traditional garden in Portland, Oregon.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Portland_Japanese_Garden"
+    },
+    {
+      "id": "us-west-2-powells",
+      "category": "landmark",
+      "text": "Powell's City of Books in Portland, Oregon, is a bookstore that fills an entire city block.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Powell's_Books"
+    },
+    {
+      "id": "us-west-2-mill-ends-park",
+      "category": "landmark",
+      "text": "Mill Ends Park in Portland, Oregon, is a tiny park just two feet across, set in the median of a busy street.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Mill_Ends_Park"
+    },
+    {
+      "id": "us-west-2-city-of-roses",
+      "category": "culture",
+      "text": "Portland, Oregon, is nicknamed the City of Roses and is home to the International Rose Test Garden.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/International_Rose_Test_Garden"
+    },
+    {
+      "id": "us-west-2-marionberry",
+      "category": "food",
+      "text": "The marionberry, a blackberry variety bred in Oregon, is named after the state's Marion County.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Marionberry"
+    },
+    {
+      "id": "us-west-2-tillamook",
+      "category": "food",
+      "text": "Tillamook County on the Oregon coast is known for the cheese made by its dairy farmers' cooperative.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Tillamook_County_Creamery_Association"
+    },
+    {
+      "id": "us-west-2-trail-blazers",
+      "category": "sport",
+      "text": "The Portland Trail Blazers basketball team won the NBA championship in 1977.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Portland_Trail_Blazers"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

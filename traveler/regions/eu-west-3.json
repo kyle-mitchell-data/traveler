@@ -7,6 +7,130 @@
   "lat": 48.86,
   "lon": 2.35,
   "tz": "Europe/Paris",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Paris",
+    "languages": [
+      "French"
+    ],
+    "currency": "EUR",
+    "currency_name": "euro",
+    "drives_on": "right",
+    "calling_code": "+33"
+  },
+  "evergreen_facts": [
+    {
+      "id": "eu-west-3-parisii",
+      "category": "history",
+      "text": "Paris takes its name from the Parisii, a Celtic people who lived along the Seine before the Romans arrived.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Parisii_(Gaul)"
+    },
+    {
+      "id": "eu-west-3-bastille",
+      "category": "history",
+      "text": "The storming of the Bastille in Paris on 14 July 1789 is commemorated each year as France's national day.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Storming_of_the_Bastille"
+    },
+    {
+      "id": "eu-west-3-eiffel-tower",
+      "category": "landmark",
+      "text": "The Eiffel Tower in Paris was built as the centerpiece of the 1889 World's Fair.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Eiffel_Tower"
+    },
+    {
+      "id": "eu-west-3-notre-dame",
+      "category": "landmark",
+      "text": "Work on Notre-Dame de Paris, the Gothic cathedral on the Île de la Cité, began in 1163.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Notre-Dame_de_Paris"
+    },
+    {
+      "id": "eu-west-3-louvre",
+      "category": "landmark",
+      "text": "The Louvre in Paris was a royal palace before it opened as a museum in 1793; it is home to the Mona Lisa.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Louvre"
+    },
+    {
+      "id": "eu-west-3-arc-de-triomphe",
+      "category": "landmark",
+      "text": "The Arc de Triomphe in Paris was commissioned by Napoleon in 1806 to honor the French army.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Arc_de_Triomphe"
+    },
+    {
+      "id": "eu-west-3-left-right-bank",
+      "category": "geography",
+      "text": "The Seine divides Paris into the Right Bank to the north and the Left Bank to the south.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Seine"
+    },
+    {
+      "id": "eu-west-3-arrondissements",
+      "category": "geography",
+      "text": "Paris is divided into 20 arrondissements that spiral outward clockwise from the center of the city.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Arrondissements_of_Paris"
+    },
+    {
+      "id": "eu-west-3-guimard-metro",
+      "category": "culture",
+      "text": "Many Paris Métro entrances keep their Art Nouveau ironwork designed by Hector Guimard around 1900.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Hector_Guimard"
+    },
+    {
+      "id": "eu-west-3-academie",
+      "category": "culture",
+      "text": "The Académie Française, founded in Paris in 1635, is the official guardian of the French language.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Académie_Française"
+    },
+    {
+      "id": "eu-west-3-baguette",
+      "category": "food",
+      "text": "The baguette is a daily staple in Paris, and French baguette baking is on UNESCO's intangible heritage list.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Baguette"
+    },
+    {
+      "id": "eu-west-3-croque-monsieur",
+      "category": "food",
+      "text": "The croque monsieur, a toasted ham and cheese sandwich, first appeared on Paris café menus in 1910.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Croque_monsieur"
+    },
+    {
+      "id": "eu-west-3-pasteur-institute",
+      "category": "science",
+      "text": "Louis Pasteur founded the Pasteur Institute in Paris in 1887 to study and fight infectious disease.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Pasteur_Institute"
+    },
+    {
+      "id": "eu-west-3-marie-curie",
+      "category": "science",
+      "text": "Marie Curie carried out her Nobel Prize-winning research on radioactivity in Paris.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Marie_Curie"
+    },
+    {
+      "id": "eu-west-3-tour-de-france",
+      "category": "sport",
+      "text": "The Tour de France, first raced in 1903, traditionally ends in Paris on the Champs-Élysées.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Tour_de_France"
+    },
+    {
+      "id": "eu-west-3-roland-garros",
+      "category": "sport",
+      "text": "The French Open tennis championship is played on red clay courts at Stade Roland Garros in Paris.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/French_Open"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

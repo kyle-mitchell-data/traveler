@@ -7,6 +7,130 @@
   "lat": -23.55,
   "lon": -46.63,
   "tz": "America/Sao_Paulo",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "Brasília",
+    "languages": [
+      "Portuguese"
+    ],
+    "currency": "BRL",
+    "currency_name": "real",
+    "drives_on": "right",
+    "calling_code": "+55"
+  },
+  "evergreen_facts": [
+    {
+      "id": "sa-east-1-founding-1554",
+      "category": "history",
+      "text": "São Paulo was founded by Jesuit missionaries, among them José de Anchieta, on 25 January 1554.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/São_Paulo"
+    },
+    {
+      "id": "sa-east-1-ipiranga",
+      "category": "history",
+      "text": "Prince Pedro declared Brazil's independence beside the Ipiranga brook in São Paulo on 7 September 1822.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Independence_of_Brazil"
+    },
+    {
+      "id": "sa-east-1-coffee",
+      "category": "history",
+      "text": "São Paulo grew rapidly in the 19th century on the wealth of coffee farmed across the surrounding state.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/São_Paulo"
+    },
+    {
+      "id": "sa-east-1-liberdade",
+      "category": "culture",
+      "text": "São Paulo's Liberdade district is the heart of Brazil's large Japanese-Brazilian community.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Liberdade_(district_of_São_Paulo)"
+    },
+    {
+      "id": "sa-east-1-modern-art-week",
+      "category": "culture",
+      "text": "The 1922 Modern Art Week at São Paulo's Municipal Theatre helped launch Brazilian modernism.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Modern_Art_Week"
+    },
+    {
+      "id": "sa-east-1-masp",
+      "category": "landmark",
+      "text": "The São Paulo Museum of Art, designed by Lina Bo Bardi, is lifted above Avenida Paulista on two huge red beams.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/São_Paulo_Museum_of_Art"
+    },
+    {
+      "id": "sa-east-1-ibirapuera",
+      "category": "landmark",
+      "text": "São Paulo's Ibirapuera Park, opened in 1954, has pavilions and an auditorium designed by Oscar Niemeyer.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Ibirapuera_Park"
+    },
+    {
+      "id": "sa-east-1-municipal-theatre",
+      "category": "landmark",
+      "text": "The Municipal Theatre of São Paulo, an ornate opera house in the city center, opened in 1911.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Theatro_Municipal_(São_Paulo)"
+    },
+    {
+      "id": "sa-east-1-mercadao",
+      "category": "food",
+      "text": "São Paulo's Municipal Market, opened in 1933, is famous for its stained glass and towering mortadella sandwiches.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Municipal_Market_of_São_Paulo"
+    },
+    {
+      "id": "sa-east-1-pacaembu",
+      "category": "sport",
+      "text": "São Paulo's Pacaembu Stadium, opened in 1940, is home to the Museu do Futebol, a museum of Brazilian football.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Pacaembu_Stadium"
+    },
+    {
+      "id": "sa-east-1-interlagos",
+      "category": "sport",
+      "text": "The Interlagos circuit in São Paulo has hosted Formula One's Brazilian Grand Prix since the 1970s.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Interlagos_Circuit"
+    },
+    {
+      "id": "sa-east-1-senna",
+      "category": "sport",
+      "text": "Ayrton Senna, three-time Formula One world champion, was born in São Paulo in 1960.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Ayrton_Senna"
+    },
+    {
+      "id": "sa-east-1-plateau",
+      "category": "geography",
+      "text": "São Paulo sits on a plateau about 760 metres above sea level, inland from the Atlantic coast.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/São_Paulo"
+    },
+    {
+      "id": "sa-east-1-tiete",
+      "category": "geography",
+      "text": "The Tietê River runs through São Paulo and flows inland, away from the nearby Atlantic Ocean.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Tietê_River"
+    },
+    {
+      "id": "sa-east-1-serra-do-mar",
+      "category": "nature",
+      "text": "The Serra do Mar mountains, cloaked in Atlantic Forest, separate São Paulo's plateau from the coast.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Serra_do_Mar"
+    },
+    {
+      "id": "sa-east-1-butantan",
+      "category": "science",
+      "text": "São Paulo's Butantan Institute, founded in 1901, is a biomedical research center known for snake antivenoms.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Instituto_Butantan"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }

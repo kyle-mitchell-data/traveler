@@ -4,6 +4,7 @@
     python -m scripts.ops wake [--region]  place the traveler from the latest release and route to it
     python -m scripts.ops sleep            route to "resting" and remove every traveler copy
     python -m scripts.ops status           tower state plus a live count of copies
+    python -m scripts.ops facts [--region] preview a stay's statements from live sources (writes nothing)
 
 Settings come from SSM under /traveler/ (written by Terraform). Status reads the tower,
 never the key-value store (decision D5).
@@ -14,10 +15,13 @@ from __future__ import annotations
 import argparse
 import contextlib
 import io
+import json
 import random
+import ssl
 import subprocess
 import sys
 import time
+import urllib.request
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
@@ -26,7 +30,9 @@ from typing import Any
 
 import boto3
 
-from traveler import placement, wake
+from traveler import placement, regions, wake
+from traveler.facts import engine
+from traveler.facts.model import Context
 from traveler.routing import EDGE_PROPAGATION_S, Router
 from traveler.tower import Tower
 
@@ -156,7 +162,7 @@ def cmd_sleep(session: boto3.Session, cfg: dict[str, Any], args: argparse.Namesp
     print(f"resting; removed copies in: {', '.join(removed) or 'none'}")
 
 
-SWITCHES = {"stay_seconds", "hop_regions", "max_hops", "kill", "pin_awake", "inject"}
+SWITCHES = {"stay_seconds", "hop_regions", "max_hops", "kill", "pin_awake", "inject", "adapters_off"}
 
 
 def cmd_set(session: boto3.Session, cfg: dict[str, Any], args: argparse.Namespace) -> None:
@@ -199,6 +205,45 @@ def cmd_status(session: boto3.Session, cfg: dict[str, Any], _: argparse.Namespac
         print("WARNING   copies do not match the tower state")
 
 
+def cmd_facts(session: boto3.Session, cfg: dict[str, Any], args: argparse.Namespace) -> None:
+    """What a 5-minute stay would say right now, against the real sources and memory."""
+    t = tower(session, cfg)
+    region = args.region or str(t.state().get("region") or HOME)
+    ctx = Context(
+        region=region,
+        profile=regions.profile(region),
+        now=datetime.now(UTC),
+        hop_id=f"preview-{int(time.time())}",
+        hop_count=int(t.state().get("hop_count") or 0),
+        from_region=args.origin or "",
+        fetch=_fetcher(cfg),
+    )
+    plan = engine.plan(ctx, slots=engine.slots_for(300), memory=t.region_memory(region))
+    for st in plan.statements:
+        print(f"{st['slot']:>2}. [{st['category']}] {st['text']}  ({st['source_name']})")
+    print(
+        "adapters:",
+        ", ".join(f"{k} {'ok' if r.get('ok') else r.get('error', 'off')}" for k, r in plan.adapters.items()),
+    )
+
+
+def _fetcher(cfg: dict[str, Any]) -> Any:
+    try:  # Windows Python has no CA bundle of its own
+        import certifi
+
+        tls = ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        tls = ssl.create_default_context()
+    agent = f"traveler-preview (+{cfg.get('site_url', '')})"
+
+    def fetch(url: str) -> Any:
+        req = urllib.request.Request(url, headers={"user-agent": agent, "accept": "application/json"})  # noqa: S310
+        with urllib.request.urlopen(req, timeout=engine.ADAPTER_TIMEOUT_S, context=tls) as resp:  # noqa: S310
+            return json.loads(resp.read())
+
+    return fetch
+
+
 # --- main -------------------------------------------------------------------
 
 
@@ -211,6 +256,9 @@ def main() -> None:
     sleep = sub.add_parser("sleep")
     sleep.add_argument("--now", action="store_true", help="skip the edge wait (emergency stop)")
     sub.add_parser("status")
+    facts = sub.add_parser("facts")
+    facts.add_argument("--region")
+    facts.add_argument("--origin", help="pretend we just flew in from this region")
     set_ = sub.add_parser("set")
     set_.add_argument("name")
     set_.add_argument("value")
@@ -225,6 +273,7 @@ def main() -> None:
         "wake": cmd_wake,
         "sleep": cmd_sleep,
         "status": cmd_status,
+        "facts": cmd_facts,
         "set": cmd_set,
         "unset": cmd_unset,
     }

@@ -7,7 +7,7 @@ TF := terraform -chdir=infra/terraform
 PY := $(if $(wildcard .venv/Scripts/python.exe),.venv/Scripts/python,.venv/bin/python)
 OPS := $(PY) -m scripts.ops
 
-.PHONY: help bootstrap venv hooks init plan apply fmt check test lint site release wake sleep status set unset build destroy
+.PHONY: help bootstrap venv hooks init plan apply fmt check test lint site release wake sleep status facts set unset build destroy
 
 help:
 	@echo "bootstrap  create the Terraform state bucket and install git hooks"
@@ -21,7 +21,8 @@ help:
 	@echo "wake       place the traveler (REGION=eu-west-1 to choose) and route to it"
 	@echo "sleep      route to resting, wait for the edge, remove every copy (NOW=1 skips the wait)"
 	@echo "status     tower state and live copy count"
-	@echo "set/unset  test switches: make set NAME=stay_seconds VALUE=60 (stay_seconds hop_regions max_hops kill)"
+	@echo "facts      preview what a stay would say now, from live sources (REGION=, ORIGIN=)"
+	@echo "set/unset  test switches: make set NAME=stay_seconds VALUE=60 (stay_seconds hop_regions max_hops kill adapters_off)"
 	@echo "destroy    sleep, then terraform destroy (state bucket is kept)"
 
 bootstrap: hooks
@@ -77,6 +78,9 @@ sleep:
 
 status:
 	$(OPS) status
+
+facts:
+	$(OPS) facts $(if $(REGION),--region $(REGION),) $(if $(ORIGIN),--origin $(ORIGIN),)
 
 set:
 	$(OPS) set $(NAME) $(VALUE)

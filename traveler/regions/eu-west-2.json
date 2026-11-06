@@ -7,6 +7,130 @@
   "lat": 51.51,
   "lon": -0.13,
   "tz": "Europe/London",
-  "evergreen_facts": [],
-  "nearby_towns": []
+  "country_facts": {
+    "capital": "London",
+    "languages": [
+      "English"
+    ],
+    "currency": "GBP",
+    "currency_name": "pound sterling",
+    "drives_on": "left",
+    "calling_code": "+44"
+  },
+  "evergreen_facts": [
+    {
+      "id": "eu-west-2-londinium",
+      "category": "history",
+      "text": "The Romans founded Londinium on the River Thames around AD 47, the beginning of London.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Londinium"
+    },
+    {
+      "id": "eu-west-2-great-fire",
+      "category": "history",
+      "text": "The Great Fire of London in 1666 burned for days and destroyed most of the medieval City of London.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Great_Fire_of_London"
+    },
+    {
+      "id": "eu-west-2-first-underground",
+      "category": "history",
+      "text": "The world's first underground railway, the Metropolitan Railway, opened in London in 1863.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Metropolitan_Railway"
+    },
+    {
+      "id": "eu-west-2-tower-of-london",
+      "category": "landmark",
+      "text": "The Tower of London was founded by William the Conqueror after the Norman conquest of 1066.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Tower_of_London"
+    },
+    {
+      "id": "eu-west-2-st-pauls",
+      "category": "landmark",
+      "text": "London's St Paul's Cathedral, with its great dome, was designed by Christopher Wren after the Great Fire.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/St_Paul's_Cathedral"
+    },
+    {
+      "id": "eu-west-2-westminster-abbey",
+      "category": "landmark",
+      "text": "Westminster Abbey in London has been the coronation church of English and British monarchs since 1066.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Westminster_Abbey"
+    },
+    {
+      "id": "eu-west-2-big-ben",
+      "category": "landmark",
+      "text": "Big Ben is the nickname of the great bell in the clock tower of London's Palace of Westminster.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Big_Ben"
+    },
+    {
+      "id": "eu-west-2-thames",
+      "category": "geography",
+      "text": "The River Thames winds through the middle of London on its way east to the North Sea.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/River_Thames"
+    },
+    {
+      "id": "eu-west-2-prime-meridian",
+      "category": "science",
+      "text": "The Prime Meridian, the line of zero degrees longitude, runs through the Royal Observatory in Greenwich, London.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Royal_Observatory,_Greenwich"
+    },
+    {
+      "id": "eu-west-2-penicillin",
+      "category": "science",
+      "text": "Alexander Fleming discovered penicillin in 1928 in his laboratory at St Mary's Hospital in London.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Alexander_Fleming"
+    },
+    {
+      "id": "eu-west-2-globe",
+      "category": "culture",
+      "text": "Shakespeare's Globe on London's South Bank is a reconstruction of the open-air playhouse of Shakespeare's time.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Shakespeare's_Globe"
+    },
+    {
+      "id": "eu-west-2-british-museum",
+      "category": "culture",
+      "text": "The British Museum in London, founded in 1753, holds the Rosetta Stone among millions of objects.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/British_Museum"
+    },
+    {
+      "id": "eu-west-2-fish-and-chips",
+      "category": "food",
+      "text": "Fish and chips became a popular takeaway in London and northern England in the second half of the 1800s.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Fish_and_chips"
+    },
+    {
+      "id": "eu-west-2-pie-and-mash",
+      "category": "food",
+      "text": "Pie and mash with a green parsley sauce called liquor is a traditional working-class meal of East London.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Pie_and_mash"
+    },
+    {
+      "id": "eu-west-2-wimbledon",
+      "category": "sport",
+      "text": "Wimbledon, played in southwest London since 1877, is the oldest tennis tournament in the world.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/Wimbledon_Championships"
+    },
+    {
+      "id": "eu-west-2-three-olympics",
+      "category": "sport",
+      "text": "London has hosted the Summer Olympics three times, in 1908, 1948 and 2012.",
+      "source_name": "Wikipedia",
+      "source_url": "https://en.wikipedia.org/wiki/2012_Summer_Olympics"
+    }
+  ],
+  "nearby_towns": [],
+  "evergreen_reviewed": false
 }
