@@ -16,6 +16,7 @@ import io
 import random
 import subprocess
 import sys
+import time
 import zipfile
 from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime
@@ -25,7 +26,7 @@ from typing import Any
 import boto3
 
 from traveler import placement
-from traveler.routing import Router
+from traveler.routing import EDGE_PROPAGATION_S, Router
 from traveler.tower import Tower, now_iso
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -160,11 +161,16 @@ def cmd_wake(session: boto3.Session, cfg: dict[str, Any], args: argparse.Namespa
     print(f"live in {region} ({placed.url_domain})")
 
 
-def cmd_sleep(session: boto3.Session, cfg: dict[str, Any], _: argparse.Namespace) -> None:
-    # Route away first so no visitor reaches a function that is being deleted.
+def cmd_sleep(session: boto3.Session, cfg: dict[str, Any], args: argparse.Namespace) -> None:
+    # Route away first, then keep the copy alive until every edge has stopped sending
+    # it traffic (D21). Deleting sooner gives stale edges about a minute of 403s.
     Router(session.client("cloudfront-keyvaluestore", region_name="us-east-1"), cfg["kvs_arn"]).rest()
-    removed = [r for r in cfg["allowlist"] if placement.remove(session.client("lambda", region_name=r))]
     t = tower(session, cfg)
+    t.set_state(status="resting", phase="SETTLING")
+    if not args.now:
+        print(f"routed to resting; waiting {EDGE_PROPAGATION_S} s for the edge before removing copies", flush=True)
+        time.sleep(EDGE_PROPAGATION_S)
+    removed = [r for r in cfg["allowlist"] if placement.remove(session.client("lambda", region_name=r))]
     t.set_state(status="resting", phase="RESTING")
     t.event("RESTING", removed=removed)
     print(f"resting; removed copies in: {', '.join(removed) or 'none'}")
@@ -191,7 +197,8 @@ def main() -> None:
     sub.add_parser("release")
     wake = sub.add_parser("wake")
     wake.add_argument("--region")
-    sub.add_parser("sleep")
+    sleep = sub.add_parser("sleep")
+    sleep.add_argument("--now", action="store_true", help="skip the edge wait (emergency stop)")
     sub.add_parser("status")
     args = parser.parse_args()
 

@@ -8,6 +8,10 @@ from __future__ import annotations
 
 from typing import Any
 
+# Measured 2026-11-06 (decision D21): edge servers converge on a key change in about
+# 60 s. Anything that retires the old origin waits at least this long after a flip.
+EDGE_PROPAGATION_S = 90
+
 
 class Router:
     def __init__(self, kvs_client: Any, kvs_arn: str) -> None:

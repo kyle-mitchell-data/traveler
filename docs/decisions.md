@@ -147,7 +147,17 @@ with no function changes: first edge server sees the change after 23–31 s, ser
 in the same location disagree (responses alternate) for about 30 s more, and the
 edge is stable after about 60 s. Both directions behaved the same.
 
-Consequences for phase 3:
+Accepted 2026-11-06:
+
+- Flight cap is 180 s, replacing the spec's 120 s.
+- P7 requires both: at least `EDGE_PROPAGATION_S` (90 s) since the P6 flip, and a
+  run of consecutive responses from the new region. Only then is ARRIVED allowed
+  to retire the old copy.
+- `make sleep` waits `EDGE_PROPAGATION_S` between the flip and deleting copies
+  (`NOW=1` skips the wait for emergencies). Verified: 234 edge responses during a
+  sleep, all 200 or 503, zero 403s.
+
+Background and consequences:
 
 - P7 cannot use "3 responses in a row". It needs a long consecutive run (or a fixed
   floor of about 90 s after P6) before ARRIVED is allowed to delete the old copy.

@@ -19,7 +19,7 @@ help:
 	@echo "site       upload the static site"
 	@echo "release    build the traveler package and publish it as desired_release"
 	@echo "wake       place the traveler (REGION=eu-west-1 to choose) and route to it"
-	@echo "sleep      route to resting and remove every traveler copy"
+	@echo "sleep      route to resting, wait for the edge, remove every copy (NOW=1 skips the wait)"
 	@echo "status     tower state and live copy count"
 	@echo "destroy    sleep, then terraform destroy (state bucket is kept)"
 
@@ -70,7 +70,7 @@ wake:
 	$(OPS) wake $(if $(REGION),--region $(REGION),)
 
 sleep:
-	$(OPS) sleep
+	$(OPS) sleep $(if $(NOW),--now,)
 
 status:
 	$(OPS) status
