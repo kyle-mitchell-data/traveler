@@ -35,6 +35,7 @@ data "aws_iam_policy_document" "boundary" {
       "ssm:GetParameter",
       "ssm:GetParameters",
       "ssm:GetParametersByPath",
+      "ssm:DeleteParameter",
       "kms:Decrypt",
       "logs:CreateLogStream",
       "logs:PutLogEvents",
@@ -142,6 +143,13 @@ data "aws_iam_policy_document" "traveler" {
       "ssm:GetParametersByPath",
     ]
     resources = ["arn:aws:ssm:${var.home_region}:${var.account_id}:parameter/traveler/*"]
+  }
+
+  # Consume the one-shot failure-injection switch (phase 3 gate tests).
+  statement {
+    sid       = "ConsumeInjection"
+    actions   = ["ssm:DeleteParameter"]
+    resources = ["arn:aws:ssm:${var.home_region}:${var.account_id}:parameter/traveler/inject"]
   }
 
   statement {

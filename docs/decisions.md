@@ -197,3 +197,11 @@ The hop record moves from `in_flight` to either `arrived` (written by the new co
 or `aborted` (written by the old copy), by conditional write. Whoever loses stands
 down: a new copy that arrives late does nothing and is deleted by the rollback; an
 old copy that times out just as the new one arrives carries on as a normal handoff.
+
+## D26. Forced failures are real and one-shot
+
+The phase 3 gate requires forced failures at P2, P5, P7 and a missing ARRIVED. The
+operator sets `/traveler/inject` to a phase name; the next hop then fails for real
+at that phase (a role that does not exist, a wrong release, an edge that never
+settles, a lost suitcase) and the traveler deletes the switch as it fires. The
+traveler's only SSM write permission is deleting that one parameter.

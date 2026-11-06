@@ -198,7 +198,7 @@ def cmd_sleep(session: boto3.Session, cfg: dict[str, Any], args: argparse.Namesp
     print(f"resting; removed copies in: {', '.join(removed) or 'none'}")
 
 
-SWITCHES = {"stay_seconds", "hop_regions", "max_hops", "kill", "pin_awake"}
+SWITCHES = {"stay_seconds", "hop_regions", "max_hops", "kill", "pin_awake", "inject"}
 
 
 def cmd_set(session: boto3.Session, cfg: dict[str, Any], args: argparse.Namespace) -> None:

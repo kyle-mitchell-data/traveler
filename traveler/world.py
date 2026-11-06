@@ -16,6 +16,10 @@ from traveler.tower import Tower, now_iso
 
 HTTP_TIMEOUT_S = 3
 
+# Test hook for the phase 3 gate: `make set NAME=inject VALUE=<phase>` makes the next
+# hop fail at that phase for real, once. Only the operator can write /traveler/inject.
+INJECTABLE = ("FUNCTION_CREATED", "HEALTH_OK", "ROUTE_CONFIRMED", "ARRIVED")
+
 
 class AwsWorld:
     def __init__(self, context: Any) -> None:
@@ -27,6 +31,7 @@ class AwsWorld:
         self.tower = Tower(boto3.resource("dynamodb", region_name=self.home).Table(os.environ["TOWER_TABLE"]))
         self._ssm = boto3.client("ssm", region_name=self.home)
         self._cfg = self._load()
+        self._edge_stuck = False
 
     # --- config -------------------------------------------------------------
 
@@ -43,6 +48,18 @@ class AwsWorld:
             except self._ssm.exceptions.ParameterNotFound:
                 return None
         return self._cfg.get(name)
+
+    def _take_injection(self, phase: str) -> bool:
+        """True once if the operator asked for a failure at this phase; consumes the switch."""
+        try:
+            value = self._ssm.get_parameter(Name="/traveler/inject")["Parameter"]["Value"]
+        except self._ssm.exceptions.ParameterNotFound:
+            return False
+        if value != phase:
+            return False
+        self._ssm.delete_parameter(Name="/traveler/inject")
+        self.log("injecting failure", phase=phase)
+        return True
 
     # --- time ---------------------------------------------------------------
 
@@ -71,6 +88,9 @@ class AwsWorld:
 
     def probe(self) -> str | None:
         """Ask the public URL where the traveler is, as a visitor would."""
+        if self._edge_stuck or self._take_injection("ROUTE_CONFIRMED"):
+            self._edge_stuck = True  # for the rest of this flight
+            return None
         req = urllib.request.Request(  # noqa: S310 - our own https URL from config
             self._cfg["site_url"] + "/api/traveler/whereami", headers={"cache-control": "no-cache"}
         )
@@ -91,19 +111,25 @@ class AwsWorld:
         return data
 
     def invoke_async(self, region: str, payload: dict[str, Any]) -> None:
+        if payload.get("from_region") and self._take_injection("ARRIVED"):
+            return  # the suitcase is lost in transit
         _lambda(region).invoke(
             FunctionName=placement.FUNCTION_NAME, InvocationType="Event", Payload=json.dumps(payload).encode()
         )
 
     def placement_args(self, *, release: str, hop_id: str) -> dict[str, Any]:
+        role = self._cfg["role_arn"]
+        if self._take_injection("FUNCTION_CREATED"):
+            role = role.rsplit("/", 1)[0] + "/traveler-does-not-exist"
+        claimed = release + "-wrong" if self._take_injection("HEALTH_OK") else release
         return {
             "zip_bytes": self.package(release),
-            "role_arn": self._cfg["role_arn"],
+            "role_arn": role,
             "distribution_arn": self._cfg["distribution_arn"],
             "env": {
                 "TOWER_TABLE": self._cfg["tower_table"],
                 "TOWER_REGION": self.home,
-                "TRAVELER_RELEASE": release,
+                "TRAVELER_RELEASE": claimed,
                 "TRAVELER_HOP_ID": hop_id,
                 "TRAVELER_ARRIVED_AT": now_iso(),
             },
