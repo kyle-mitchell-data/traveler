@@ -26,7 +26,9 @@ class Router:
         puts = [{"Key": k, "Value": v} for k, v in keys.items()]
         try:
             out = self.kvs.update_keys(KvsARN=self.arn, IfMatch=self._etag, Puts=puts)
-        except self.kvs.exceptions.ConflictException:
+        except Exception as exc:
+            if not _stale_etag(exc):
+                raise
             # Someone else wrote since our cached ETag; refresh once and retry.
             self._etag = self.kvs.describe_key_value_store(KvsARN=self.arn)["ETag"]
             out = self.kvs.update_keys(KvsARN=self.arn, IfMatch=self._etag, Puts=puts)
@@ -38,3 +40,14 @@ class Router:
 
     def rest(self) -> None:
         self.set(status="resting")
+
+
+def _stale_etag(exc: Exception) -> bool:
+    """True if UpdateKeys failed because our cached ETag is out of date.
+
+    The API reports this as ValidationException "Pre-Condition failed" (seen in
+    production 2026-11-06), though ConflictException is also documented.
+    """
+    error = getattr(exc, "response", {}).get("Error", {})
+    code, message = error.get("Code", ""), error.get("Message", "")
+    return code == "ConflictException" or (code == "ValidationException" and "Pre-Condition" in message)

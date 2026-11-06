@@ -1,17 +1,20 @@
 from typing import Any
 
+import pytest
+
 from traveler.routing import Router
 
 
-class Conflict(Exception):
-    pass
+class ClientError(Exception):
+    """Shaped like botocore's ClientError."""
+
+    def __init__(self, code: str, message: str) -> None:
+        super().__init__(message)
+        self.response = {"Error": {"Code": code, "Message": message}}
 
 
 class FakeKvs:
     """Mimics the KeyValueStore API's optimistic concurrency on ETag."""
-
-    class exceptions:  # noqa: N801 - mirrors the boto3 client attribute
-        ConflictException = Conflict
 
     def __init__(self) -> None:
         self.etag = "e0"
@@ -25,7 +28,8 @@ class FakeKvs:
     def update_keys(self, KvsARN: str, IfMatch: str, Puts: list[dict[str, str]]) -> dict[str, Any]:  # noqa: N803
         self.calls.append("update")
         if IfMatch != self.etag:
-            raise Conflict()
+            # What the real API returned in production for a stale ETag.
+            raise ClientError("ValidationException", "Pre-Condition failed during update of Key-Value-Store")
         self.data.update({p["Key"]: p["Value"] for p in Puts})
         self.etag = f"e{len(self.calls)}"
         return {"ETag": self.etag}
@@ -60,3 +64,16 @@ def test_stale_etag_refreshes_once_and_succeeds() -> None:
     r.go_live(origin="b", region="eu-west-2", hop_id="h-2")
     assert kvs.calls == ["update", "describe", "update"]
     assert kvs.data["status"] == "live"
+
+
+def test_other_errors_are_not_retried() -> None:
+    class Broken(FakeKvs):
+        def update_keys(self, KvsARN: str, IfMatch: str, Puts: list[dict[str, str]]) -> dict[str, Any]:  # noqa: N803
+            self.calls.append("update")
+            raise ClientError("AccessDeniedException", "nope")
+
+    kvs = Broken()
+    with pytest.raises(ClientError) as err:
+        Router(kvs, "arn:kvs").rest()
+    assert err.value.response["Error"]["Code"] == "AccessDeniedException"
+    assert kvs.calls == ["describe", "update"]

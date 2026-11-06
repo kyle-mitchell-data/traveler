@@ -66,7 +66,8 @@ class AwsWorld:
         )
         resp = json.loads(out["Payload"].read())
         if out.get("FunctionError") or not resp.get("ok"):
-            raise RuntimeError(f"route writer refused: {resp}")
+            reason = resp.get("errorMessage") or resp.get("error") or str(resp)
+            raise RuntimeError(f"route writer refused: {reason}"[:300])
 
     def probe(self) -> str | None:
         """Ask the public URL where the traveler is, as a visitor would."""
