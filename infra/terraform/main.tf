@@ -34,6 +34,7 @@ module "iam" {
   home_region    = var.home_region
   allowlist      = var.allowlist
   github_repo    = var.github_repo
+  github_subject = var.github_oidc_subject_prefix
   state_bucket   = local.state_bucket
   tower_table    = module.tower.table_arn
   kvs_arn        = module.edge.kvs_arn

@@ -2,6 +2,7 @@ variable "account_id" { type = string }
 variable "home_region" { type = string }
 variable "allowlist" { type = list(string) }
 variable "github_repo" { type = string }
+variable "github_subject" { type = string }
 variable "state_bucket" { type = string }
 variable "tower_table" { type = string }
 variable "kvs_arn" {
@@ -218,10 +219,12 @@ resource "aws_iam_openid_connect_provider" "github" {
   client_id_list = ["sts.amazonaws.com"]
 }
 
+# The repo issues immutable subjects (owner and repo pinned by numeric ID, so a renamed
+# or re-created repo cannot inherit trust); the name form is kept for the legacy format.
 data "aws_iam_policy_document" "ci_trust" {
   for_each = {
-    plan   = "repo:${var.github_repo}:pull_request"
-    deploy = "repo:${var.github_repo}:ref:refs/heads/main"
+    plan   = [for p in ["repo:${var.github_repo}", var.github_subject] : "${p}:pull_request"]
+    deploy = [for p in ["repo:${var.github_repo}", var.github_subject] : "${p}:ref:refs/heads/main"]
   }
 
   statement {
@@ -238,7 +241,7 @@ data "aws_iam_policy_document" "ci_trust" {
     condition {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = [each.value]
+      values   = each.value
     }
   }
 }

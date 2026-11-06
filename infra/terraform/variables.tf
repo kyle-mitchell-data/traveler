@@ -21,6 +21,12 @@ variable "github_repo" {
   default     = "kyle-mitchell-data/traveler"
 }
 
+variable "github_oidc_subject_prefix" {
+  description = "The repo's immutable OIDC subject prefix (owner@id/name@id), from GET /repos/{repo}/actions/oidc/customization/sub."
+  type        = string
+  default     = "repo:kyle-mitchell-data@349532211/traveler@1437877847"
+}
+
 variable "alert_email" {
   description = "Where budget alerts go. Set in terraform.tfvars, which is not committed."
   type        = string
