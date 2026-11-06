@@ -40,7 +40,7 @@ variable "monthly_budget_usd" {
 variable "alert_test" {
   description = "Adds a throwaway $0.01 budget so the email path can be proven. Turn off once an alert arrives."
   type        = bool
-  default     = false
+  default     = true # phase 1 gate: until the first budget email arrives
 }
 
 variable "log_retention_days" {
