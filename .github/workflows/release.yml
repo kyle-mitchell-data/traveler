@@ -1,0 +1,58 @@
+name: release
+
+# On merge to main: apply infrastructure, then publish the traveler package as
+# desired_release. CI never deploys the traveler into a region; the traveler adopts
+# the new release at its next hop.
+
+on:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push'
+    runs-on: ubuntu-latest
+    env:
+      TF_VAR_alert_email: ${{ secrets.ALERT_EMAIL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.6"
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: us-east-2
+
+      - name: Build bundles
+        run: |
+          python -m venv .venv && .venv/bin/python -m pip install -q -r requirements-dev.txt
+          bash scripts/build-route-writer.sh
+          bash scripts/build-watchdog.sh
+
+      - name: Terraform apply
+        run: |
+          terraform -chdir=infra/terraform init -input=false \
+            -backend-config="bucket=traveler-tfstate-$(aws sts get-caller-identity --query Account --output text)"
+          terraform -chdir=infra/terraform apply -input=false -auto-approve
+
+      - name: Publish release
+        run: .venv/bin/python -m scripts.ops release

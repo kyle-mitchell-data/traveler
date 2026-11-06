@@ -1,0 +1,90 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.6"
+
+      - name: Install tooling
+        run: python -m pip install -r requirements-dev.txt
+
+      - name: Lint and types
+        run: |
+          python -m ruff check .
+          python -m ruff format --check .
+          python -m mypy
+          python -m mypy route_writer
+          python -m mypy watchdog
+
+      - name: Tests
+        run: |
+          python -m pytest -q
+          node --test edge/router.test.mjs
+
+      - name: Terraform format and validate
+        run: |
+          terraform -chdir=infra/terraform fmt -recursive -check
+          terraform -chdir=infra/terraform init -backend=false -input=false
+          terraform -chdir=infra/terraform validate
+
+      - name: Secret scan
+        run: |
+          curl -sSL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz | tar xz gitleaks
+          ./gitleaks git --redact --no-banner .
+
+  plan:
+    if: github.event_name == 'pull_request'
+    needs: checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      TF_VAR_alert_email: ${{ secrets.ALERT_EMAIL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.16.6"
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_PLAN_ROLE_ARN }}
+          aws-region: us-east-2
+      - name: Build bundles
+        run: |
+          python -m venv .venv && .venv/bin/python -m pip install -q -r requirements-dev.txt
+          bash scripts/build-route-writer.sh
+          bash scripts/build-watchdog.sh
+      - name: Plan
+        run: |
+          terraform -chdir=infra/terraform init -input=false \
+            -backend-config="bucket=traveler-tfstate-$(aws sts get-caller-identity --query Account --output text)"
+          terraform -chdir=infra/terraform plan -input=false -lock=false
