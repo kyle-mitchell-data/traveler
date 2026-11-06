@@ -37,3 +37,14 @@ back cleanly and raised the 3-in-a-row alarm event.
 
 Also verified early: a release published mid-run was adopted at the next hop (a phase 4
 criterion).
+
+## Phase 4: Autonomous travel — in progress
+
+| Criterion | Result |
+|---|---|
+| Runs 24 hours unattended with all invariants holding | **Running** since 2026-11-06 ~04:12 UTC: 17-region allowlist, 3–5 min stays, `pin_awake=true`. Evidence: watchdog metrics (`Copies`, `InvariantViolations`, `HeartbeatAgeSeconds`) every 5 min, hop records, alarms. |
+| Watchdog resurrects a hand-deleted traveler within 10 minutes | Pass (2026-11-06): deleted in eu-west-2 at 04:03:42; traveler noticed in 10 s and stopped; watchdog resurrected in eu-north-1 after 331 s. About 60 s of 403s while the edge moved off the deleted copy. |
+| A new release published by CI is running within 2 hops | Pending CI (needs the `workflow` token scope and repo secrets). Manual `make release` adoption already verified in phase 3. |
+
+Also verified: intercontinental hops us-east-2 → ap-northeast-1 (111.0 s) → eu-central-1
+(111.6 s), zero failed probes in flight.
