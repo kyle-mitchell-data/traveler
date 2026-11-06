@@ -1,6 +1,6 @@
 """Phase 3 gate drill: force a failure at each phase and check the rollback.
 
-    python -m scripts.failure_drill
+    python -m scripts.failure_drill [PHASE ...]
 
 Assumes the traveler is awake with hop_regions set. For each phase it sets the
 one-shot /traveler/inject switch (D26), waits for the HOP_ABORTED event, and then
@@ -22,6 +22,10 @@ TIMEOUT_S = 15 * 60
 
 
 def main() -> None:
+    phases = tuple(sys.argv[1:]) or PHASES
+    unknown = set(phases) - set(PHASES)
+    if unknown:
+        sys.exit(f"unknown phases {sorted(unknown)}; choose from {PHASES}")
     ssm = boto3.client("ssm", region_name=HOME)
     table = boto3.resource("dynamodb", region_name=HOME).Table(
         ssm.get_parameter(Name="/traveler/tower_table")["Parameter"]["Value"]
@@ -50,7 +54,7 @@ def main() -> None:
         return here
 
     results: list[tuple[str, bool, str]] = []
-    for phase in PHASES:
+    for phase in phases:
         start = latest_seq()
         ssm.put_parameter(Name="/traveler/inject", Value=phase, Type="String", Overwrite=True)
         print(f"injected {phase}; waiting for the next hop to fail…", flush=True)
@@ -76,8 +80,9 @@ def main() -> None:
         results.append((phase, ok, detail))
         print(("PASS " if ok else "FAIL ") + f"{phase}: {detail}", flush=True)
 
-    print("\nforced-failure drill:", "PASS" if all(ok for _, ok, _ in results) and len(results) == 4 else "FAIL")
-    sys.exit(0 if all(ok for _, ok, _ in results) and len(results) == len(PHASES) else 1)
+    passed = all(ok for _, ok, _ in results) and len(results) == len(phases)
+    print("\nforced-failure drill:", "PASS" if passed else "FAIL")
+    sys.exit(0 if passed else 1)
 
 
 if __name__ == "__main__":

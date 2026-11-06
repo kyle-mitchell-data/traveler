@@ -10,7 +10,7 @@ Evidence for each phase's acceptance criteria. Dates are UTC.
 | A test budget alert reaches Kyle's email | **Open**: `traveler-alert-test` ($0.01, credits excluded) waits on billing data |
 | No long-lived AWS keys anywhere | Pass (2026-11-05): bootstrap IAM user and key deleted; account has 0 IAM users; local access is IAM Identity Center only |
 
-## Phase 2: One region, routed
+## Phase 2: One region, routed — passed
 
 | Criterion | Result |
 |---|---|
@@ -20,7 +20,7 @@ Evidence for each phase's acceptance criteria. Dates are UTC.
 
 Also verified early: direct calls to a traveler Function URL return 403 (a phase 6 criterion).
 
-## Phase 3: Handoff between two regions
+## Phase 3: Handoff between two regions — passed
 
 | Criterion | Result |
 |---|---|
@@ -29,7 +29,7 @@ Also verified early: direct calls to a traveler Function URL return 403 (a phase
 | Forced failure at P2 rolls back cleanly, 1 function left | Pass: h-000036, CreateFunction denied (`iam:PassRole` on a role the traveler does not own) |
 | Forced failure at P5 | Pass: h-000037, health check saw the wrong release |
 | Forced failure at P7 | Pass: h-000038, "edge did not settle in time", rolled back, next hop landed |
-| Missing ARRIVED | **Open**: drill stopped by the host (memory pressure) before this step; covered in simulation |
+| Missing ARRIVED | Pass (2026-11-06): h-000041, "no ARRIVED within 60 s", routed back, new copy deleted, 1 function left |
 
 Found and fixed during the gate: stale-ETag route writes fail with `ValidationException`,
 not `ConflictException` (commit 7fd5bc2). Five real P6 aborts before the fix all rolled
