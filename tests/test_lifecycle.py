@@ -164,3 +164,34 @@ def test_destination_rule_relaxes_for_small_pools() -> None:
     world: Any = _Stub("us-east-2", {"hop_regions": PAIR})
     s = {"hop_id": "h-000002", "recent_regions": ["us-east-1", "us-east-2"], "avoid": ["us-east-1"]}
     assert lifecycle.choose_destination(world, s) == "us-east-1"
+
+
+def test_auto_sleep_after_the_awake_limit(cloud: FakeCloud) -> None:
+    cloud.settings["auto_sleep_hours"] = "12"
+    cloud.wake("us-east-2")
+    FakeWorld(cloud, "us-east-2").tower.set_state(awake_since="2000-01-01T00:00:00.000Z")
+    cloud.wait_idle()
+    assert _hops(cloud) == {}
+    assert _events(cloud, "RESTING")[0]["reason"] == "auto-sleep after 12 h awake"
+    _assert_clean_end(cloud)
+
+
+def test_pin_awake_overrides_auto_sleep(cloud: FakeCloud) -> None:
+    cloud.settings.update({"auto_sleep_hours": "12", "pin_awake": "true", "max_hops": "1"})
+    cloud.wake("us-east-2")
+    FakeWorld(cloud, "us-east-2").tower.set_state(awake_since="2000-01-01T00:00:00.000Z")
+    cloud.wait_idle()
+    assert [h["status"] for h in _hops(cloud).values()] == ["landed"]
+    assert _events(cloud, "RESTING")[0]["reason"] == "reached max_hops=1"
+
+
+def test_deleted_traveler_stops_without_building_a_copy(cloud: FakeCloud) -> None:
+    cloud.settings["stay_seconds"] = "120"
+    cloud.wake("us-east-2")
+    cloud.sleep(5)
+    cloud.client("us-east-2").delete_function(FunctionName="traveler")
+    cloud.wait_idle()
+    assert cloud.functions == {}
+    assert _hops(cloud) == {}
+    assert _events(cloud, "INVARIANT_VIOLATION")[0]["reason"] == "my function was deleted"
+    assert not cloud.errors

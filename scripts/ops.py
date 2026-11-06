@@ -14,7 +14,6 @@ from __future__ import annotations
 import argparse
 import contextlib
 import io
-import json
 import random
 import subprocess
 import sys
@@ -27,9 +26,9 @@ from typing import Any
 
 import boto3
 
-from traveler import placement
+from traveler import placement, wake
 from traveler.routing import EDGE_PROPAGATION_S, Router
-from traveler.tower import Tower, now_iso
+from traveler.tower import Tower
 
 ROOT = Path(__file__).resolve().parent.parent
 HOME = "us-east-2"
@@ -122,65 +121,24 @@ def cmd_wake(session: boto3.Session, cfg: dict[str, Any], args: argparse.Namespa
         .get_object(Bucket=cfg["release_bucket"], Key=f"releases/{release}.zip")["Body"]
         .read()
     )
-    hop_id = t.next_hop_id()
-    arrived = now_iso()
-    lam = session.client("lambda", region_name=region)
-    print(f"waking {release} in {region} as {hop_id}…")
+    router = Router(session.client("cloudfront-keyvaluestore", region_name="us-east-1"), cfg["kvs_arn"])
+    print(f"waking {release} in {region}...")
     try:
-        placed = placement.create(
-            lam,
+        hop_id = wake.place_and_start(
+            tower=t,
+            lambda_for=lambda r: session.client("lambda", region_name=r),
+            set_route=router.set,
             zip_bytes=zip_bytes,
+            release=release,
+            region=region,
             role_arn=cfg["role_arn"],
             distribution_arn=cfg["distribution_arn"],
-            env={
-                "TOWER_TABLE": cfg["tower_table"],
-                "TOWER_REGION": HOME,
-                "TRAVELER_RELEASE": release,
-                "TRAVELER_HOP_ID": hop_id,
-                "TRAVELER_ARRIVED_AT": arrived,
-            },
+            tower_table=cfg["tower_table"],
+            home=HOME,
         )
-        placement.health(lam, expect_release=release)
     except placement.PlacementError as exc:
-        placement.remove(lam)
-        t.event("HOP_ABORTED", hop_id=hop_id, region=region, phase=exc.phase, reason=exc.reason)
         sys.exit(f"wake failed at {exc.phase}: {exc.reason}")
-
-    Router(session.client("cloudfront-keyvaluestore", region_name="us-east-1"), cfg["kvs_arn"]).go_live(
-        origin=placed.url_domain, region=region, hop_id=hop_id
-    )
-    t.set_state(
-        status="live",
-        region=region,
-        hop_id=hop_id,
-        arrived_at=arrived,
-        release=release,
-        function_url=placed.url_domain,
-        phase="RESIDENT",
-        heartbeat_at=arrived,
-    )
-    t.event("WOKE", hop_id=hop_id, region=region, release=release)
-    prior = t.state()
-    # Start the residence loop; from here the traveler moves on its own.
-    lam.invoke(
-        FunctionName=placement.FUNCTION_NAME,
-        InvocationType="Event",
-        Payload=json.dumps(
-            {
-                "mode": "residence",
-                "journey_id": f"j-{arrived[:10]}",
-                "hop_id": hop_id,
-                "hop_count": int(prior.get("hop_count", 0)),
-                "recent_regions": [region],
-                "release": release,
-                "stats": {
-                    "hops_ok": int(prior.get("hops_ok", 0)),
-                    "hops_aborted": int(prior.get("hops_aborted", 0)),
-                },
-            }
-        ).encode(),
-    )
-    print(f"live in {region} ({placed.url_domain}); residence started")
+    print(f"live in {region} as {hop_id}; residence started")
 
 
 def cmd_sleep(session: boto3.Session, cfg: dict[str, Any], args: argparse.Namespace) -> None:

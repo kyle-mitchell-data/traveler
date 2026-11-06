@@ -134,6 +134,7 @@ def reside(world: World, s: dict[str, Any]) -> str:
         heartbeat_at=now_iso(),
         hops_ok=s.get("stats", {}).get("hops_ok", 0),
         hops_aborted=s.get("stats", {}).get("hops_aborted", 0),
+        consecutive_aborts=s.get("consecutive_aborts", 0),
     )
     t.event("ARRIVAL_STARTED", hop_id=s["hop_id"], region=world.region, stay_s=int(stay))
     _arrival_statement(world, s)
@@ -143,10 +144,17 @@ def reside(world: World, s: dict[str, Any]) -> str:
     while world.now() < depart_at:
         if world.now() >= next_beat:
             next_beat += HEARTBEAT_S
-            t.set_state(heartbeat_at=now_iso())
             if t.state().get("status") != "live":
                 world.log("put to sleep from outside; exiting")
                 return "stopped"
+            if not placement.exists(world.lambda_client(world.region)):
+                # Deleted from outside. Stop heartbeating so the watchdog resurrects us.
+                t.event(
+                    "INVARIANT_VIOLATION", hop_id=s["hop_id"], region=world.region, reason="my function was deleted"
+                )
+                world.log("own function deleted; exiting")
+                return "stopped"
+            t.set_state(heartbeat_at=now_iso())
         if dest is None and world.now() >= depart_at - PACKING_S:
             dest = choose_destination(world, s)
             t.set_state(phase="PACKING", next_region=dest)
@@ -157,6 +165,11 @@ def reside(world: World, s: dict[str, Any]) -> str:
         return "stopped"
     if (world.setting("kill") or "").lower() == "true":
         return go_to_rest(world, s, "kill switch")
+    limit_h = _int(world.setting("auto_sleep_hours"))
+    awake_since = _epoch(str(t.state().get("awake_since", "")))
+    pinned = (world.setting("pin_awake") or "").lower() == "true"
+    if limit_h and awake_since and not pinned and _wall_now() - awake_since >= limit_h * 3600:
+        return go_to_rest(world, s, f"auto-sleep after {limit_h} h awake")
     max_hops = _int(world.setting("max_hops"))
     if max_hops is not None and s.get("hop_count", 0) >= max_hops:
         return go_to_rest(world, s, f"reached max_hops={max_hops}")
@@ -211,6 +224,13 @@ def fly(world: World, s: dict[str, Any], dest: str) -> dict[str, Any]:
         _phase_event(world, flight, name)
         t.set_state(phase=name, next_region=dest)
 
+    # Our own URL is the rollback target. If we have been deleted, do not build a copy.
+    try:
+        home_origin = placement.url_domain(world.lambda_client(world.region))
+    except Exception:  # noqa: BLE001
+        world.log("own function missing at departure; not flying")
+        return {"outcome": "stopped", "hop_id": s.get("hop_id")}
+
     t.start_hop(hop_id, from_region=world.region, to_region=dest, release=release)
     phase("DEPARTED")
     new = world.lambda_client(dest)
@@ -228,7 +248,6 @@ def fly(world: World, s: dict[str, Any], dest: str) -> dict[str, Any]:
         return _abort(world, s, hop_id, dest, "FUNCTION_CREATED", str(exc), flipped=False)
 
     # P6: point the edge at the new copy.
-    home_origin = placement.url_domain(world.lambda_client(world.region))
     try:
         world.set_route(current_origin=placed.url_domain, current_region=dest, hop_id=hop_id, status="live")
     except Exception as exc:  # noqa: BLE001
@@ -317,7 +336,12 @@ def _abort(
     stats = s.get("stats", {})
     stats = {**stats, "hops_aborted": stats.get("hops_aborted", 0) + 1}
     t.event("HOP_ABORTED", hop_id=hop_id, region=world.region, destination=dest, phase=phase, reason=reason)
-    t.set_state(phase="RESIDENT", next_region="", hops_aborted=stats["hops_aborted"])
+    t.set_state(
+        phase="RESIDENT",
+        next_region="",
+        hops_aborted=stats["hops_aborted"],
+        consecutive_aborts=s.get("consecutive_aborts", 0) + 1,
+    )
     world.log("hop aborted", hop_id=hop_id, phase=phase, reason=reason, flipped=flipped)
 
     # Stay 60-120 s more in a fresh invocation, then try somewhere else.
@@ -372,6 +396,18 @@ def _arrival_statement(world: World, s: dict[str, Any]) -> None:
 def _iso_in(world: World, seconds: float) -> str:
     then = datetime.now(UTC) + timedelta(seconds=seconds)
     return then.isoformat(timespec="milliseconds").replace("+00:00", "Z")
+
+
+def _epoch(iso: str) -> float | None:
+    try:
+        return datetime.fromisoformat(iso.replace("Z", "+00:00")).timestamp()
+    except ValueError:
+        return None
+
+
+def _wall_now() -> float:
+    # Wall clock, not world.now(): awake_since is a real timestamp in the tower.
+    return datetime.now(UTC).timestamp()
 
 
 def _int(value: str | None) -> int | None:

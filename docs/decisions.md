@@ -205,3 +205,29 @@ operator sets `/traveler/inject` to a phase name; the next hop then fails for re
 at that phase (a role that does not exist, a wrong release, an edge that never
 settles, a lost suitcase) and the traveler deletes the switch as it fires. The
 traveler's only SSM write permission is deleting that one parameter.
+
+## D27. Watchdog rules
+
+Every 5 minutes, from the home region, reading the tower and Lambda (never the KVS):
+
+- A copy outside the tower's region and older than 10 minutes is a stray: deleted
+  and reported. Younger copies are mid-flight and left alone.
+- While resting, copies are removed only once the tower has been quiet for 10
+  minutes, so `make sleep`'s 90 s edge wait is never cut short.
+- Dead means: live, but no tower update for 10 minutes, or the tower's region has
+  no copy and nothing has updated for 2 minutes (the 2 minutes covers a landing).
+  The watchdog resurrects in another region from the latest release, then waits
+  for the edge before deleting any old copy, because a copy whose loop died can
+  still serve visitors. The kill switch blocks resurrection.
+- A traveler that finds its own function deleted stops heartbeating, so a hand
+  deletion is resurrected within about 7 minutes.
+
+Metrics `HeartbeatAgeSeconds`, `Copies`, `ConsecutiveAborts` and
+`InvariantViolations` (no dimensions) drive three alarms to the `traveler-alerts`
+topic. The watchdog holds a tower lock so runs never overlap.
+
+## D28. Auto-sleep
+
+At each departure the traveler rests if it has been awake (`awake_since`, set by
+wake and kept by resurrection) for `auto_sleep_hours` (12) unless `pin_awake` is
+true. The 24-hour gate run uses `pin_awake=true`.

@@ -15,7 +15,7 @@ import threading
 import time
 from typing import Any
 
-from traveler import lifecycle, placement
+from traveler import lifecycle, placement, wake
 from traveler.tower import Tower
 
 FAILURES = ("create", "active", "health", "edge_stuck", "drop_arrival", "late_arrival")
@@ -146,25 +146,21 @@ class FakeCloud:
     # --- operator -------------------------------------------------------------
 
     def wake(self, region: str, release: str = "r1") -> str:
-        """What `make wake` does: place, route, record, start the residence loop."""
+        """What `make wake` does, through the same shared module."""
         tower = Tower(self.table)
         tower.set_desired_release(release)
-        hop_id = tower.next_hop_id()
-        lam = self.client(region)
-        placed = placement.create(
-            lam,
+        return wake.place_and_start(
+            tower=tower,
+            lambda_for=self.client,
+            set_route=self.set_route,
             zip_bytes=self.packages[release],
+            release=release,
+            region=region,
             role_arn="arn:role/traveler",
             distribution_arn="arn:dist/X",
-            env={"TRAVELER_RELEASE": release, "TRAVELER_HOP_ID": hop_id},
+            tower_table="traveler-tower",
+            home="us-east-2",
         )
-        self.set_route(current_origin=placed.url_domain, current_region=region, hop_id=hop_id, status="live")
-        tower.set_state(status="live", region=region, hop_id=hop_id)
-        self.invoke_async(
-            region,
-            {"mode": "residence", "hop_id": hop_id, "hop_count": 0, "recent_regions": [region], "release": release},
-        )
-        return hop_id
 
 
 class FakeLambda:
@@ -238,6 +234,9 @@ class FakeLambda:
         import io
         import json
 
+        if kw.get("InvocationType") == "Event":
+            self.cloud.invoke_async(self.region, json.loads(kw["Payload"]))
+            return {"StatusCode": 202}
         fn = self._fn()
         release = fn["release"]
         if self.cloud.fail.get("health") == fn["hop_id"]:

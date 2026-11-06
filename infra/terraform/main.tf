@@ -41,6 +41,21 @@ module "iam" {
   writer_arn     = module.edge.writer_arn
 }
 
+module "watchdog" {
+  source             = "./modules/watchdog"
+  account_id         = local.account_id
+  home_region        = var.home_region
+  allowlist          = var.allowlist
+  source_dir         = "${path.root}/.build/watchdog"
+  tower_table_arn    = module.tower.table_arn
+  release_bucket     = module.tower.release_bucket
+  traveler_role_arn  = module.iam.traveler_role_arn
+  writer_arn         = module.edge.writer_arn
+  boundary_arn       = module.iam.boundary_arn
+  alert_email        = var.alert_email
+  log_retention_days = var.log_retention_days
+}
+
 module "budgets" {
   source             = "./modules/budgets"
   alert_email        = var.alert_email

@@ -144,3 +144,29 @@ class Tower:
     def hop(self, hop_id: str) -> dict[str, Any]:
         item: dict[str, Any] = self.table.get_item(Key={"pk": "HOP", "sk": hop_id}).get("Item", {})
         return item
+
+    def recent_events(self, limit: int) -> list[dict[str, Any]]:
+        items: list[dict[str, Any]] = self.table.query(
+            KeyConditionExpression="pk = :e",
+            ExpressionAttributeValues={":e": "EVENT"},
+            ScanIndexForward=False,
+            Limit=limit,
+        )["Items"]
+        return items
+
+    def try_lock(self, name: str, *, ttl_s: int) -> bool:
+        """Best-effort mutual exclusion (the watchdog must not overlap itself)."""
+        now = int(time.time())
+        try:
+            self.table.put_item(
+                Item={"pk": "LOCK", "sk": name, "until": now + ttl_s},
+                ConditionExpression="attribute_not_exists(pk) OR #u < :now",
+                ExpressionAttributeNames={"#u": "until"},
+                ExpressionAttributeValues={":now": now},
+            )
+            return True
+        except self.table.meta.client.exceptions.ConditionalCheckFailedException:
+            return False
+
+    def unlock(self, name: str) -> None:
+        self.table.delete_item(Key={"pk": "LOCK", "sk": name})

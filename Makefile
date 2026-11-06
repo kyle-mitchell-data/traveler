@@ -53,6 +53,7 @@ lint:
 	$(PY) -m ruff format --check .
 	$(PY) -m mypy
 	$(PY) -m mypy route_writer
+	$(PY) -m mypy watchdog
 	$(TF) fmt -recursive -check
 	$(TF) validate
 
@@ -85,6 +86,7 @@ unset:
 
 build:
 	bash scripts/build-route-writer.sh
+	bash scripts/build-watchdog.sh
 
 destroy: sleep
 	$(TF) destroy -input=false
