@@ -75,3 +75,72 @@ class Tower:
 
     def set_desired_release(self, version: str) -> None:
         self.table.put_item(Item={"pk": "CONFIG", "sk": "RELEASE", "desired_release": version, "set_at": now_iso()})
+
+    # --- hops -------------------------------------------------------------------
+    # A hop is in_flight until exactly one of try_arrive (new copy) or try_abort
+    # (old copy) wins a conditional write. That single write is what stops both
+    # sides from acting on the same hop.
+
+    def start_hop(self, hop_id: str, *, from_region: str, to_region: str, release: str) -> None:
+        self.table.put_item(
+            Item={
+                "pk": "HOP",
+                "sk": hop_id,
+                "status": "in_flight",
+                "from": from_region,
+                "to": to_region,
+                "release": release,
+                "started_at": now_iso(),
+                "phases": {},
+            }
+        )
+
+    def mark_phase(self, hop_id: str, phase: str) -> None:
+        self.table.update_item(
+            Key={"pk": "HOP", "sk": hop_id},
+            UpdateExpression="SET phases.#p = :ts",
+            ExpressionAttributeNames={"#p": phase},
+            ExpressionAttributeValues={":ts": now_iso()},
+        )
+
+    def _transition(self, hop_id: str, to_status: str, **fields: Any) -> bool:
+        fields["status"] = to_status
+        names = {f"#{k}": k for k in fields}
+        values: dict[str, Any] = {f":{k}": v for k, v in fields.items()}
+        values[":in_flight"] = "in_flight"
+        try:
+            self.table.update_item(
+                Key={"pk": "HOP", "sk": hop_id},
+                UpdateExpression="SET " + ", ".join(f"#{k} = :{k}" for k in fields),
+                ConditionExpression="#status = :in_flight",
+                ExpressionAttributeNames=names,
+                ExpressionAttributeValues=values,
+            )
+            return True
+        except self.table.meta.client.exceptions.ConditionalCheckFailedException:
+            return False
+
+    def try_arrive(self, hop_id: str) -> bool:
+        return self._transition(hop_id, "arrived", arrived_at=now_iso())
+
+    def try_abort(self, hop_id: str, *, phase: str, reason: str) -> bool:
+        return self._transition(hop_id, "aborted", aborted_at=now_iso(), abort_phase=phase, abort_reason=reason)
+
+    def mark_old_exited(self, hop_id: str) -> None:
+        self.table.update_item(
+            Key={"pk": "HOP", "sk": hop_id},
+            UpdateExpression="SET old_exited_at = :ts",
+            ExpressionAttributeValues={":ts": now_iso()},
+        )
+
+    def land(self, hop_id: str, *, flight_ms: int) -> None:
+        self.table.update_item(
+            Key={"pk": "HOP", "sk": hop_id},
+            UpdateExpression="SET #s = :landed, flight_ms = :ms, landed_at = :ts",
+            ExpressionAttributeNames={"#s": "status"},
+            ExpressionAttributeValues={":landed": "landed", ":ms": flight_ms, ":ts": now_iso()},
+        )
+
+    def hop(self, hop_id: str) -> dict[str, Any]:
+        item: dict[str, Any] = self.table.get_item(Key={"pk": "HOP", "sk": hop_id}).get("Item", {})
+        return item

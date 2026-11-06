@@ -12,7 +12,9 @@ never the key-value store (decision D5).
 from __future__ import annotations
 
 import argparse
+import contextlib
 import io
+import json
 import random
 import subprocess
 import sys
@@ -158,7 +160,27 @@ def cmd_wake(session: boto3.Session, cfg: dict[str, Any], args: argparse.Namespa
         heartbeat_at=arrived,
     )
     t.event("WOKE", hop_id=hop_id, region=region, release=release)
-    print(f"live in {region} ({placed.url_domain})")
+    prior = t.state()
+    # Start the residence loop; from here the traveler moves on its own.
+    lam.invoke(
+        FunctionName=placement.FUNCTION_NAME,
+        InvocationType="Event",
+        Payload=json.dumps(
+            {
+                "mode": "residence",
+                "journey_id": f"j-{arrived[:10]}",
+                "hop_id": hop_id,
+                "hop_count": int(prior.get("hop_count", 0)),
+                "recent_regions": [region],
+                "release": release,
+                "stats": {
+                    "hops_ok": int(prior.get("hops_ok", 0)),
+                    "hops_aborted": int(prior.get("hops_aborted", 0)),
+                },
+            }
+        ).encode(),
+    )
+    print(f"live in {region} ({placed.url_domain}); residence started")
 
 
 def cmd_sleep(session: boto3.Session, cfg: dict[str, Any], args: argparse.Namespace) -> None:
@@ -176,11 +198,42 @@ def cmd_sleep(session: boto3.Session, cfg: dict[str, Any], args: argparse.Namesp
     print(f"resting; removed copies in: {', '.join(removed) or 'none'}")
 
 
+SWITCHES = {"stay_seconds", "hop_regions", "max_hops", "kill", "pin_awake"}
+
+
+def cmd_set(session: boto3.Session, cfg: dict[str, Any], args: argparse.Namespace) -> None:
+    if args.name not in SWITCHES:
+        sys.exit(f"{args.name} is not a switch; choose from {sorted(SWITCHES)}")
+    session.client("ssm", region_name=HOME).put_parameter(
+        Name=f"/traveler/{args.name}", Value=args.value, Type="String", Overwrite=True
+    )
+    print(f"{args.name} = {args.value}")
+
+
+def cmd_unset(session: boto3.Session, cfg: dict[str, Any], args: argparse.Namespace) -> None:
+    if args.name not in SWITCHES - {"kill", "pin_awake"}:
+        sys.exit(f"{args.name} cannot be unset; use `set {args.name} false`")
+    ssm = session.client("ssm", region_name=HOME)
+    with contextlib.suppress(ssm.exceptions.ParameterNotFound):
+        ssm.delete_parameter(Name=f"/traveler/{args.name}")
+    print(f"{args.name} unset")
+
+
 def cmd_status(session: boto3.Session, cfg: dict[str, Any], _: argparse.Namespace) -> None:
     s = tower(session, cfg).state()
     present = copies(session, cfg["allowlist"])
     print(f"status    {s.get('status', 'unknown')}")
-    for k in ("region", "hop_id", "release", "arrived_at", "phase", "heartbeat_at"):
+    for k in (
+        "region",
+        "hop_id",
+        "release",
+        "phase",
+        "next_region",
+        "departure_at",
+        "heartbeat_at",
+        "hops_ok",
+        "hops_aborted",
+    ):
         if k in s:
             print(f"{k:<9} {s[k]}")
     print(f"copies    {len(present)} {present if present else ''}")
@@ -200,11 +253,24 @@ def main() -> None:
     sleep = sub.add_parser("sleep")
     sleep.add_argument("--now", action="store_true", help="skip the edge wait (emergency stop)")
     sub.add_parser("status")
+    set_ = sub.add_parser("set")
+    set_.add_argument("name")
+    set_.add_argument("value")
+    unset = sub.add_parser("unset")
+    unset.add_argument("name")
     args = parser.parse_args()
 
     session = boto3.Session()
     cfg = settings(session)
-    {"release": cmd_release, "wake": cmd_wake, "sleep": cmd_sleep, "status": cmd_status}[args.cmd](session, cfg, args)
+    commands = {
+        "release": cmd_release,
+        "wake": cmd_wake,
+        "sleep": cmd_sleep,
+        "status": cmd_status,
+        "set": cmd_set,
+        "unset": cmd_unset,
+    }
+    commands[args.cmd](session, cfg, args)
 
 
 if __name__ == "__main__":

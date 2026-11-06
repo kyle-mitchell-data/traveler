@@ -55,5 +55,10 @@ def http(event: dict[str, Any]) -> dict[str, Any]:
 def handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
     if "rawPath" in event:
         return http(event)
-    # Residence mode (the suitcase from the previous copy) arrives in phase 3.
+    if event.get("mode") == "residence":
+        # Imported here so HTTP requests never pay for boto3 setup.
+        from traveler import lifecycle
+        from traveler.world import AwsWorld
+
+        return lifecycle.run(AwsWorld(context), event)
     return {"error": f"unknown event; mode={event.get('mode')!r}"}

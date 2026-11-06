@@ -1,5 +1,7 @@
 variable "tower_url_domain" { type = string }
 variable "router_source" { type = string }
+variable "writer_dir" { type = string }
+variable "log_retention_days" { type = number }
 
 # ---------------------------------------------------------------------------
 # Static site: private bucket, read only by this distribution.
@@ -66,6 +68,78 @@ resource "aws_cloudfront_function" "router" {
   publish                      = true
   code                         = file(var.router_source)
   key_value_store_associations = [aws_cloudfront_key_value_store.routing.arn]
+}
+
+# ---------------------------------------------------------------------------
+# Route writer: signs KeyValueStore writes for the traveler (decision D16).
+# ---------------------------------------------------------------------------
+
+data "archive_file" "writer" {
+  type        = "zip"
+  source_dir  = var.writer_dir
+  output_path = "${path.root}/.build/route-writer.zip"
+  excludes    = [".deps-stamp"]
+}
+
+data "aws_iam_policy_document" "lambda_trust" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "writer" {
+  name               = "traveler-route-writer"
+  assume_role_policy = data.aws_iam_policy_document.lambda_trust.json
+}
+
+data "aws_iam_policy_document" "writer" {
+  statement {
+    actions = [
+      "cloudfront-keyvaluestore:DescribeKeyValueStore",
+      "cloudfront-keyvaluestore:UpdateKeys",
+    ]
+    resources = [aws_cloudfront_key_value_store.routing.arn]
+  }
+  statement {
+    actions   = ["logs:CreateLogStream", "logs:PutLogEvents"]
+    resources = ["${aws_cloudwatch_log_group.writer.arn}:*"]
+  }
+}
+
+resource "aws_iam_role_policy" "writer" {
+  name   = "route-writer"
+  role   = aws_iam_role.writer.id
+  policy = data.aws_iam_policy_document.writer.json
+}
+
+resource "aws_cloudwatch_log_group" "writer" {
+  name              = "/aws/lambda/traveler-route-writer"
+  retention_in_days = var.log_retention_days
+}
+
+resource "aws_lambda_function" "writer" {
+  function_name    = "traveler-route-writer"
+  role             = aws_iam_role.writer.arn
+  runtime          = "python3.13"
+  architectures    = ["arm64"]
+  handler          = "handler.handler"
+  filename         = data.archive_file.writer.output_path
+  source_code_hash = data.archive_file.writer.output_base64sha256
+  memory_size      = 256
+  timeout          = 15
+
+  environment {
+    variables = { KVS_ARN = aws_cloudfront_key_value_store.routing.arn }
+  }
+
+  logging_config {
+    log_format = "JSON"
+    log_group  = aws_cloudwatch_log_group.writer.name
+  }
 }
 
 # ---------------------------------------------------------------------------
@@ -215,3 +289,5 @@ output "distribution_arn" { value = aws_cloudfront_distribution.site.arn }
 output "domain" { value = aws_cloudfront_distribution.site.domain_name }
 output "site_bucket" { value = aws_s3_bucket.site.id }
 output "kvs_arn" { value = aws_cloudfront_key_value_store.routing.arn }
+output "writer_name" { value = aws_lambda_function.writer.function_name }
+output "writer_arn" { value = aws_lambda_function.writer.arn }

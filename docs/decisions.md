@@ -175,3 +175,25 @@ Through CloudFront, `ping` to eu-central-1 takes about 0.4 s and to ap-southeast
 about 0.8–1.2 s, roughly 3x the network round trip. CloudFront appears to open a
 new TLS connection to the Function URL for most requests. Investigate in phase 6
 before the "You are N ms away" figure is shown to visitors.
+
+## D23. Traveler timeout is 900 seconds
+
+The worst case for one invocation is now: arrival (up to 60 s waiting for the old
+copy's exit) + a 300 s stay + a 180 s flight cap + a 90 s rollback wait. That exceeds
+the spec's 600 s, so the traveler uses Lambda's maximum of 900 s, and each stay is
+shortened if needed to leave `RESERVE_S` (300 s) for a flight that rolls back.
+
+## D24. Route flips go through `traveler-route-writer` (D16 resolved)
+
+Verified 2026-11-05 with a throwaway function: the python3.13 Lambda runtime has no
+`awscrt`, and a KeyValueStore call fails with `MissingDependencyException`. The
+route writer (home region, 256 MB, awscrt bundled) is the only non-operator writer,
+and it accepts only the four routing keys with validated values. The traveler
+package stays about 10 KB.
+
+## D25. One hop, one winner
+
+The hop record moves from `in_flight` to either `arrived` (written by the new copy)
+or `aborted` (written by the old copy), by conditional write. Whoever loses stands
+down: a new copy that arrives late does nothing and is deleted by the rollback; an
+old copy that times out just as the new one arrives carries on as a normal handoff.

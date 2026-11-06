@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import urllib.request
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Any
 
@@ -14,7 +15,7 @@ FUNCTION_NAME = "traveler"
 RUNTIME = "python3.13"
 HANDLER = "traveler.handler.handler"
 MEMORY_MB = 128
-TIMEOUT_S = 600  # 300 s stay + packing + 120 s flight cap
+TIMEOUT_S = 900  # Lambda maximum: arrival + 300 s stay + 180 s flight cap + rollback (D23)
 
 
 class PlacementError(RuntimeError):
@@ -54,8 +55,12 @@ def create(
     role_arn: str,
     distribution_arn: str,
     env: dict[str, str],
+    on_phase: Callable[[str], None] = lambda _phase: None,
 ) -> Placed:
-    """P2-P4: create the function, wait for Active, configure it and open its URL."""
+    """P2-P4: create the function, wait for Active, configure it and open its URL.
+
+    `on_phase` is called as each phase completes, so the flight clock records real times.
+    """
     region = lambda_client.meta.region_name
     try:
         fn = lambda_client.create_function(
@@ -73,6 +78,7 @@ def create(
         )
     except Exception as exc:  # noqa: BLE001 - every failure here is a P2 abort
         raise PlacementError("FUNCTION_CREATED", str(exc)) from exc
+    on_phase("FUNCTION_CREATED")
 
     try:
         lambda_client.get_waiter("function_active_v2").wait(
@@ -80,6 +86,7 @@ def create(
         )
     except Exception as exc:  # noqa: BLE001
         raise PlacementError("FUNCTION_ACTIVE", str(exc)) from exc
+    on_phase("FUNCTION_ACTIVE")
 
     try:
         # D4: a late or retried arrival must never wake a ghost.
@@ -108,6 +115,7 @@ def create(
     except Exception as exc:  # noqa: BLE001
         raise PlacementError("URL_READY", str(exc)) from exc
 
+    on_phase("URL_READY")
     domain = url["FunctionUrl"].removeprefix("https://").rstrip("/")
     return Placed(region=region, arn=fn["FunctionArn"], url_domain=domain)
 
@@ -127,6 +135,12 @@ def health(lambda_client: Any, *, expect_release: str) -> dict[str, Any]:
     if body.get("region") != region or body.get("release") != expect_release:
         raise PlacementError("HEALTH_OK", f"expected {region}/{expect_release}, got {body}")
     return body
+
+
+def url_domain(lambda_client: Any) -> str:
+    """This region's traveler Function URL domain (used to route back on rollback)."""
+    url: str = lambda_client.get_function_url_config(FunctionName=FUNCTION_NAME)["FunctionUrl"]
+    return url.removeprefix("https://").rstrip("/")
 
 
 def remove(lambda_client: Any) -> bool:

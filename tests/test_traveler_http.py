@@ -48,8 +48,8 @@ def test_unknown_path_and_method() -> None:
     assert handler.handler(_req("/api/traveler/ping", "POST"), None)["statusCode"] == 405
 
 
-def test_non_http_event_is_rejected_until_phase_3() -> None:
-    assert "error" in handler.handler({"mode": "residence"}, None)
+def test_unknown_event_is_rejected() -> None:
+    assert "error" in handler.handler({"mode": "teleport"}, None)
 
 
 def test_profiles_cover_the_allowlist() -> None:

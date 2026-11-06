@@ -89,7 +89,7 @@ def test_create_configures_everything_the_design_needs() -> None:
 
     fn = calls["create_function"]
     assert fn["FunctionName"] == "traveler"
-    assert fn["Architectures"] == ["arm64"] and fn["MemorySize"] == 128 and fn["Timeout"] == 600
+    assert fn["Architectures"] == ["arm64"] and fn["MemorySize"] == 128 and fn["Timeout"] == 900
     # D4: no ghosts
     assert calls["put_function_event_invoke_config"] == {
         "FunctionName": "traveler",

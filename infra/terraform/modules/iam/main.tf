@@ -12,6 +12,10 @@ variable "release_bucket" {
   type    = string
   default = null
 }
+variable "writer_arn" {
+  type    = string
+  default = null
+}
 
 locals {
   traveler_fn = "arn:aws:lambda:*:${var.account_id}:function:traveler"
@@ -167,6 +171,16 @@ data "aws_iam_policy_document" "traveler" {
         "cloudfront-keyvaluestore:PutKey",
         "cloudfront-keyvaluestore:UpdateKeys",
       ]
+      resources = [statement.value]
+    }
+  }
+
+  # Route flips go through the home-region route writer (decision D16).
+  dynamic "statement" {
+    for_each = var.writer_arn == null ? [] : [var.writer_arn]
+    content {
+      sid       = "FlipRoute"
+      actions   = ["lambda:InvokeFunction"]
       resources = [statement.value]
     }
   }

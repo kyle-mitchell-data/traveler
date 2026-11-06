@@ -21,9 +21,11 @@ module "regions" {
 }
 
 module "edge" {
-  source           = "./modules/edge"
-  tower_url_domain = module.tower.read_url_domain
-  router_source    = "${local.repo_root}/edge/traveler-router.js"
+  source             = "./modules/edge"
+  tower_url_domain   = module.tower.read_url_domain
+  router_source      = "${local.repo_root}/edge/traveler-router.js"
+  writer_dir         = "${path.root}/.build/route-writer"
+  log_retention_days = var.log_retention_days
 }
 
 module "iam" {
@@ -36,6 +38,7 @@ module "iam" {
   tower_table    = module.tower.table_arn
   kvs_arn        = module.edge.kvs_arn
   release_bucket = module.tower.release_bucket
+  writer_arn     = module.edge.writer_arn
 }
 
 module "budgets" {
@@ -69,6 +72,8 @@ resource "aws_ssm_parameter" "setting" {
     release_bucket   = module.tower.release_bucket
     tower_table      = module.tower.table_name
     site_bucket      = module.edge.site_bucket
+    site_url         = "https://${module.edge.domain}"
+    route_writer     = module.edge.writer_name
   }
 
   name  = "/traveler/${each.key}"
