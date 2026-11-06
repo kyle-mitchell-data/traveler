@@ -37,7 +37,8 @@ HOME = "us-east-2"
 
 def settings(session: boto3.Session) -> dict[str, Any]:
     ssm = session.client("ssm", region_name=HOME)
-    params = ssm.get_parameters_by_path(Path="/traveler/")["Parameters"]
+    pages = ssm.get_paginator("get_parameters_by_path").paginate(Path="/traveler/")
+    params = [p for page in pages for p in page["Parameters"]]
     out: dict[str, Any] = {p["Name"].removeprefix("/traveler/"): p["Value"] for p in params}
     out["allowlist"] = out["allowlist"].split(",")
     missing = {"kvs_arn", "distribution_arn", "role_arn", "release_bucket", "tower_table"} - out.keys()

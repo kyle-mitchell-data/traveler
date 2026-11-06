@@ -139,3 +139,29 @@ The shape of each summary is unchanged.
 (the route flip) are used both by the operator CLI (`scripts/ops.py`) and, from
 phase 3, by the traveler itself. Wake is therefore an exercise of P2–P6 before any
 hop exists.
+
+## D21. KeyValueStore propagation is about 60 seconds, not "seconds"
+
+Measured 2026-11-06 from one edge location (MCI), flipping only the `status` key
+with no function changes: first edge server sees the change after 23–31 s, servers
+in the same location disagree (responses alternate) for about 30 s more, and the
+edge is stable after about 60 s. Both directions behaved the same.
+
+Consequences for phase 3:
+
+- P7 cannot use "3 responses in a row". It needs a long consecutive run (or a fixed
+  floor of about 90 s after P6) before ARRIVED is allowed to delete the old copy.
+- The old copy must stay alive and serving until then. That keeps G3 (no failed
+  requests) achievable: stale edges reach the old copy, which still answers 200.
+- Flights will take roughly 90–100 s, mostly edge propagation. That is the honest
+  handoff time (G2). The 120 s flight cap is too tight; propose 180 s, which still
+  fits the 600 s invocation timeout (300 s stay + 30 s packing + 180 s flight).
+- `make sleep` must flip, wait for propagation, then delete. Deleting immediately
+  causes about 60 s of 403s from edges that still route to the deleted copy.
+
+## D22. Traveler round trip is slower than the network
+
+Through CloudFront, `ping` to eu-central-1 takes about 0.4 s and to ap-southeast-2
+about 0.8–1.2 s, roughly 3x the network round trip. CloudFront appears to open a
+new TLS connection to the Function URL for most requests. Investigate in phase 6
+before the "You are N ms away" figure is shown to visitors.
