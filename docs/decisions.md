@@ -262,3 +262,21 @@ true. The 24-hour gate run uses `pin_awake=true`.
 - **Evergreen pack.** 16 facts per region, drafted for Kyle's review
   (`evergreen_reviewed: false` until he signs off). `make facts REGION=… ORIGIN=…`
   previews a stay against the live sources without writing anything.
+
+## D30. Front end
+
+- The map is Natural Earth 1:110m land (public domain) in the Equal Earth projection,
+  generated once into `site/map/land.txt` by `scripts/build_map.py` and inlined into
+  the page with the region pins. No tiles, no third-party requests.
+- The plane's position is a fixed fraction per completed phase, never a timer. Most of
+  each flight is the edge settling (D21), so the plane waits at ROUTE_FLIPPED for about
+  90 s until ROUTE_CONFIRMED, and the panel says why.
+- Countdowns use the server's clock: `/api/traveler/ping` returns `now`, and the page
+  keeps the offset from the fastest ping (falling back to the HTTP `Date` header).
+- Failure reasons are internal (exception text, request IDs). The tower publishes only
+  the failed phase, and the page explains it in plain words. Resting reasons, which are
+  fixed phrases, stay public.
+- CSS and JS have content-hashed names, cached for a year; `index.html` is cached 60 s.
+  The release workflow publishes the site on every merge to main.
+- Flight stats cover the last 100 hops until the tower keeps running totals (phase 6,
+  with the archive).
