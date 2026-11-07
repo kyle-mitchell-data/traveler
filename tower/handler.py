@@ -36,6 +36,11 @@ PUBLIC_STATE = (
     "updated_at",
 )
 
+# Failure reasons are written for the operator (exception text, request IDs). The page
+# explains failures from the phase alone, so only resting reasons, which are fixed
+# phrases, are published.
+PUBLIC_REASON_EVENTS = frozenset({"RESTING"})
+
 _table: Any = None
 
 
@@ -70,6 +75,8 @@ def feed(tbl: Any) -> dict[str, Any]:
         e.pop("pk", None)
         e.pop("sk", None)
         e.pop("expires_at", None)
+        if e.get("type") not in PUBLIC_REASON_EVENTS:
+            e.pop("reason", None)
     return {
         "state": {k: state[k] for k in PUBLIC_STATE if k in state} or {"status": "unknown"},
         "events": list(reversed(events)),
@@ -80,6 +87,7 @@ def hops(tbl: Any, limit: int) -> list[dict[str, Any]]:
     items = tbl.query(KeyConditionExpression=Key("pk").eq("HOP"), ScanIndexForward=False, Limit=limit)["Items"]
     for h in items:
         h.pop("pk", None)
+        h.pop("abort_reason", None)
         h["hop_id"] = h.pop("sk")
     return list(items)
 

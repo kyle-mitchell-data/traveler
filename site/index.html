@@ -3,106 +3,96 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <title>The Traveler</title>
-<style>
-  :root { --bg: #fafaf7; --fg: #1d1d1b; --muted: #6b6b66; --accent: #c2410c; --card: #ffffff; --line: #e5e5df; }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg: #141413; --fg: #ececea; --muted: #9a9a94; --accent: #fb923c; --card: #1e1e1c; --line: #2e2e2b; }
-  }
-  * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 system-ui, sans-serif; }
-  main { max-width: 640px; margin: 0 auto; padding: 48px 16px; }
-  h1 { font-size: 1.5rem; margin: 0 0 4px; }
-  .sub { color: var(--muted); margin: 0 0 32px; }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
-  .where { font-size: 1.35rem; font-weight: 600; }
-  .status { display: inline-block; font-size: .8rem; padding: 2px 10px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); }
-  .status.live { color: var(--accent); border-color: var(--accent); }
-  dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 16px; margin: 16px 0 0; font-size: .9rem; }
-  dt { color: var(--muted); }
-  dd { margin: 0; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-  ul { list-style: none; padding: 0; margin: 0; font-size: .9rem; }
-  li { padding: 6px 0; border-top: 1px solid var(--line); }
-  li:first-child { border-top: 0; }
-  time { color: var(--muted); margin-right: 8px; }
-</style>
+<meta name="description" content="A website whose server moves to a new AWS region every few minutes. Watch it travel.">
+<link rel="stylesheet" href="app.css">
+<script type="module" src="app.js"></script>
 </head>
 <body>
-<main>
-  <h1>The Traveler</h1>
-  <p class="sub">A website that can't sit still. Placeholder page: the map arrives in phase 6.</p>
+<header class="top">
+  <div>
+    <h1>The Traveler</h1>
+    <p class="tagline">A website that can't sit still. Every few minutes its server packs up and moves to another part of the world, and this page follows it.</p>
+  </div>
+  <div class="badges">
+    <span id="status" class="pill">Connecting…</span>
+    <span id="latency" class="latency" hidden></span>
+  </div>
+</header>
 
-  <section class="card" aria-live="polite">
-    <span id="status" class="status">checking…</span>
-    <p id="where" class="where">Finding the traveler…</p>
-    <dl>
-      <dt>Region</dt><dd id="region">–</dd>
-      <dt>Hop</dt><dd id="hop">–</dd>
-      <dt>Arrived</dt><dd id="arrived">–</dd>
-      <dt>Release</dt><dd id="release">–</dd>
-      <dt>Distance</dt><dd id="rtt">–</dd>
-    </dl>
+<main>
+  <section class="card map-card" aria-labelledby="map-title">
+    <h2 id="map-title" class="sr-only">Map</h2>
+    <svg id="map" class="map" viewBox="{{VIEWBOX}}" role="img" aria-labelledby="map-summary">
+      <path class="land" d="{{LAND}}"/>
+      <g id="trail"></g>
+      <g id="route"></g>
+      <g id="pins"></g>
+      <g id="plane" class="plane" style="display: none">
+        <path d="M11 0 L-5 -7 L-2 -1 L-8 -1 L-10 -4 L-11 -4 L-10 0 L-11 4 L-10 4 L-8 1 L-2 1 L-5 7 Z"/>
+      </g>
+    </svg>
+    <p id="map-summary" class="sr-only" aria-live="polite">Finding the traveler.</p>
   </section>
 
-  <section class="card">
-    <ul id="events"><li>No events yet.</li></ul>
+  <div class="columns">
+    <section class="card panel" id="panel" aria-live="polite" aria-busy="true">
+      <p class="kicker">Finding the traveler…</p>
+    </section>
+
+    <section class="card feed-card" aria-labelledby="feed-title">
+      <h2 id="feed-title">What it's noticing</h2>
+      <ol id="feed" class="feed"><li class="empty">Statements appear here about every 30 seconds.</li></ol>
+    </section>
+  </div>
+
+  <section class="stats" aria-label="Journey statistics">
+    <div class="stat"><span class="value" id="st-hops">–</span><span class="label">hops since launch</span></div>
+    <div class="stat"><span class="value" id="st-regions">–</span><span class="label">regions visited</span></div>
+    <div class="stat"><span class="value" id="st-avg">–</span><span class="label">average flight</span></div>
+    <div class="stat"><span class="value" id="st-long">–</span><span class="label">longest flight</span></div>
+    <div class="stat"><span class="value" id="st-aborted">–</span><span class="label">cancelled departures</span></div>
+  </section>
+  <p id="st-note" class="note" hidden></p>
+
+  <section class="card how" aria-labelledby="how-title">
+    <h2 id="how-title">How it works</h2>
+    <div class="how-grid">
+      <div class="how-text">
+        <p>The server behind this page is a single AWS Lambda function, and only one copy exists at a time. It stays in a region for three to five minutes, then moves itself to another one.</p>
+        <p>To move, the running copy builds a new copy of itself in the destination, checks that it's healthy, and points the edge at it. It keeps serving until edge locations worldwide have picked up the change, then hands over. The new copy retires the old one. If any step fails, the move is cancelled and the traveler stays where it is.</p>
+        <p>You always visit the same address. CloudFront looks up where the traveler is on every request and sends you there, so the server moves and the visitor never notices.</p>
+        <p>While it stays somewhere, it posts what it notices about the place: local time, weather, earthquakes, holidays and history, from public sources it credits and links.</p>
+      </div>
+      <svg class="arch" viewBox="0 0 360 250" role="img" aria-labelledby="arch-title">
+        <title id="arch-title">Your browser talks to CloudFront. An edge function reads the traveler's current location and routes API calls to the one live Lambda copy. A control tower in DynamoDB records every step.</title>
+        <defs>
+          <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L8 4 L0 8 Z" class="arrow-head"/>
+          </marker>
+        </defs>
+        <g class="box"><rect x="120" y="8" width="120" height="34" rx="8"/><text x="180" y="30">Your browser</text></g>
+        <g class="box"><rect x="100" y="70" width="160" height="44" rx="8"/><text x="180" y="89">CloudFront</text><text x="180" y="105" class="small">edge function picks the region</text></g>
+        <g class="box"><rect x="8" y="150" width="104" height="44" rx="8"/><text x="60" y="169">Static page</text><text x="60" y="185" class="small">S3</text></g>
+        <g class="box live"><rect x="128" y="150" width="104" height="44" rx="8"/><text x="180" y="169">Traveler</text><text x="180" y="185" class="small">Lambda, one region</text></g>
+        <g class="box"><rect x="248" y="150" width="104" height="44" rx="8"/><text x="300" y="169">Control tower</text><text x="300" y="185" class="small">DynamoDB</text></g>
+        <g class="box ghost"><rect x="128" y="212" width="104" height="30" rx="8"/><text x="180" y="231" class="small">next region, in flight</text></g>
+        <path class="link" d="M180 42 V68" marker-end="url(#arrow)"/>
+        <path class="link" d="M140 114 L72 148" marker-end="url(#arrow)"/>
+        <path class="link" d="M180 114 V148" marker-end="url(#arrow)"/>
+        <path class="link" d="M220 114 L288 148" marker-end="url(#arrow)"/>
+        <path class="link dashed" d="M180 194 V210" marker-end="url(#arrow)"/>
+        <path class="link dashed" d="M232 172 H246" marker-end="url(#arrow)"/>
+      </svg>
+    </div>
   </section>
 </main>
-<script>
-  const $ = (id) => document.getElementById(id);
 
-  async function getJson(url) {
-    const res = await fetch(url, { cache: 'no-store' });
-    return { ok: res.ok, status: res.status, body: await res.json().catch(() => ({})), region: res.headers.get('x-traveler-region') };
-  }
+<footer class="foot">
+  <span id="release"></span>
+</footer>
 
-  async function refreshFeed() {
-    try {
-      const { ok, body } = await getJson('/api/tower/feed');
-      if (!ok) return;
-      const s = body.state || {};
-      $('status').textContent = s.status || 'unknown';
-      $('status').className = 'status' + (s.status === 'live' ? ' live' : '');
-      $('events').replaceChildren(...(body.events || []).slice().reverse().map((e) => {
-        const li = document.createElement('li');
-        const t = document.createElement('time');
-        t.textContent = new Date(e.ts).toLocaleTimeString();
-        li.append(t, `${e.type}${e.region ? ' · ' + e.region : ''}`);
-        return li;
-      }));
-      if (!body.events || !body.events.length) $('events').innerHTML = '<li>No events yet.</li>';
-    } catch (e) { /* keep last good view */ }
-  }
-
-  async function refreshTraveler() {
-    try {
-      const t0 = performance.now();
-      const { ok, status, body } = await getJson('/api/traveler/whereami');
-      const ms = Math.round(performance.now() - t0);
-      if (!ok) {
-        $('where').textContent = status === 503 ? 'The traveler is resting.' : 'The traveler is unreachable.';
-        $('rtt').textContent = '–';
-        return;
-      }
-      $('where').textContent = `Currently ${body.near}`;
-      $('region').textContent = body.region;
-      $('hop').textContent = body.hop_id || '–';
-      $('arrived').textContent = body.arrived_at ? new Date(body.arrived_at).toLocaleString() : '–';
-      $('release').textContent = body.release;
-      $('rtt').textContent = `You are ${ms} ms away`;
-    } catch (e) { /* keep last good view */ }
-  }
-
-  function tick() {
-    if (document.hidden) return; // D7: no polling from background tabs
-    refreshFeed();
-  }
-
-  refreshFeed();
-  refreshTraveler();
-  setInterval(tick, 2000);
-  setInterval(() => { if (!document.hidden) refreshTraveler(); }, 5000);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) { refreshFeed(); refreshTraveler(); } });
-</script>
+<script type="application/json" id="map-data">{{MAP_DATA}}</script>
 </body>
 </html>

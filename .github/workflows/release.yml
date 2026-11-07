@@ -1,6 +1,6 @@
 name: release
 
-# On merge to main: apply infrastructure, then publish the traveler package as
+# On merge to main: apply infrastructure, publish the site, then publish the traveler package as
 # desired_release. CI never deploys the traveler into a region; the traveler adopts
 # the new release at its next hop.
 
@@ -53,6 +53,13 @@ jobs:
           terraform -chdir=infra/terraform init -input=false \
             -backend-config="bucket=traveler-tfstate-$(aws sts get-caller-identity --query Account --output text)"
           terraform -chdir=infra/terraform apply -input=false -auto-approve
+
+      - name: Publish site
+        run: |
+          bucket=$(terraform -chdir=infra/terraform output -raw site_bucket)
+          .venv/bin/python -m scripts.site_build build/site
+          aws s3 sync build/site/ "s3://$bucket/" --exclude index.html --cache-control "public, max-age=31536000, immutable"
+          aws s3 cp build/site/index.html "s3://$bucket/index.html" --cache-control "public, max-age=60"
 
       - name: Publish release
         run: .venv/bin/python -m scripts.ops release

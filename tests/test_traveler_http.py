@@ -1,4 +1,5 @@
 import json
+from datetime import UTC, datetime
 
 import pytest
 
@@ -38,9 +39,13 @@ def test_every_response_carries_region_header_and_no_store() -> None:
         assert headers["cache-control"] == "no-store"
 
 
-def test_ping_is_minimal() -> None:
-    out = handler.handler(_req("/api/traveler/ping"), None)
-    assert json.loads(out["body"]) == {"region": "eu-central-1"}
+def test_ping_is_minimal_and_carries_server_time() -> None:
+    before = datetime.now(UTC)
+    body = json.loads(handler.handler(_req("/api/traveler/ping"), None)["body"])
+    assert sorted(body) == ["now", "region"]
+    assert body["region"] == "eu-central-1"
+    assert body["now"].endswith("Z")
+    assert abs((datetime.fromisoformat(body["now"]) - before).total_seconds()) < 1
 
 
 def test_unknown_path_and_method() -> None:

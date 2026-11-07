@@ -44,7 +44,7 @@ jobs:
       - name: Tests
         run: |
           python -m pytest -q
-          node --test edge/router.test.mjs
+          node --test edge/router.test.mjs site/model.test.js
 
       - name: Terraform format and validate
         run: |

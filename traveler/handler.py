@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import os
+from datetime import UTC, datetime
 from typing import Any
 
 from traveler import regions
@@ -46,7 +47,9 @@ def http(event: dict[str, Any]) -> dict[str, Any]:
     if method not in ("GET", "HEAD"):
         return _response(405, {"error": "method not allowed"})
     if path.endswith("/ping"):
-        return _response(200, {"region": REGION})
+        # The server's clock, so the page's countdown is right even when the visitor's clock is not.
+        now = datetime.now(UTC).isoformat(timespec="milliseconds").replace("+00:00", "Z")
+        return _response(200, {"region": REGION, "now": now})
     if path.endswith("/whereami"):
         return _response(200, _identity())
     return _response(404, {"error": "not found"})

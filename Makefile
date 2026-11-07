@@ -60,12 +60,15 @@ lint:
 
 test:
 	$(PY) -m pytest -q
-	node --test edge/router.test.mjs
+	node --test edge/router.test.mjs site/model.test.js
 
 check: lint test
 
+# Hashed assets first (cached a year), then the page that names them (cached 60 s).
 site:
-	aws s3 sync site/ "s3://$$($(TF) output -raw site_bucket)/" --delete --cache-control "public, max-age=60"
+	$(PY) -m scripts.site_build build/site
+	aws s3 sync build/site/ "s3://$$($(TF) output -raw site_bucket)/" --exclude index.html --cache-control "public, max-age=31536000, immutable"
+	aws s3 cp build/site/index.html "s3://$$($(TF) output -raw site_bucket)/index.html" --cache-control "public, max-age=60"
 
 release:
 	$(OPS) release

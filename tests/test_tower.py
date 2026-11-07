@@ -80,6 +80,28 @@ def test_hops_newest_first_with_clamped_limit(table: Any) -> None:
     assert json.loads(_get("/api/tower/hops", limit="abc")["body"])["hops"][0]["hop_id"] == "h-000005"
 
 
+def test_internal_failure_reasons_are_not_published(table: Any) -> None:
+    t = Tower(table)
+    t.event("HOP_ABORTED", hop_id="h-000007", phase="ROUTE_FLIPPED", reason="Traceback ... requestId abc")
+    t.event("INVARIANT_VIOLATION", reason="2 copies: ['eu-west-1', 'us-east-2']")
+    t.event("RESTING", reason="auto-sleep after 6 h awake")
+    table.put_item(
+        Item={
+            "pk": "HOP",
+            "sk": "h-000007",
+            "status": "aborted",
+            "abort_phase": "ROUTE_FLIPPED",
+            "abort_reason": "Traceback",
+        }
+    )
+
+    events = json.loads(_get("/api/tower/feed")["body"])["events"]
+    assert [e.get("reason") for e in events] == [None, None, "auto-sleep after 6 h awake"]
+    assert events[0]["phase"] == "ROUTE_FLIPPED"
+    hop = json.loads(_get("/api/tower/hops")["body"])["hops"][0]
+    assert "abort_reason" not in hop and hop["abort_phase"] == "ROUTE_FLIPPED"
+
+
 def test_desired_release_round_trip(table: Any) -> None:
     t = Tower(table)
     assert t.desired_release() is None
