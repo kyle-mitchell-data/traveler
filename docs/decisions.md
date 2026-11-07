@@ -280,3 +280,9 @@ true. The 24-hour gate run uses `pin_awake=true`.
   The release workflow publishes the site on every merge to main.
 - Flight stats cover the last 100 hops until the tower keeps running totals (phase 6,
   with the archive).
+- Amends D7: the page pings the traveler every 1 s during a move (5 s otherwise), so
+  the latency chart catches the moment the answering region flips. A move lasts about
+  110 s, so that is about 110 extra traveler requests per viewer per move.
+- The page leads with the move itself: a live headline, the old copy, edge and new copy
+  with their states, the copy count, and the nine steps. Between moves it shows the
+  last move's timings, so the mechanism is visible all the time, not only in flight.
