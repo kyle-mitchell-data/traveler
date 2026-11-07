@@ -38,20 +38,22 @@ back cleanly and raised the 3-in-a-row alarm event.
 Also verified early: a release published mid-run was adopted at the next hop (a phase 4
 criterion).
 
-## Phase 4: Autonomous travel — in progress
+## Phase 4: Autonomous travel — passed
 
 | Criterion | Result |
 |---|---|
-| Runs 24 hours unattended with all invariants holding | **Running** since 2026-11-06 ~04:12 UTC: 17-region allowlist, 3–5 min stays, `pin_awake=true`. Evidence: watchdog metrics (`Copies`, `InvariantViolations`, `HeartbeatAgeSeconds`) every 5 min, hop records, alarms. |
+| Runs 24 hours unattended with all invariants holding | **Pass.** 2026-11-06 04:12 → 2026-11-07 04:12 UTC, 17-region allowlist, 3–5 min stays, `pin_awake=true`. 244 hops started, 244 landed, 0 aborted; all 17 regions visited; 289–416 s between departures. Watchdog, 288 samples each: `Copies` 1–2, `InvariantViolations` 0, `ConsecutiveAborts` 0, `HeartbeatAgeSeconds` max 89 s. All three alarms OK for the whole window. Four releases adopted mid-run; about 15.9 h ran phase 4 code and the last 8.1 h ran the phase 5 release `r202611062005-8d9404c`. The 11 aborts on the counter all predate the run (phase 2/3 testing, 2026-11-06 00:56–03:25). |
 | Watchdog resurrects a hand-deleted traveler within 10 minutes | Pass (2026-11-06): deleted in eu-west-2 at 04:03:42; traveler noticed in 10 s and stopped; watchdog resurrected in eu-north-1 after 331 s. About 60 s of 403s while the edge moved off the deleted copy. |
 | A new release published by CI is running within 2 hops | **Pass.** Push `a82fc2f` → ci green → release workflow applied infra and published `r202611061815-a82fc2f` at 18:15:26 UTC; adopted at the very next hop (h-000191, ap-northeast-3 → eu-west-2, landed, 115 s flight), mid-way through the 24 h run with no aborts. First attempt failed at OIDC: the repo issues immutable (ID-pinned) subjects, now trusted alongside the name form. |
 
 Also verified: intercontinental hops us-east-2 → ap-northeast-1 (111.0 s) → eu-central-1
 (111.6 s), zero failed probes in flight.
 
-## Phase 5: Fact engine — built, waiting to deploy
+## Phase 5: Fact engine — passed
 
-Built while the phase 4 run finishes; nothing deploys until phase 4 passes. Local
+Deployed as `r202611062005-8d9404c` at 20:05 UTC on 2026-11-06 and ran the last 8.1 h of
+the phase 4 run: 777 `STATEMENT` events in that window, `AdapterFailures` 0, and a check of
+47 stays found 6–10 statements each with no rule broken. Local
 evidence (`tests/test_facts.py`, recorded API responses for Tokyo, all 17 profiles):
 
 | Criterion | Result |
