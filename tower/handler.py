@@ -34,6 +34,7 @@ PUBLIC_STATE = (
     "hops_ok",
     "hops_aborted",
     "updated_at",
+    "awake_since",
 )
 
 # Failure reasons are written for the operator (exception text, request IDs). The page

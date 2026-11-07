@@ -114,16 +114,24 @@ export function along(points, t) {
 // is the edge settling (D21), so the plane waits at ROUTE_FLIPPED until the edge
 // confirms. Progress only ever moves on a real phase event.
 export const PHASES = [
-  { name: 'DEPARTED', label: 'Left the old region', at: 0.04 },
-  { name: 'FUNCTION_CREATED', label: 'New copy created', at: 0.12 },
-  { name: 'FUNCTION_ACTIVE', label: 'New copy running', at: 0.2 },
-  { name: 'URL_READY', label: 'Address ready', at: 0.27 },
-  { name: 'HEALTH_OK', label: 'Health check passed', at: 0.34 },
-  { name: 'ROUTE_FLIPPED', label: 'Edge routing switched', at: 0.42 },
-  { name: 'ROUTE_CONFIRMED', label: 'Edge settled on the new region', at: 0.86 },
-  { name: 'ARRIVED', label: 'Suitcase delivered', at: 0.95 },
-  { name: 'LANDED', label: 'Old copy retired', at: 1 },
+  { name: 'DEPARTED', label: 'Leaves', at: 0.04, explain: 'Picks a destination and starts the move.' },
+  { name: 'FUNCTION_CREATED', label: 'Builds a copy', at: 0.12, explain: 'Copies its own code into a brand-new Lambda function in {to}.' },
+  { name: 'FUNCTION_ACTIVE', label: 'Starts it', at: 0.2, explain: 'AWS boots the new copy.' },
+  { name: 'URL_READY', label: 'Gives it an address', at: 0.27, explain: 'The new copy gets its own private address, which only CloudFront may call.' },
+  { name: 'HEALTH_OK', label: 'Checks its health', at: 0.34, explain: 'The old copy calls the new one to make sure it answers and runs the right version.' },
+  { name: 'ROUTE_FLIPPED', label: 'Switches the route', at: 0.42, explain: 'Tells CloudFront to send visitors to {to} instead.' },
+  {
+    name: 'ROUTE_CONFIRMED',
+    label: 'Waits for the world',
+    at: 0.86,
+    explain: 'CloudFront edge locations worldwide pick up the change. This is most of every move. The old copy keeps answering until then, so no visitor sees an error.',
+  },
+  { name: 'ARRIVED', label: 'Hands over', at: 0.95, explain: 'Passes its suitcase (journey history and stats) to the new copy, which takes over.' },
+  { name: 'LANDED', label: 'Deletes the old copy', at: 1, explain: 'The new copy deletes the old one. Nothing is left behind in {from}.' },
 ];
+
+/** How long the edge usually takes to settle after a route switch (D21). */
+export const EDGE_SETTLE_MS = 90_000;
 const PHASE_INDEX = Object.fromEntries(PHASES.map((p, i) => [p.name, i]));
 const IN_FLIGHT = new Set(PHASES.map((p) => p.name));
 
@@ -405,4 +413,158 @@ export function lastJourney(hops, gapMs = 20 * 60 * 1000) {
     endedAt: Date.parse(run[0].landed_at),
     startedAt: Date.parse(run[run.length - 1].started_at || run[run.length - 1].landed_at),
   };
+}
+
+// --- the move, as three live boxes: old copy, edge, new copy ---------------------------
+
+/**
+ * Live state of each part of a move. `flight` comes from currentFlight(); without one
+ * the traveler is staying put in `here`, and `next` is set once it has picked a
+ * destination (30 s before leaving).
+ */
+export function moveState({ flight = null, here = '', next = '', regions = {}, now = Date.now() }) {
+  const city = (code) => regions[code]?.city || code;
+  if (!flight) {
+    return {
+      copies: here ? 1 : 0,
+      old: { region: here, status: here ? 'serving' : 'none', text: here ? 'Serving you' : 'Not running' },
+      edge: { status: 'steady', text: here ? `Sends every visitor to ${city(here)}` : 'Not routing anywhere', settle: null },
+      new: next
+        ? { region: next, status: 'none', text: 'Does not exist yet. Built when the countdown ends.' }
+        : { region: '', status: 'none', text: 'Not chosen yet. Picked 30 s before leaving.' },
+    };
+  }
+  const d = flight.done;
+  const { from, to } = flight;
+
+  let newer = { region: to, status: 'none', text: 'Does not exist yet' };
+  if (d.FUNCTION_CREATED) newer = { region: to, status: 'building', text: 'Being created' };
+  if (d.FUNCTION_ACTIVE) newer = { region: to, status: 'building', text: 'Starting up' };
+  if (d.URL_READY) newer = { region: to, status: 'building', text: 'Has an address; being checked' };
+  if (d.HEALTH_OK) newer = { region: to, status: 'ready', text: 'Healthy, waiting for traffic' };
+  if (d.ROUTE_FLIPPED) newer = { region: to, status: 'serving', text: 'Starting to receive visitors' };
+  if (d.ARRIVED) newer = { region: to, status: 'serving', text: 'In charge now' };
+  if (d.LANDED) newer = { region: to, status: 'serving', text: 'Serving you' };
+
+  let older = { region: from, status: 'serving', text: 'Serving you while it builds the next copy' };
+  if (d.ROUTE_FLIPPED) older = { region: from, status: 'serving', text: 'Still answering until every edge has switched' };
+  if (d.ARRIVED) older = { region: from, status: 'leaving', text: 'Handed over; being deleted' };
+  if (d.LANDED) older = { region: from, status: 'gone', text: 'Deleted' };
+
+  let edge = { status: 'steady', text: `Sends every visitor to ${city(from)}`, settle: null };
+  if (d.ROUTE_FLIPPED && !d.ROUTE_CONFIRMED) {
+    const since = Date.parse(d.ROUTE_FLIPPED.ts);
+    edge = {
+      status: 'switching',
+      text: `Switching from ${city(from)} to ${city(to)}`,
+      settle: { since, fraction: Math.min(0.99, Math.max(0, (now - since) / EDGE_SETTLE_MS)) },
+    };
+  }
+  if (d.ROUTE_CONFIRMED) edge = { status: 'steady', text: `Sends every visitor to ${city(to)}`, settle: null };
+
+  const exists = (b) => b.status !== 'none' && b.status !== 'gone';
+  return { copies: [older, newer].filter(exists).length, old: older, edge, new: newer };
+}
+
+/** A step's explanation with the cities filled in. */
+export function explain(step, from, to, regions = {}) {
+  const city = (code, fallback) => regions[code]?.city || code || fallback;
+  return step.explain.replace('{to}', city(to, 'the next region')).replace('{from}', city(from, 'the old region'));
+}
+
+/** Milliseconds into the move at which each step finished. `phases` maps name to ts or {ts}. */
+export function stepTimes(phases = {}, startedAt = null) {
+  const tsOf = (v) => (typeof v === 'string' ? v : v?.ts);
+  const start = startedAt ?? (Date.parse(tsOf(phases.DEPARTED) || '') || null);
+  const out = {};
+  if (!start) return out;
+  for (const p of PHASES) {
+    const ts = Date.parse(tsOf(phases[p.name]) || '');
+    if (!Number.isNaN(ts)) out[p.name] = ts - start;
+  }
+  return out;
+}
+
+/** The most recent finished move into `region`, shown between flights. */
+export function lastMove(hops, region) {
+  const h = hops.find((x) => x.status === 'landed' && x.to === region && x.phases);
+  if (!h) return null;
+  const startedAt = Date.parse(h.started_at || h.phases.DEPARTED || '') || null;
+  return {
+    hopId: h.hop_id,
+    from: h.from,
+    to: h.to,
+    flightMs: h.flight_ms ?? null,
+    times: stepTimes(h.phases, startedAt),
+    landedAt: Date.parse(h.landed_at || h.phases.LANDED || '') || null,
+  };
+}
+
+/** Recent hops as journey-log rows, newest first. */
+export function journeyRows(hops, n = 10) {
+  return hops.slice(0, n).map((h) => {
+    const t = stepTimes(h.phases || {}, Date.parse(h.started_at || '') || null);
+    const outcome = { landed: 'landed', aborted: 'cancelled', in_flight: 'in flight' }[h.status] || h.status || '';
+    return {
+      hopId: h.hop_id,
+      from: h.from,
+      to: h.to,
+      at: Date.parse(h.landed_at || h.aborted_at || h.started_at || '') || null,
+      buildMs: t.HEALTH_OK ?? null,
+      edgeMs: t.ROUTE_CONFIRMED != null && t.ROUTE_FLIPPED != null ? t.ROUTE_CONFIRMED - t.ROUTE_FLIPPED : null,
+      totalMs: h.flight_ms ?? null,
+      outcome,
+      abortPhase: h.abort_phase || '',
+    };
+  });
+}
+
+/** Human duration: "38 s", "4 min", "3 h 12 min", "2 days 5 h". */
+export function duration(ms) {
+  const s = Math.max(0, Math.floor(ms / 1000));
+  if (s < 60) return `${s} s`;
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m} min`;
+  const h = Math.floor(m / 60);
+  if (h < 48) return `${h} h ${m % 60} min`;
+  return `${Math.floor(h / 24)} days ${h % 24} h`;
+}
+
+// --- latency from this browser -----------------------------------------------------------
+
+/** Ping results for the chart, {t, ms, region}, oldest first, within `windowMs`. */
+export class Latency {
+  constructor(windowMs = 6 * 60 * 1000) {
+    this.windowMs = windowMs;
+    this.samples = [];
+  }
+
+  add(t, ms, region) {
+    this.samples.push({ t, ms, region });
+    const cutoff = t - this.windowMs;
+    while (this.samples.length && this.samples[0].t < cutoff) this.samples.shift();
+  }
+
+  /** Where the answering region changed: [{t, from, to}]. */
+  switches() {
+    const out = [];
+    for (let i = 1; i < this.samples.length; i++) {
+      const a = this.samples[i - 1], b = this.samples[i];
+      if (a.region && b.region && a.region !== b.region) out.push({ t: b.t, from: a.region, to: b.region });
+    }
+    return out;
+  }
+
+  /** Median latency per answering region, in the order they first answered. */
+  medians() {
+    const by = new Map();
+    for (const s of this.samples) {
+      if (!by.has(s.region)) by.set(s.region, []);
+      by.get(s.region).push(s.ms);
+    }
+    return [...by].map(([region, v]) => {
+      const sorted = [...v].sort((a, b) => a - b);
+      return { region, ms: sorted[Math.floor(sorted.length / 2)], n: v.length };
+    });
+  }
 }

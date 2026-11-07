@@ -5,25 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>The Traveler</title>
-<meta name="description" content="A website whose server moves to a new AWS region every few minutes. Watch it travel.">
+<meta name="description" content="A website whose server moves itself to a new AWS region every few minutes: it builds a copy elsewhere, switches traffic, and deletes itself. Watch it happen live.">
 <link rel="stylesheet" href="app.css">
 <script type="module" src="app.js"></script>
 </head>
 <body>
 <header class="top">
-  <div>
-    <h1>The Traveler</h1>
-    <p class="tagline">A website that can't sit still. Every few minutes its server packs up and moves to another part of the world, and this page follows it.</p>
-  </div>
-  <div class="badges">
+  <span class="brand">The Traveler</span>
+  <span class="badges">
     <span id="status" class="pill">Connecting…</span>
-    <span id="latency" class="latency" hidden></span>
-  </div>
+    <span id="hop" class="hop"></span>
+  </span>
 </header>
 
 <main>
+  <section class="hero" aria-live="polite">
+    <h1 id="headline">Finding the website's server…</h1>
+    <p id="lede" class="lede">This website doesn't live anywhere. Every few minutes its server builds a copy of itself in another part of the world, moves your traffic there, and deletes itself.</p>
+    <ul id="hero-facts" class="hero-facts"></ul>
+  </section>
+
   <section class="card map-card" aria-labelledby="map-title">
-    <h2 id="map-title" class="sr-only">Map</h2>
+    <h2 id="map-title" class="sr-only">Map of the journey</h2>
     <svg id="map" class="map" viewBox="{{VIEWBOX}}" role="img" aria-labelledby="map-summary">
       <path class="land" d="{{LAND}}"/>
       <g id="trail"></g>
@@ -33,40 +36,117 @@
         <path d="M11 0 L-5 -7 L-2 -1 L-8 -1 L-10 -4 L-11 -4 L-10 0 L-11 4 L-10 4 L-8 1 L-2 1 L-5 7 Z"/>
       </g>
     </svg>
-    <p id="map-summary" class="sr-only" aria-live="polite">Finding the traveler.</p>
+    <p class="map-legend" aria-hidden="true">
+      <span><i class="key here"></i>running now</span>
+      <span><i class="key next"></i>next stop</span>
+      <span><i class="key trail"></i>recent moves</span>
+      <span><i class="key pin"></i>AWS regions it can visit</span>
+    </p>
+    <p id="map-summary" class="sr-only">Finding the traveler.</p>
+  </section>
+
+  <section class="card move" aria-labelledby="move-title">
+    <div class="section-head">
+      <h2 id="move-title">How it moves</h2>
+      <p id="move-sub" class="section-sub"></p>
+    </div>
+
+    <div class="stage">
+      <div class="stage-top">
+        <div class="node you"><span class="node-kicker">You</span><span class="node-title">This page</span><span class="node-text">Same address every time</span></div>
+        <div class="flow" aria-hidden="true"></div>
+        <div class="node edge" id="node-edge">
+          <span class="node-kicker">CloudFront edge</span>
+          <span class="node-title">Decides where you go</span>
+          <span class="node-text" id="edge-text">–</span>
+          <span class="settle" id="edge-settle" hidden><span class="settle-bar"><span id="edge-settle-bar"></span></span><span class="settle-text" id="edge-settle-text"></span></span>
+        </div>
+      </div>
+      <div class="stage-bottom">
+        <div class="node copy" id="node-old">
+          <span class="node-kicker" id="old-kicker">Copy</span>
+          <span class="node-title" id="old-title">–</span>
+          <span class="node-text" id="old-text">–</span>
+          <span class="answered" id="old-answered" hidden title="The region that answered this page's last request">answered you</span>
+        </div>
+        <div class="copies" aria-live="polite"><span class="copies-n" id="copies">1</span><span class="copies-label">copies running</span></div>
+        <div class="node copy" id="node-new">
+          <span class="node-kicker" id="new-kicker">Next copy</span>
+          <span class="node-title" id="new-title">–</span>
+          <span class="node-text" id="new-text">–</span>
+          <span class="answered" id="new-answered" hidden title="The region that answered this page's last request">answered you</span>
+        </div>
+      </div>
+    </div>
+
+    <h3 id="steps-title" class="steps-title">The next move</h3>
+    <ol id="steps" class="steps"></ol>
   </section>
 
   <div class="columns">
-    <section class="card panel" id="panel" aria-live="polite" aria-busy="true">
-      <p class="kicker">Finding the traveler…</p>
+    <section class="card proof" aria-labelledby="proof-title">
+      <h2 id="proof-title">Proof from your browser</h2>
+      <p class="section-sub">This page pings the website every few seconds. The address never changes, but the server that answers does.</p>
+      <p class="answer"><span class="answer-label">Answered by</span> <span id="answer-region" class="answer-region">–</span> <span id="answer-ms" class="answer-ms"></span></p>
+      <div class="chart" id="chart">
+        <svg id="chart-svg" class="chart-svg" role="img" aria-labelledby="chart-desc"></svg>
+        <div id="chart-tip" class="chart-tip" hidden></div>
+      </div>
+      <p id="chart-desc" class="chart-note">Round-trip time from your browser to whichever region is live. When the traveler moves, the line jumps with the new distance.</p>
+      <ul id="medians" class="medians"></ul>
     </section>
 
     <section class="card feed-card" aria-labelledby="feed-title">
-      <h2 id="feed-title">What it's noticing</h2>
+      <h2 id="feed-title">What it notices at each stop</h2>
+      <p class="section-sub">At every stop it looks the place up in public data, about one fact every 30 seconds, and credits each source.</p>
       <ol id="feed" class="feed"><li class="empty">Statements appear here about every 30 seconds.</li></ol>
     </section>
   </div>
 
-  <section class="stats" aria-label="Journey statistics">
-    <div class="stat"><span class="value" id="st-hops">–</span><span class="label">hops since launch</span></div>
-    <div class="stat"><span class="value" id="st-regions">–</span><span class="label">regions visited</span></div>
-    <div class="stat"><span class="value" id="st-avg">–</span><span class="label">average flight</span></div>
-    <div class="stat"><span class="value" id="st-long">–</span><span class="label">longest flight</span></div>
-    <div class="stat"><span class="value" id="st-aborted">–</span><span class="label">cancelled departures</span></div>
+  <section class="card log" aria-labelledby="log-title">
+    <div class="section-head">
+      <h2 id="log-title">Journey log</h2>
+      <p id="awake" class="section-sub"></p>
+    </div>
+    <div class="stats" aria-label="Journey statistics">
+      <div class="stat"><span class="value" id="st-hops">–</span><span class="label">moves since launch</span></div>
+      <div class="stat"><span class="value" id="st-regions">–</span><span class="label">regions visited</span></div>
+      <div class="stat"><span class="value" id="st-avg">–</span><span class="label">average move</span></div>
+      <div class="stat"><span class="value" id="st-long">–</span><span class="label">longest move</span></div>
+      <div class="stat"><span class="value" id="st-aborted">–</span><span class="label">cancelled, stayed put</span></div>
+    </div>
+    <div class="table-wrap">
+      <table class="journey">
+        <thead><tr><th scope="col">Your time</th><th scope="col">Move</th><th scope="col" class="num">Build</th><th scope="col" class="num">Edge switch</th><th scope="col" class="num">Total</th><th scope="col">Result</th></tr></thead>
+        <tbody id="journey"><tr><td colspan="6" class="empty">Loading the last moves…</td></tr></tbody>
+      </table>
+    </div>
+    <p id="st-note" class="note" hidden></p>
   </section>
-  <p id="st-note" class="note" hidden></p>
 
   <section class="card how" aria-labelledby="how-title">
-    <h2 id="how-title">How it works</h2>
+    <h2 id="how-title">What's going on here</h2>
     <div class="how-grid">
-      <div class="how-text">
-        <p>The server behind this page is a single AWS Lambda function, and only one copy exists at a time. It stays in a region for three to five minutes, then moves itself to another one.</p>
-        <p>To move, the running copy builds a new copy of itself in the destination, checks that it's healthy, and points the edge at it. It keeps serving until edge locations worldwide have picked up the change, then hands over. The new copy retires the old one. If any step fails, the move is cancelled and the traveler stays where it is.</p>
-        <p>You always visit the same address. CloudFront looks up where the traveler is on every request and sends you there, so the server moves and the visitor never notices.</p>
-        <p>While it stays somewhere, it posts what it notices about the place: local time, weather, earthquakes, holidays and history, from public sources it credits and links.</p>
+      <div class="claims">
+        <div class="claim">
+          <h3>There is no fixed server</h3>
+          <p>The site is one AWS Lambda function, and only one copy of it exists between moves. It has no home region. Wait five minutes and it runs somewhere else.</p>
+        </div>
+        <div class="claim">
+          <h3>It moves itself</h3>
+          <p>No pipeline or person deploys it. Every three to five minutes the running copy picks a region, builds a copy of itself there from its own code, switches traffic, and the new copy deletes the old one. The code carries itself around the world.</p>
+        </div>
+        <div class="claim">
+          <h3>Visitors don't notice</h3>
+          <p>There is one address. CloudFront looks up where the traveler is on every request. The old copy keeps answering until every edge location has switched, so a move doesn't drop requests. In testing: zero failed requests across 20 moves and about 2,800 probes.</p>
+        </div>
+        <div class="claim">
+          <h3>It fails safe</h3>
+          <p>If any step of a move fails, the move is cancelled and the traveler stays put. A watchdog checks every five minutes and brings it back if it stops. There are never more than two copies.</p>
+        </div>
       </div>
       <svg class="arch" viewBox="0 0 360 250" role="img" aria-labelledby="arch-title">
-        <title id="arch-title">Your browser talks to CloudFront. An edge function reads the traveler's current location and routes API calls to the one live Lambda copy. A control tower in DynamoDB records every step.</title>
+        <title id="arch-title">Your browser talks to CloudFront. An edge function reads where the traveler is and routes API calls to the one live Lambda copy. A control tower in DynamoDB records every step.</title>
         <defs>
           <marker id="arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M0 0 L8 4 L0 8 Z" class="arrow-head"/>

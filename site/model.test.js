@@ -193,3 +193,76 @@ test('stats from the hop sample, trail and the last journey', () => {
   // Tower-side stats, when the feed has them, win.
   assert.deepEqual(M.stats({}, hops, { hops: 1 }), { hops: 1 });
 });
+
+test('move state: one copy at rest, two while moving, one again after landing', () => {
+  const at = M.moveState({ here: 'eu-west-1', next: '', regions: REGIONS });
+  assert.equal(at.copies, 1);
+  assert.equal(at.old.status, 'serving');
+  assert.equal(at.new.status, 'none');
+  assert.match(at.edge.text, /Dublin/);
+
+  const done = {};
+  const flight = { from: 'eu-west-1', to: 'ap-northeast-3', done };
+  const states = [];
+  for (const [i, p] of M.PHASES.entries()) {
+    done[p.name] = { ts: iso(T0 + i * 10_000) };
+    states.push(M.moveState({ flight, regions: REGIONS, now: T0 + i * 10_000 + 5000 }));
+  }
+  assert.deepEqual(states.map((s) => s.copies), [1, 2, 2, 2, 2, 2, 2, 2, 1]);
+  assert.equal(states.at(-1).old.status, 'gone');
+  assert.equal(states.at(-1).new.status, 'serving');
+  // While the edge settles it reports progress toward the usual 90 s.
+  const switching = states[M.PHASES.findIndex((p) => p.name === 'ROUTE_FLIPPED')];
+  assert.equal(switching.edge.status, 'switching');
+  assert.ok(switching.edge.settle.fraction > 0 && switching.edge.settle.fraction < 0.1);
+  assert.match(states.at(-1).edge.text, /Osaka/);
+});
+
+test('step explanations name the cities', () => {
+  const build = M.PHASES.find((p) => p.name === 'FUNCTION_CREATED');
+  assert.equal(M.explain(build, 'eu-west-1', 'ap-northeast-3', REGIONS), 'Copies its own code into a brand-new Lambda function in Osaka.');
+  const last = M.PHASES.at(-1);
+  assert.match(M.explain(last, 'eu-west-1', 'ap-northeast-3', REGIONS), /behind in Dublin/);
+  assert.match(M.explain(last, '', '', {}), /the old region/);
+});
+
+test('last move and journey rows come from hop records', () => {
+  const phases = { DEPARTED: iso(T0), HEALTH_OK: iso(T0 + 6000), ROUTE_FLIPPED: iso(T0 + 9000), ROUTE_CONFIRMED: iso(T0 + 100_000), LANDED: iso(T0 + 109_000) };
+  const hops = [
+    { hop_id: 'h-9', status: 'in_flight', from: 'ap-northeast-3', to: 'us-west-2', started_at: iso(T0 + 400_000), phases: { DEPARTED: iso(T0 + 400_000) } },
+    { hop_id: 'h-8', status: 'aborted', from: 'eu-west-1', to: 'us-west-2', abort_phase: 'HEALTH_OK', started_at: iso(T0 - 300_000), aborted_at: iso(T0 - 290_000), phases: {} },
+    { hop_id: 'h-7', status: 'landed', from: 'eu-west-1', to: 'ap-northeast-3', started_at: iso(T0), landed_at: iso(T0 + 109_000), flight_ms: 109_000, phases },
+  ];
+  const last = M.lastMove(hops, 'ap-northeast-3');
+  assert.equal(last.hopId, 'h-7');
+  assert.equal(last.times.HEALTH_OK, 6000);
+  assert.equal(last.landedAt, T0 + 109_000);
+  assert.equal(M.lastMove(hops, 'us-west-2'), null);
+
+  const rows = M.journeyRows(hops);
+  assert.deepEqual(rows.map((r) => r.outcome), ['in flight', 'cancelled', 'landed']);
+  assert.equal(rows[1].abortPhase, 'HEALTH_OK');
+  assert.equal(rows[2].buildMs, 6000);
+  assert.equal(rows[2].edgeMs, 91_000);
+  assert.equal(rows[2].totalMs, 109_000);
+});
+
+test('durations read naturally', () => {
+  assert.equal(M.duration(38_000), '38 s');
+  assert.equal(M.duration(4 * 60_000 + 5000), '4 min');
+  assert.equal(M.duration((3 * 60 + 12) * 60_000), '3 h 12 min');
+  assert.equal(M.duration(53 * 3_600_000), '2 days 5 h');
+});
+
+test('latency samples find the moment the answering region changed', () => {
+  const l = new M.Latency(60_000);
+  l.add(T0, 120, 'eu-west-1');
+  l.add(T0 + 5000, 118, 'eu-west-1');
+  l.add(T0 + 6000, 260, 'ap-northeast-3');
+  l.add(T0 + 7000, 250, 'ap-northeast-3');
+  l.add(T0 + 8000, 270, 'ap-northeast-3');
+  assert.deepEqual(l.switches(), [{ t: T0 + 6000, from: 'eu-west-1', to: 'ap-northeast-3' }]);
+  assert.deepEqual(l.medians().map((m) => [m.region, m.ms]), [['eu-west-1', 120], ['ap-northeast-3', 260]]);
+  l.add(T0 + 70_000, 255, 'ap-northeast-3');
+  assert.deepEqual(l.samples.map((x) => x.t), [T0 + 70_000], 'samples older than the window fall out');
+});
