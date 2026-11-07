@@ -1,15 +1,17 @@
 """Preview the site locally against the live API.
 
-    python -m scripts.serve_site https://dxxxx.cloudfront.net [--port 8080]
+    python -m scripts.serve_site https://dxxxx.cloudfront.net [--port 8080] [--lan]
 
 Builds the site, serves it, and forwards /api/* to the given site so the page shows
-the real traveler. Read-only: only GET is forwarded.
+the real traveler. Read-only: only GET is forwarded. Listens on this machine only,
+unless --lan, which listens on every interface so a phone on the same network can open it.
 """
 
 from __future__ import annotations
 
 import argparse
 import http.server
+import socket
 import ssl
 import urllib.error
 import urllib.request
@@ -66,13 +68,16 @@ def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("upstream", help="the live site, e.g. https://dxxxx.cloudfront.net")
     p.add_argument("--port", type=int, default=8080)
+    p.add_argument("--lan", action="store_true", help="listen on the local network, not just this machine")
     args = p.parse_args()
     out = ROOT / "build" / "site"
     build(out)
     Handler.upstream = args.upstream.rstrip("/")
     Handler.tls = _tls()
-    server = http.server.ThreadingHTTPServer(("127.0.0.1", args.port), partial(Handler, directory=str(Path(out))))
-    print(f"http://127.0.0.1:{args.port}/  (api -> {Handler.upstream})")
+    host = "0.0.0.0" if args.lan else "127.0.0.1"  # noqa: S104 - --lan asks for exactly this
+    server = http.server.ThreadingHTTPServer((host, args.port), partial(Handler, directory=str(Path(out))))
+    shown = socket.gethostbyname(socket.gethostname()) if args.lan else "127.0.0.1"
+    print(f"http://{shown}:{args.port}/  (api -> {Handler.upstream})", flush=True)
     server.serve_forever()
     return 0
 
