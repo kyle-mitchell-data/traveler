@@ -2,6 +2,8 @@ variable "tower_url_domain" { type = string }
 variable "router_source" { type = string }
 variable "writer_dir" { type = string }
 variable "log_retention_days" { type = number }
+variable "tower_table_name" { type = string }
+variable "tower_table_arn" { type = string }
 
 # ---------------------------------------------------------------------------
 # Static site: private bucket, read only by this distribution.
@@ -104,6 +106,16 @@ data "aws_iam_policy_document" "writer" {
     ]
     resources = [aws_cloudfront_key_value_store.routing.arn]
   }
+  # The last ETag lives on one tower item so a cold writer can skip a describe.
+  statement {
+    actions   = ["dynamodb:GetItem", "dynamodb:PutItem"]
+    resources = [var.tower_table_arn]
+    condition {
+      test     = "ForAllValues:StringEquals"
+      variable = "dynamodb:LeadingKeys"
+      values   = ["ROUTE"]
+    }
+  }
   statement {
     actions   = ["logs:CreateLogStream", "logs:PutLogEvents"]
     resources = ["${aws_cloudwatch_log_group.writer.arn}:*"]
@@ -133,7 +145,10 @@ resource "aws_lambda_function" "writer" {
   timeout          = 15
 
   environment {
-    variables = { KVS_ARN = aws_cloudfront_key_value_store.routing.arn }
+    variables = {
+      KVS_ARN     = aws_cloudfront_key_value_store.routing.arn
+      TOWER_TABLE = var.tower_table_name
+    }
   }
 
   logging_config {

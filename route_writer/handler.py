@@ -28,6 +28,22 @@ ALLOWED = {
 _router: Router | None = None
 
 
+class TowerEtag:
+    """The last KeyValueStore ETag, on its own tower item (pk ROUTE)."""
+
+    KEY = {"pk": "ROUTE", "sk": "ETAG"}
+
+    def __init__(self, table: Any) -> None:
+        self.table = table
+
+    def get(self) -> str | None:
+        item = self.table.get_item(Key=self.KEY).get("Item")
+        return str(item["etag"]) if item else None
+
+    def put(self, etag: str) -> None:
+        self.table.put_item(Item={**self.KEY, "etag": etag})
+
+
 def handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
     global _router
     keys = event.get("keys")
@@ -38,6 +54,11 @@ def handler(event: dict[str, Any], context: Any) -> dict[str, Any]:
         if pattern is None or not isinstance(v, str) or not pattern.match(v):
             return {"ok": False, "error": f"rejected {k!r}"}
     if _router is None:
-        _router = Router(boto3.client("cloudfront-keyvaluestore", region_name="us-east-1"), os.environ["KVS_ARN"])
+        table = boto3.resource("dynamodb").Table(os.environ["TOWER_TABLE"])
+        _router = Router(
+            boto3.client("cloudfront-keyvaluestore", region_name="us-east-1"),
+            os.environ["KVS_ARN"],
+            etag_store=TowerEtag(table),
+        )
     _router.set(**keys)
     return {"ok": True}

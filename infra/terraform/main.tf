@@ -26,6 +26,8 @@ module "edge" {
   router_source      = "${local.repo_root}/edge/traveler-router.js"
   writer_dir         = "${path.root}/.build/route-writer"
   log_retention_days = var.log_retention_days
+  tower_table_name   = module.tower.table_name
+  tower_table_arn    = module.tower.table_arn
 }
 
 module "iam" {

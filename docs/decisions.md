@@ -41,6 +41,14 @@ Every KeyValueStore API call costs $0.001 (confirmed via the AWS Pricing API,
 2026-10-28), reads included. Only the P6 route flip (and rollback, wake, sleep)
 calls the store. The watchdog and `make status` read state from the tower table.
 
+Amended 2026-11-10: the in-memory ETag cache never survived between flips, because
+the route writer is a fresh container every time (one log stream per invocation),
+so each flip paid for a DescribeKeyValueStore as well: about 2 calls per hop, about
+$14/month always-on. The writer now keeps the last ETag on a tower item (`ROUTE` /
+`ETAG`; its IAM policy reaches only that partition). A stale tag (after `make wake`
+or `make sleep`) costs one failed update, a describe and a retry; if the tower is
+unreachable the writer falls back to describing, and the flip is never blocked.
+
 ## D6. One cacheable tower feed
 
 `/api/tower/status` and `/api/tower/events?since=` merge into `/api/tower/feed`,
