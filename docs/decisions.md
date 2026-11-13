@@ -1,6 +1,7 @@
 # Decision log
 
-Amendments to the build spec. Where these conflict with the spec, these win.
+Decisions made while building, in order. Each amends the original design brief (not
+published); "the spec" below means that brief.
 
 ## D1. Budget: one $25/month budget
 
@@ -294,3 +295,21 @@ true. The 24-hour gate run uses `pin_awake=true`.
 - The page leads with the move itself: a live headline, the old copy, edge and new copy
   with their states, the copy count, and the nine steps. Between moves it shows the
   last move's timings, so the mechanism is visible all the time, not only in flight.
+
+## D31. Wrap-up for the public demo (2026-11-13)
+
+- **Runs always on.** `pin_awake=true` stays set, so the demo is always moving. About
+  $8 a month (cost report).
+- **Phase 1's budget-email criterion is waived.** Budgets reports the alert as sent and
+  nothing arrived; the $25 budget's alerts stay configured, and the alarm email path
+  through SNS is proven. The $0.01 test budget is removed (`alert_test` defaults to
+  false).
+- **Phase 6 ships without** the S3 archive, all-time totals and the stats page; they are
+  listed in the README as not built. WAF stays off (D15); tracing was optional.
+- **Public repo.** MIT license. The design brief is not published: it was removed from
+  history before the repo went public. `github_repo` and `github_oidc_subject_prefix`
+  have no defaults, so a new deployment cannot trust someone else's repo; CI derives
+  both from the GitHub context. The plan job runs only for pull requests from this
+  repo, never a fork.
+- `make deploy` chains apply, site, release and wake for a first deploy.
+

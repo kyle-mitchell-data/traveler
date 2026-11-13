@@ -1,5 +1,10 @@
 # Copy to terraform.tfvars (gitignored) and fill in.
 alert_email = "you@example.com"
 
+# The GitHub repo whose Actions may deploy. Find the IDs with
+#   gh api repos/OWNER/NAME --jq '"repo:\(.owner.login)@\(.owner.id)/\(.name)@\(.id)"'
+github_repo                = "OWNER/NAME"
+github_oidc_subject_prefix = "repo:OWNER@OWNER_ID/NAME@REPO_ID"
+
 # Set true once to prove the budget email path, then back to false.
 alert_test = false

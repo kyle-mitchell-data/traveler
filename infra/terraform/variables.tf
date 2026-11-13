@@ -15,16 +15,16 @@ variable "allowlist" {
   ]
 }
 
+# No defaults: a deployment must name its own repo, or its AWS account would trust
+# someone else's. CI derives both from the GitHub context.
 variable "github_repo" {
   description = "owner/name of the repo allowed to assume the CI roles."
   type        = string
-  default     = "kyle-mitchell-data/traveler"
 }
 
 variable "github_oidc_subject_prefix" {
-  description = "The repo's immutable OIDC subject prefix (owner@id/name@id), from GET /repos/{repo}/actions/oidc/customization/sub."
+  description = "The repo's immutable OIDC subject prefix, repo:OWNER@OWNER_ID/NAME@REPO_ID (GET /repos/{repo}/actions/oidc/customization/sub)."
   type        = string
-  default     = "repo:kyle-mitchell-data@349532211/traveler@1437877847"
 }
 
 variable "alert_email" {
@@ -40,7 +40,7 @@ variable "monthly_budget_usd" {
 variable "alert_test" {
   description = "Adds a throwaway $0.01 budget so the email path can be proven. Turn off once an alert arrives."
   type        = bool
-  default     = true # phase 1 gate: until the first budget email arrives
+  default     = false
 }
 
 variable "log_retention_days" {

@@ -2,12 +2,12 @@
 
 Evidence for each phase's acceptance criteria. Dates are UTC.
 
-## Phase 1: Bootstrap
+## Phase 1: Bootstrap — passed, one criterion waived
 
 | Criterion | Result |
 |---|---|
 | `terraform plan` clean from a fresh clone | Pass (2026-11-05): fresh `gh repo clone`, init, plan → "No changes" |
-| A test budget alert reaches Kyle's email | **Open**: `traveler-alert-test` ($0.01, credits excluded) waits on billing data |
+| A test budget alert reaches Kyle's email | **Waived** (2026-11-13, D31). AWS shows the `traveler-alert-test` notification in ALARM ($3.14 against $0.01, credits excluded) with the right address, but no Budgets email ever arrived (inbox, spam and trash searched). The SNS email path to the same address is proven by the watchdog alarm subscription. The test budget is removed. |
 | No long-lived AWS keys anywhere | Pass (2026-11-05): bootstrap IAM user and key deleted; account has 0 IAM users; local access is IAM Identity Center only |
 
 ## Phase 2: One region, routed — passed
@@ -67,3 +67,14 @@ Also checked live from the laptop (`make facts`): all six network adapters answe
 London, Tokyo, Northern Virginia, Frankfurt and Northern California. After deploy: confirm
 in AWS from the tower's `STATEMENT` events and the hop records' `facts` summaries.
 
+## Phase 6: Experience and hardening — passed (scope trimmed, D31)
+
+| Criterion | Result |
+|---|---|
+| The plane's progress matches phase events; the countdown is accurate to ±1 second | **Pass.** The plane advances one fixed step per phase event (D30). Countdown target vs actual departure across 600 hops (2026-11-13): 600 within ±1 s, median 0.05 s early, worst 0.92 s early. The page's clock offset comes from the fastest ping, so its error is at most half that round trip. |
+| Works at phone width and in dark mode | **Pass** (2026-11-07): 390 px with no horizontal scroll; light and dark themes. |
+| Function URLs reject direct calls that bypass CloudFront | **Pass** (2026-11-13): the live copy in us-west-1 has `AWS_IAM` auth; direct `/api/traveler/ping` and `/whereami` return 403, the same path through CloudFront returns 200. |
+| After 7 days, actual cost is within the cost model, documented in the cost report | **Pass.** About $7.95 a month always on, against $5–20 modelled. [cost-report.md](cost-report.md). |
+
+Front end live since 2026-11-07 13:31 UTC. README and runbook written. Not built: the S3
+archive, all-time totals, the stats page, WAF (D15) and tracing.
