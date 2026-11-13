@@ -1,5 +1,4 @@
 # Secrets and bootstrap credentials
-a.txt
 *.pem
 .env
 .env.*

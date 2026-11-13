@@ -30,6 +30,7 @@ variable "github_oidc_subject_prefix" {
 variable "alert_email" {
   description = "Where budget alerts go. Set in terraform.tfvars, which is not committed."
   type        = string
+  sensitive   = true
 }
 
 variable "monthly_budget_usd" {

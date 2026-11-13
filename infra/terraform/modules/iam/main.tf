@@ -223,8 +223,10 @@ resource "aws_iam_openid_connect_provider" "github" {
 # or re-created repo cannot inherit trust); the name form is kept for the legacy format.
 data "aws_iam_policy_document" "ci_trust" {
   for_each = {
-    plan   = [for p in ["repo:${var.github_repo}", var.github_subject] : "${p}:pull_request"]
-    deploy = [for p in ["repo:${var.github_repo}", var.github_subject] : "${p}:ref:refs/heads/main"]
+    plan = [for p in ["repo:${var.github_repo}", var.github_subject] : "${p}:pull_request"]
+    # Only jobs in the "production" environment, which is limited to main: any other
+    # workflow on main (a bot, a future pull_request_target) gets no deploy role.
+    deploy = [for p in ["repo:${var.github_repo}", var.github_subject] : "${p}:environment:production"]
   }
 
   statement {
