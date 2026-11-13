@@ -76,8 +76,9 @@ make deploy                 # apply, publish the site, publish a release, wake i
 ```
 
 `terraform output` prints the site URL and two CI role ARNs. For merges to `main` to
-deploy, add repository variables `AWS_PLAN_ROLE_ARN` and `AWS_DEPLOY_ROLE_ARN` and a
-secret `ALERT_EMAIL`. `make status` shows where it is; `make sleep` stops it;
+deploy, add three repository secrets: `AWS_PLAN_ROLE_ARN`, `AWS_DEPLOY_ROLE_ARN` and
+`ALERT_EMAIL`. They are secrets rather than variables so the account ID and address stay
+masked in public Actions logs. `make status` shows where it is; `make sleep` stops it;
 `make destroy` removes everything. More in the [runbook](docs/runbook.md).
 
 The allowlist in `infra/terraform/variables.tf` must contain only regions enabled on the
