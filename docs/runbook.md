@@ -50,4 +50,8 @@ on its own (decision D27), so most alarms clear without a person.
   `/aws/lambda/traveler-watchdog`, `/aws/lambda/traveler-route-writer` and
   `/aws/lambda/traveler-tower` in the home region.
 - **Metrics:** namespace `Traveler`.
+- **Audit:** CloudTrail trail `traveler-audit` (all regions, management events) into the
+  `traveler-audit-<account>` bucket, kept a year. IAM Access Analyzer
+  `traveler-external-access` in the home region lists anything shared outside the
+  account (decision D32).
 - **Cost:** `docs/cost-report.md`. About $8 a month always on.

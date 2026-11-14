@@ -293,6 +293,21 @@ data "aws_iam_policy_document" "ci_deploy_guard" {
     ]
     resources = ["*"]
   }
+
+  # Decision D32: CI cannot switch off the account baseline. Removing any of it
+  # takes a person signed in through SSO.
+  statement {
+    sid    = "KeepBaseline"
+    effect = "Deny"
+    actions = [
+      "cloudtrail:StopLogging",
+      "cloudtrail:DeleteTrail",
+      "access-analyzer:DeleteAnalyzer",
+      "s3:DeleteAccountPublicAccessBlock",
+      "ec2:DisableEbsEncryptionByDefault",
+    ]
+    resources = ["*"]
+  }
 }
 
 resource "aws_iam_role_policy" "ci_deploy_guard" {

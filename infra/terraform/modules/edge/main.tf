@@ -213,6 +213,11 @@ resource "aws_cloudfront_cache_policy" "tower" {
   }
 }
 
+# HSTS, nosniff, frame and referrer headers on every response (decision D32).
+data "aws_cloudfront_response_headers_policy" "security" {
+  name = "Managed-SecurityHeadersPolicy"
+}
+
 resource "aws_cloudfront_distribution" "site" {
   enabled             = true
   comment             = "traveler"
@@ -253,34 +258,37 @@ resource "aws_cloudfront_distribution" "site" {
   }
 
   default_cache_behavior {
-    target_origin_id       = "site"
-    viewer_protocol_policy = "redirect-to-https"
-    allowed_methods        = ["GET", "HEAD"]
-    cached_methods         = ["GET", "HEAD"]
-    cache_policy_id        = data.aws_cloudfront_cache_policy.optimized.id
-    compress               = true
+    target_origin_id           = "site"
+    viewer_protocol_policy     = "redirect-to-https"
+    allowed_methods            = ["GET", "HEAD"]
+    cached_methods             = ["GET", "HEAD"]
+    cache_policy_id            = data.aws_cloudfront_cache_policy.optimized.id
+    compress                   = true
+    response_headers_policy_id = data.aws_cloudfront_response_headers_policy.security.id
   }
 
   ordered_cache_behavior {
-    path_pattern             = "/api/tower/*"
-    target_origin_id         = "tower"
-    viewer_protocol_policy   = "redirect-to-https"
-    allowed_methods          = ["GET", "HEAD"]
-    cached_methods           = ["GET", "HEAD"]
-    cache_policy_id          = aws_cloudfront_cache_policy.tower.id
-    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_but_host.id
-    compress                 = true
+    path_pattern               = "/api/tower/*"
+    target_origin_id           = "tower"
+    viewer_protocol_policy     = "redirect-to-https"
+    allowed_methods            = ["GET", "HEAD"]
+    cached_methods             = ["GET", "HEAD"]
+    cache_policy_id            = aws_cloudfront_cache_policy.tower.id
+    origin_request_policy_id   = data.aws_cloudfront_origin_request_policy.all_but_host.id
+    compress                   = true
+    response_headers_policy_id = data.aws_cloudfront_response_headers_policy.security.id
   }
 
   ordered_cache_behavior {
-    path_pattern             = "/api/traveler/*"
-    target_origin_id         = "traveler"
-    viewer_protocol_policy   = "redirect-to-https"
-    allowed_methods          = ["GET", "HEAD"]
-    cached_methods           = ["GET", "HEAD"]
-    cache_policy_id          = data.aws_cloudfront_cache_policy.disabled.id
-    origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_but_host.id
-    compress                 = true
+    path_pattern               = "/api/traveler/*"
+    target_origin_id           = "traveler"
+    viewer_protocol_policy     = "redirect-to-https"
+    allowed_methods            = ["GET", "HEAD"]
+    cached_methods             = ["GET", "HEAD"]
+    cache_policy_id            = data.aws_cloudfront_cache_policy.disabled.id
+    origin_request_policy_id   = data.aws_cloudfront_origin_request_policy.all_but_host.id
+    compress                   = true
+    response_headers_policy_id = data.aws_cloudfront_response_headers_policy.security.id
 
     function_association {
       event_type   = "viewer-request"

@@ -313,3 +313,33 @@ true. The 24-hour gate run uses `pin_awake=true`.
   repo, never a fork.
 - `make deploy` chains apply, site, release and wake for a first deploy.
 
+
+## D32. Account security baseline (2026-11-13)
+
+The site stays public only through CloudFront; everything else in the account is
+closed. Added in `modules/security` and alongside the modules they touch:
+
+- **CloudTrail:** one multi-region trail (`traveler-audit`) of management events with
+  log file validation, into a private, encrypted, TLS-only bucket that expires logs
+  after a year. The first copy of management events is free; S3 costs are pennies to
+  about a dollar a month.
+- **IAM Access Analyzer** (external access, free) flags anything shared outside the
+  account.
+- **Account-wide S3 Block Public Access.** The site bucket is read through origin
+  access control, so this does not affect it.
+- **EBS encryption by default** in every allowlisted region. Nothing uses EBS; this
+  covers anything created later.
+- **Security headers** (`Managed-SecurityHeadersPolicy`: HSTS, nosniff, frame and
+  referrer) on every CloudFront behavior.
+- **The budget counts real usage** (credits excluded). Credits cover the bill today,
+  so the old net-of-credits budget read $0 and would have stayed silent until they
+  ran out. Its alerts also go to the `traveler-alerts` SNS topic, whose email is
+  proven, since Budgets' own email never arrived (D31).
+- **CI cannot switch the baseline off:** the deploy role's guard also denies
+  stopping or deleting the trail, deleting the analyzer, removing account-level S3
+  Block Public Access and disabling EBS default encryption. Removing any of them takes
+  a person signed in through SSO, and a change that forces Terraform to replace the
+  trail fails in CI by design.
+
+Not done here: GuardDuty (paid, per region), and anything that has to run from the
+management account (SCPs, root-access management for this member account).
