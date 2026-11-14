@@ -1,4 +1,5 @@
 variable "alert_email" { type = string }
+variable "alerts_topic_arn" { type = string }
 variable "monthly_budget_usd" { type = number }
 variable "alert_test" { type = bool }
 
@@ -14,6 +15,13 @@ resource "aws_budgets_budget" "monthly" {
   limit_unit   = "USD"
   time_unit    = "MONTHLY"
 
+  # Count real usage. Credits cover the bill today, so a net-of-credits budget would
+  # read $0 and stay silent until the credits run out (decision D32).
+  cost_types {
+    include_credit = false
+    include_refund = false
+  }
+
   dynamic "notification" {
     for_each = local.actual_thresholds
     content {
@@ -22,6 +30,7 @@ resource "aws_budgets_budget" "monthly" {
       threshold_type             = "ABSOLUTE_VALUE"
       notification_type          = "ACTUAL"
       subscriber_email_addresses = [var.alert_email]
+      subscriber_sns_topic_arns  = [var.alerts_topic_arn]
     }
   }
 
@@ -31,6 +40,7 @@ resource "aws_budgets_budget" "monthly" {
     threshold_type             = "PERCENTAGE"
     notification_type          = "FORECASTED"
     subscriber_email_addresses = [var.alert_email]
+    subscriber_sns_topic_arns  = [var.alerts_topic_arn]
   }
 }
 

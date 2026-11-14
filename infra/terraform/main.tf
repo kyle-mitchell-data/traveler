@@ -62,8 +62,16 @@ module "watchdog" {
 module "budgets" {
   source             = "./modules/budgets"
   alert_email        = var.alert_email
+  alerts_topic_arn   = module.watchdog.alerts_topic_arn
   monthly_budget_usd = var.monthly_budget_usd
   alert_test         = var.alert_test
+}
+
+module "security" {
+  source      = "./modules/security"
+  account_id  = local.account_id
+  home_region = var.home_region
+  allowlist   = var.allowlist
 }
 
 # CloudFront may call the tower read function, and nothing else may (D17).

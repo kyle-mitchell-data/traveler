@@ -191,6 +191,49 @@ resource "aws_sns_topic" "alerts" {
   name = "traveler-alerts"
 }
 
+# The default owner statement plus AWS Budgets, whose own email never arrived (D31):
+# budget alerts reach the inbox through this topic instead.
+data "aws_iam_policy_document" "alerts" {
+  statement {
+    sid = "Owner"
+    actions = [
+      "SNS:GetTopicAttributes", "SNS:SetTopicAttributes", "SNS:AddPermission",
+      "SNS:RemovePermission", "SNS:DeleteTopic", "SNS:Subscribe",
+      "SNS:ListSubscriptionsByTopic", "SNS:Publish",
+    ]
+    resources = [aws_sns_topic.alerts.arn]
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceOwner"
+      values   = [var.account_id]
+    }
+  }
+
+  statement {
+    sid       = "Budgets"
+    actions   = ["SNS:Publish"]
+    resources = [aws_sns_topic.alerts.arn]
+    principals {
+      type        = "Service"
+      identifiers = ["budgets.amazonaws.com"]
+    }
+    condition {
+      test     = "StringEquals"
+      variable = "aws:SourceAccount"
+      values   = [var.account_id]
+    }
+  }
+}
+
+resource "aws_sns_topic_policy" "alerts" {
+  arn    = aws_sns_topic.alerts.arn
+  policy = data.aws_iam_policy_document.alerts.json
+}
+
 resource "aws_sns_topic_subscription" "email" {
   topic_arn = aws_sns_topic.alerts.arn
   protocol  = "email"
